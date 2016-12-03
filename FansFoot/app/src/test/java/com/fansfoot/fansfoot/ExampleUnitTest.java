@@ -1,4 +1,4 @@
-package fansfoot.com.fansfoot;
+package com.fansfoot.fansfoot;
 
 import org.junit.Test;
 

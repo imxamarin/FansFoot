@@ -1,4 +1,4 @@
-package fansfoot.com.fansfoot;
+package com.fansfoot.fansfoot;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

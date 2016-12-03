@@ -1,4 +1,4 @@
-package fansfoot.com.fansfoot;
+package com.fansfoot.fansfoot;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
