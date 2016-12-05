@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:orientation="vertical" android:layout_height="match_parent">
+
+ <EditText
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:text="serach Here"
+     android:gravity="center"
+     />
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="Fun EU Leadboard 780 x 90 pixel"
+       android:textSize="20sp"
+       android:gravity="center"
+
+       />
+
+  <android.support.v7.widget.RecyclerView
+      android:id="@+id/VideoRecycleView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
+
+
+
+</LinearLayout>
