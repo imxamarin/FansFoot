@@ -29,10 +29,10 @@ public class SelectionPage extends Fragment {
     };
 
     int[] imageSub = {
-            R.drawable.meme_img,
-            R.drawable.video_icon,
-            R.drawable.nsfw_icon,
-            R.drawable.gif_icon
+            R.drawable.memes,
+            R.drawable.video,
+            R.drawable.nsfw,
+            R.drawable.animated
     };
 
     @Nullable

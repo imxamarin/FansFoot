@@ -16,6 +16,7 @@
     android:textSize="20sp"
     android:layout_alignParentTop="true"
     android:layout_alignParentLeft="true"
+        android:textColor="#333333"
     />
 <ImageButton
     android:id="@+id/SettingsImgBtn"
@@ -23,6 +24,8 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:layout_alignParentRight="true"
+    android:src="@drawable/next_arrow"
+    android:background="@android:color/transparent"
     />
         </RelativeLayout>
     <View
@@ -30,7 +33,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="10sp"
         android:layout_below="@id/SettingMenuBar"
-        android:background="@android:color/background_dark"
+        android:background="#EFEFF0"
         android:id="@+id/view" />
 
 </LinearLayout>

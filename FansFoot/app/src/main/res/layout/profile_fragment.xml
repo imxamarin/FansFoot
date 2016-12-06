@@ -18,10 +18,11 @@
 
    <ImageView
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
+       android:layout_height="150sp"
        android:src="@drawable/profile_bg"
+
        android:id="@+id/coverimage"
-       />
+       android:scaleType="fitXY" />
     <!--<ImageView-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
@@ -35,14 +36,14 @@
             android:layout_height="wrap_content"
             android:src="@drawable/profile_pic"
             android:layout_centerInParent="true"
-            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:id="@+id/imageView" />
     </RelativeLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12sp"
+        android:padding="3dp"
         >
         <LinearLayout
             android:orientation="vertical"
@@ -55,12 +56,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="POINTS"
+                android:textColor="#333333"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="28"
                 android:gravity="center"
+                android:textColor="#333333"
                 />
 
         </LinearLayout>
@@ -76,12 +79,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="COMNNENT"
+                android:textColor="#333333"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:gravity="center_horizontal"
+                android:textColor="#333333"
                 />
 
         </LinearLayout>
@@ -97,12 +102,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="POST"
+                android:textColor="#333333"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3"
                 android:layout_gravity="center_vertical"
+                android:textColor="#333333"
                 />
 
         </LinearLayout>

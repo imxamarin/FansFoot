@@ -33,15 +33,15 @@ public class SettingsPage  extends Fragment {
     };
 
     int[] imageSet = {
-            R.drawable.comment_btn,
-            R.drawable.comment_btn,
-            R.drawable.comment_btn,
-            R.drawable.comment_btn,
-            R.drawable.dislike_btn,
-            R.drawable.comment_btn,
-            R.drawable.comment_btn,
-            R.drawable.fb_like_btn,
-            R.drawable.fb_like_btn
+            R.drawable.next_arrow,
+            R.drawable.next_arrow,
+            R.drawable.next_arrow,
+            R.drawable.next_arrow,
+            R.drawable.on_toggle,
+            R.drawable.next_arrow,
+            R.drawable.next_arrow,
+            R.drawable.facebook,
+            R.drawable.twitter
     };
 
     @Nullable
