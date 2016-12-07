@@ -3,9 +3,10 @@
     android:orientation="vertical"
     android:padding="10sp"
     android:layout_width="match_parent"
+    android:background="@android:color/holo_orange_dark"
     android:layout_height="wrap_content">
     <TextView
-        android:id="@+id/adsID"
+        android:id="@+id/TilteID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Best 100 Gloals in Football 2015/2016"
@@ -16,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:adjustViewBounds="true"
         />
     <LinearLayout
         android:layout_width="match_parent"

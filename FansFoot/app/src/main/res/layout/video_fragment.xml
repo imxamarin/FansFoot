@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:orientation="vertical" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
 
- <EditText
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
-     android:text="serach Here"
-     android:gravity="center"
-     />
-   <TextView
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:text="Fun EU Leadboard 780 x 90 pixel"
-       android:textSize="20sp"
-       android:gravity="center"
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-       />
+    <com.google.android.gms.ads.AdView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/adViewAlpha"
+        ads:adSize="BANNER"
+        ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
+
+        />
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/VideoRecycleView"

@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent">
-    <TextView
+    <com.google.android.gms.ads.AdView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fun Leadboard 728 x 90 pixels"
-        android:textSize="20sp"
-        android:id="@+id/ProfileAds"
-        />
+        android:id="@+id/adViewAlpha"
+        ads:adSize="BANNER"
+        ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
 
+        />
     <RelativeLayout
         android:id="@+id/ProfileCover"
         android:layout_width="match_parent"

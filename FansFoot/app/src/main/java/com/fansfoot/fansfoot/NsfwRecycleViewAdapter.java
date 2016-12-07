@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 /**
- * Created by xamarin on 06/12/16.
+ * Created by xamarin on 07/12/16.
  */
 
-public class ImageRecycleViewAdapter extends RecyclerView.Adapter<ImageRecycleViewAdapter.ImageViewHolder> {
+public class NsfwRecycleViewAdapter extends RecyclerView.Adapter<NsfwRecycleViewAdapter.NsfwImageViewHolder> {
+
 
     String[] ImageTitle;
     int[] ImageAvaliable;
@@ -21,9 +21,10 @@ public class ImageRecycleViewAdapter extends RecyclerView.Adapter<ImageRecycleVi
     String[] ImageComments;
     Context context;
     View mainView;
-    ImageRecycleViewAdapter.ImageViewHolder viewHolders;
+    NsfwImageViewHolder viewHolder;
 
-    public ImageRecycleViewAdapter(String[] imageTitle, int[] imageAvaliable, String[] imagePoints, String[] imageComments, Context context) {
+
+    public NsfwRecycleViewAdapter(String[] imageTitle, int[] imageAvaliable, String[] imagePoints, String[] imageComments, Context context) {
         ImageTitle = imageTitle;
         ImageAvaliable = imageAvaliable;
         ImagePoints = imagePoints;
@@ -32,14 +33,14 @@ public class ImageRecycleViewAdapter extends RecyclerView.Adapter<ImageRecycleVi
     }
 
     @Override
-    public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NsfwImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mainView = LayoutInflater.from(context).inflate(R.layout.image_ls_elements,parent,false);
-        viewHolders = new ImageRecycleViewAdapter.ImageViewHolder (mainView);
-        return viewHolders;
+        viewHolder = new NsfwImageViewHolder(mainView);
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ImageViewHolder holder, int position) {
+    public void onBindViewHolder(NsfwImageViewHolder holder, int position) {
         holder.ImageDetail.setText(ImageTitle[position]);
         holder.ViewImage.setImageResource(ImageAvaliable[position]);
         holder.likesTextView.setText(ImagePoints[position]);
@@ -51,18 +52,17 @@ public class ImageRecycleViewAdapter extends RecyclerView.Adapter<ImageRecycleVi
         return ImageTitle.length;
     }
 
-    public static class ImageViewHolder extends RecyclerView.ViewHolder {
+    public static class NsfwImageViewHolder extends RecyclerView.ViewHolder {
         public TextView ImageDetail;
         public ImageView ViewImage;
         public TextView likesTextView;
         public TextView commentTextView;
-        public ImageViewHolder(View itemView) {
+        public NsfwImageViewHolder(View itemView) {
             super(itemView);
-
             ImageDetail = (TextView) itemView.findViewById(R.id.TilteID);
             ViewImage = (ImageView) itemView.findViewById(R.id.MainImage);
             likesTextView  = (TextView) itemView.findViewById(R.id.ImagePointsValue);
-        commentTextView  = (TextView) itemView.findViewById(R.id.ImageCommentPoints);
+            commentTextView  = (TextView) itemView.findViewById(R.id.ImageCommentPoints);
         }
     }
 }

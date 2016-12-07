@@ -1,7 +1,8 @@
 package com.fansfoot.fansfoot;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,14 +10,14 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     Button HomeButton,SectionButton,VideoButton,ProfileButton,SettingButton;
-
+    static FragmentManager fragmentManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FragmentManager fragmentManager = getFragmentManager();
+         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         HomePage home = new HomePage();
         fragmentTransaction.add(R.id.frag,home);
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void HomeFragment(){
-        FragmentManager fragmentManager = getFragmentManager();
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         HomePage home = new HomePage();
         fragmentTransaction.replace(R.id.frag,home);
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void SelectionFragment(){
-        FragmentManager fragmentManager = getFragmentManager();
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         SelectionPage selectionPage = new SelectionPage();
         fragmentTransaction.replace(R.id.frag,selectionPage);
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ProfileFragment(){
-        FragmentManager fragmentManager = getFragmentManager();
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ProfilePage profilePage  = new ProfilePage();
         fragmentTransaction.replace(R.id.frag,profilePage);
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void VideoFragment(){
-        FragmentManager fragmentManager = getFragmentManager();
+         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         VideoPage videoPage = new VideoPage();
         fragmentTransaction.replace(R.id.frag,videoPage);
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void SettingsFragment(){
-        FragmentManager fragmentManager = getFragmentManager();
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         SettingsPage settingsPage  = new SettingsPage();
         fragmentTransaction.replace(R.id.frag,settingsPage);
@@ -107,4 +108,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    public  static FragmentManager getBaseFragmentManager(){
+        return  fragmentManager;
+    }
+
     }
