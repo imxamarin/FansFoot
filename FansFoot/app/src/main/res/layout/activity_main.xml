@@ -8,7 +8,6 @@
     tools:context="com.fansfoot.fansfoot.MainActivity">
     <RelativeLayout
         android:id="@+id/frag"
-        android:background="@android:color/holo_blue_dark"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

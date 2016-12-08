@@ -3,4 +3,7 @@
     <color name="colorPrimary">#122964</color>
     <color name="colorPrimaryDark">#122964</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="red">#000000</color>
+    <color name="sliding_selectedtabs">#da0000</color>
+    <color name="sliding_unselectedtabs">#122964</color>
 </resources>

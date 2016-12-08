@@ -50,11 +50,7 @@ public class SelectionRecyclerViewAdapter extends RecyclerView.Adapter<Selection
        holder.textView.setText(SubjectValues[position]);
       holder.imageView.setImageResource(ImageValues[position]);
 
-
-
-
     }
-
 
 
     @Override

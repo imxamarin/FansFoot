@@ -1,34 +1,25 @@
-package com.fansfoot.fansfoot;
+package com.fansfoot.fansfoot.views;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
+import com.fansfoot.fansfoot.R;
 import com.fansfoot.fansfoot.fragments.HomeFragment;
 
-import static com.fansfoot.fansfoot.MainActivity.fragmentManager;
+public class HomeActivity extends FragmentActivity {
 
-
-/**
- * Created by xamarin on 05/12/16.
- */
-
-public class HomePage extends FragmentActivity {
     HomeFragment fragment;
     FragmentTransaction fragmentTransaction;
     FragmentManager fragmentManager;
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.homepage_fragment);
+        setContentView(R.layout.activity_home);
+
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -38,7 +29,9 @@ public class HomePage extends FragmentActivity {
          /*[By default Open Fragment]*/
         changeFragment(new HomeFragment());
     }
-    public void changeFragment(Fragment targetFragment) {
+
+
+    public void changeFragment(android.support.v4.app.Fragment targetFragment) {
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentParentView, targetFragment);
         fragmentTransaction.commit();
@@ -46,6 +39,3 @@ public class HomePage extends FragmentActivity {
 
 
 }
-
-
-

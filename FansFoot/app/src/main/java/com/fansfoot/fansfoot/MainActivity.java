@@ -1,5 +1,7 @@
 package com.fansfoot.fansfoot;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
@@ -8,29 +10,37 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.fansfoot.fansfoot.views.HomeActivity;
+
 public class MainActivity extends AppCompatActivity {
     Button HomeButton,SectionButton,VideoButton,ProfileButton,SettingButton;
     static FragmentManager fragmentManager;
-
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-         fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        HomePage home = new HomePage();
-        fragmentTransaction.add(R.id.frag,home);
-        fragmentTransaction.commit();
+        context = this;
+//        fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        HomePage home = new HomePage();
+//        fragmentTransaction.add(R.id.frag,home);
+//        fragmentTransaction.commit();
+        Intent intent = new Intent(context, HomePage.class);
+        startActivity(intent);
         CallThisToPerformButtonAction();
     }
 
     private void HomeFragment(){
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        HomePage home = new HomePage();
-        fragmentTransaction.replace(R.id.frag,home);
-        fragmentTransaction.commit();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        HomePage home = new HomePage();
+//        fragmentTransaction.replace(R.id.frag,home);
+//        fragmentTransaction.commit();
+
+        Intent intent = new Intent(context, HomePage.class);
+        startActivity(intent);
     }
 
     private void SelectionFragment(){

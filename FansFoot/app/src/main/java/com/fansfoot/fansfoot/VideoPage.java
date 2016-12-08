@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.net.URI;
+
 /**
  * Created by xamarin on 05/12/16.
  */
@@ -26,6 +28,7 @@ public class VideoPage  extends Fragment {
             "Country",
             "Birthday"
     };
+
 
     String[] userValues = {
             "Rohit",
