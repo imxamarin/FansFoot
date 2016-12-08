@@ -2,50 +2,60 @@ package com.fansfoot.fansfoot;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 
-import com.fansfoot.fansfoot.views.HomeActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
     Button HomeButton,SectionButton,VideoButton,ProfileButton,SettingButton;
     static FragmentManager fragmentManager;
     Context context;
+    PageAdapter mDemoCollection;
+    ViewPager viewPager;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        CallthisForTab();
         context = this;
-//        fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        HomePage home = new HomePage();
-//        fragmentTransaction.add(R.id.frag,home);
-//        fragmentTransaction.commit();
-        Intent intent = new Intent(context, HomePage.class);
-        startActivity(intent);
         CallThisToPerformButtonAction();
+
     }
 
-    private void HomeFragment(){
+    public void CallthisForTab(){
+        tabLayout = (TabLayout) findViewById(R.id.TabbedLayout);
+        tabLayout.addTab(tabLayout.newTab().setText("Alpha"));
+        tabLayout.addTab(tabLayout.newTab().setText("Beta"));
+        tabLayout.addTab(tabLayout.newTab().setText("Gamma"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        mDemoCollection = new PageAdapter(
+                getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager = (ViewPager) findViewById(R.id.Pager);
+        viewPager.setAdapter(mDemoCollection);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+    }
 
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        HomePage home = new HomePage();
+
+    private void HomeFragment(){
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//
 //        fragmentTransaction.replace(R.id.frag,home);
 //        fragmentTransaction.commit();
-
-        Intent intent = new Intent(context, HomePage.class);
-        startActivity(intent);
     }
 
     private void SelectionFragment(){
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         SelectionPage selectionPage = new SelectionPage();
         fragmentTransaction.replace(R.id.frag,selectionPage);
         fragmentTransaction.commit();
@@ -53,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void ProfileFragment(){
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         ProfilePage profilePage  = new ProfilePage();
         fragmentTransaction.replace(R.id.frag,profilePage);
         fragmentTransaction.commit();
@@ -61,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void VideoFragment(){
          fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         VideoPage videoPage = new VideoPage();
         fragmentTransaction.replace(R.id.frag,videoPage);
         fragmentTransaction.commit();

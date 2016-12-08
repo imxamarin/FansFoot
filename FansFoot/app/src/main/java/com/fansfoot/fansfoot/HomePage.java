@@ -2,50 +2,32 @@ package com.fansfoot.fansfoot;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.fansfoot.fansfoot.fragments.HomeFragment;
-
-import static com.fansfoot.fansfoot.MainActivity.fragmentManager;
-
+import android.support.v4.view.ViewPager;
 
 /**
- * Created by xamarin on 05/12/16.
+ * Created by kafir on 09-Dec-16.
  */
 
 public class HomePage extends FragmentActivity {
-    HomeFragment fragment;
-    FragmentTransaction fragmentTransaction;
-    FragmentManager fragmentManager;
-
+    PageAdapter mDemoCollection;
+    ViewPager viewPager;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.homepage_fragment);
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-
-
-        fragment = new HomeFragment();
-
-         /*[By default Open Fragment]*/
-        changeFragment(new HomeFragment());
+        setContentView(R.layout.activity_main);
+        tabLayout = (TabLayout) findViewById(R.id.TabbedLayout);
+        tabLayout.addTab(tabLayout.newTab().setText("Alpha"));
+        tabLayout.addTab(tabLayout.newTab().setText("Beta"));
+        tabLayout.addTab(tabLayout.newTab().setText("Gamma"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        mDemoCollection = new PageAdapter(
+                getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager = (ViewPager) findViewById(R.id.Pager);
+        viewPager.setAdapter(mDemoCollection);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
-    public void changeFragment(Fragment targetFragment) {
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentParentView, targetFragment);
-        fragmentTransaction.commit();
-    }
-
-
 }
-
-
-
