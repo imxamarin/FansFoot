@@ -24,6 +24,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CallthisForTab();
@@ -33,16 +34,34 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void CallthisForTab(){
+
         tabLayout = (TabLayout) findViewById(R.id.TabbedLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Alpha"));
         tabLayout.addTab(tabLayout.newTab().setText("Beta"));
         tabLayout.addTab(tabLayout.newTab().setText("Gamma"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+       // tabLayout.setupWithViewPager(viewPager);
         mDemoCollection = new PageAdapter(
                 getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager = (ViewPager) findViewById(R.id.Pager);
         viewPager.setAdapter(mDemoCollection);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
 
@@ -54,10 +73,9 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void SelectionFragment(){
-
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        SelectionPage selectionPage = new SelectionPage();
-        fragmentTransaction.replace(R.id.frag,selectionPage);
+        SelectionPage profilePage  = new SelectionPage();
+        fragmentTransaction.replace(R.id.frag,profilePage);
         fragmentTransaction.commit();
     }
 
@@ -95,7 +113,7 @@ public class MainActivity extends FragmentActivity {
         HomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HomeFragment();
+              //  CallthisForTab();
             }
         });
 
@@ -133,4 +151,8 @@ public class MainActivity extends FragmentActivity {
         return  fragmentManager;
     }
 
+
+
+
     }
+

@@ -45,6 +45,8 @@ public class SelectionRecyclerViewAdapter extends RecyclerView.Adapter<Selection
 
     }
 
+
+
     @Override
     public void onBindViewHolder(SelectionRecyclerViewAdapter.ViewHolder holder, int position) {
        holder.textView.setText(SubjectValues[position]);
@@ -98,7 +100,6 @@ public class SelectionRecyclerViewAdapter extends RecyclerView.Adapter<Selection
                         default:
                             Toast.makeText(context, "Something went Wrong", Toast.LENGTH_SHORT).show();
                     }
-
 
                 }
             });
