@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.fansfoot.fansfoot.Adapters.SelectionRecyclerViewAdapter;
 
@@ -53,6 +54,9 @@ public class SelectionPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.selection_fragment,null,false);
         context = getContext();
+        ((MainActivity) getActivity()).setActionBarTitle("SELECTION");
+        ((MainActivity) getActivity()).setActionBarAlpha(getResources().getDrawable(R.drawable.back_icon));
+        ((MainActivity) getActivity()).setActionBarBeta(getResources().getDrawable(R.drawable.search));
         recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);

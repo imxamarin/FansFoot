@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.fansfoot.fansfoot.Adapters.AlphaHomeRecycleViewAdapter;
 import com.fansfoot.fansfoot.R;
@@ -20,6 +22,7 @@ import com.fansfoot.fansfoot.R;
 public class AlphaHomePage extends Fragment {
 
     Context context;
+    SearchView searchView;
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerViewAdapter;
     RecyclerView.LayoutManager recylerViewLayoutManager;
@@ -51,6 +54,8 @@ public class AlphaHomePage extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.alpha_home_fragment,null,false);
         context = this.getContext();
+        searchView = (SearchView) view.findViewById(R.id.AlphaSearchView);
+        searchView.setQueryHint("adios");
         recyclerView = (RecyclerView) view.findViewById(R.id.AlphaRecycleView);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);

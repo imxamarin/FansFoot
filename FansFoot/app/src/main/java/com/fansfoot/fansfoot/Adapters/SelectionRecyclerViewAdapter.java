@@ -88,38 +88,38 @@ public class SelectionRecyclerViewAdapter extends RecyclerView.Adapter<Selection
 //                    if(fragment != null){
 //                       fragmentTransaction = MainActivity.getBaseFragmentManager().beginTransaction().remove(fragment).commit();
 //                    }else {
-
+                        manager.popBackStackImmediate();
                         fragmentTransaction = manager.beginTransaction();
 //                    }
 
                     switch (x){
                         case 0:
                             MemesPage memes = new MemesPage();
-                            Toast.makeText(context,  manager.getFragments().toString()+"", Toast.LENGTH_LONG).show();
+                            manager.popBackStackImmediate();
                             fragmentTransaction.replace(R.id.frag,memes);
-                            Toast.makeText(context,  manager.getFragments().toString()+"", Toast.LENGTH_LONG).show();
+                            fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();
                             break;
                         case 1:
-                            VideoPage videopage = null;
-                            try {
-                                videopage = new VideoPage();
-                            } catch (URISyntaxException e) {
-                                e.printStackTrace();
-                            }
+                            VideoPage videopage = new VideoPage();
 
+                            manager.popBackStackImmediate();
                             fragmentTransaction.replace(R.id.frag,videopage);
-
+                            fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();
                             break;
                         case 2:
                             NsfwPage nsfw = new NsfwPage();
+                            manager.popBackStackImmediate();
                             fragmentTransaction.replace(R.id.frag,nsfw);
+                            fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();
                             break;
                         case 3:
                             GifPage gifpage = new GifPage();
+                            manager.popBackStackImmediate();
                             fragmentTransaction.replace(R.id.frag,gifpage);
+                            fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();
                             break;
                         default:

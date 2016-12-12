@@ -1,10 +1,13 @@
 package com.fansfoot.fansfoot.Adapters;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,6 +58,11 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
         public ImageView ViewImage;
         public TextView likesTextView;
         public TextView commentTextView;
+        public ImageButton likeBtn;
+        public ImageButton dislikeBtn;
+        public ImageButton commentBtn;
+
+
         public AlphaViewHolder(View itemView) {
             super(itemView);
             ImageDetail = (TextView) itemView.findViewById(R.id.AlphaTilteID);
@@ -62,6 +70,34 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
             likesTextView  = (TextView) itemView.findViewById(R.id.AlphaImagePointsValue);
             commentTextView  = (TextView) itemView.findViewById(R.id.AlphaImageCommentPoints);
 
+            likeBtn = (ImageButton) itemView.findViewById(R.id.Alphalikebutton);
+            dislikeBtn = (ImageButton) itemView.findViewById(R.id.Alphadislikebutton);
+            commentBtn = (ImageButton) itemView.findViewById(R.id.Alphacommentbtn);
+
+
+
+
+
+            likeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT).show();
+                }
+            });
+
+            dislikeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT).show();
+                }
+            });
+
+            commentBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT).show();
+                }
+            });
 
         }
     }

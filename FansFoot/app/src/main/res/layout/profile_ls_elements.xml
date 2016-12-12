@@ -3,6 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10sp"
+    android:background="@color/gray_bg"
     >
 <TextView
     android:id="@+id/detailTextView"
@@ -19,7 +20,7 @@
     android:text="Hulu"
     android:textSize="15sp"
     android:paddingLeft="10sp"
-    android:textColor="#D6D5D8"
+    android:textColor="@color/dim_gray_bg"
     />
     <View
         android:layout_width="wrap_content"

@@ -55,15 +55,16 @@ public class VideoPage  extends Fragment {
     String[] comments = {"56","48","78","96"};
     URI[] uris;
 
-    public VideoPage() throws URISyntaxException {
-    }
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.video_fragment,null,false);
+        View view = inflater.inflate(R.layout.video_fragment,container,false);
         context = getActivity();
+        ((MainActivity) getActivity()).setActionBarTitle("VIDEO");
+        ((MainActivity) getActivity()).setActionBarAlpha(getResources().getDrawable(R.drawable.back_icon));
+        ((MainActivity) getActivity()).setActionBarBeta(getResources().getDrawable(R.drawable.search));
         recyclerView = (RecyclerView) view.findViewById(R.id.VideoRecycleView);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);
@@ -71,17 +72,17 @@ public class VideoPage  extends Fragment {
         recyclerView.setAdapter(recyclerViewAdapter);
         return  view;
     }
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
-        _menu_inflater.inflate(R.menu.refresh_menu,menu);
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setHasOptionsMenu(true);
+//    }
+//
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
+//        _menu_inflater.inflate(R.menu.refresh_menu,menu);
+//    }
 }
 

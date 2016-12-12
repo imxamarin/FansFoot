@@ -1,12 +1,17 @@
 package com.fansfoot.fansfoot.Adapters;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fansfoot.fansfoot.R;
 
@@ -20,7 +25,7 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
     String[] SubjectValues;
     int[] ImageValues;
 
-    Context context;
+   static Context context;
     View mainView;
     SettingViewHolder viewHolders;
 
@@ -39,9 +44,12 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
     }
 
     @Override
-    public void onBindViewHolder(SettingViewHolder holder, int position) {
+    public void onBindViewHolder(SettingViewHolder holder, final int position) {
         holder.textView.setText(SubjectValues[position]);
-       holder.imageBtn.setImageResource(ImageValues[position]);
+        holder.imageBtn.setButtonDrawable(ImageValues[position]);
+
+
+
     }
 
     @Override
@@ -52,11 +60,64 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
 
     public static class SettingViewHolder extends RecyclerView.ViewHolder  {
         public TextView textView;
-        public ImageButton imageBtn;
-        public SettingViewHolder(View itemView) {
+        public CheckBox imageBtn;
+        public SettingViewHolder(final View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.SettingMenuBar);
-           imageBtn = (ImageButton) itemView.findViewById(R.id.SettingsImgBtn);
+           imageBtn = (CheckBox) itemView.findViewById(R.id.SettingsImgBtn);
+            imageBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                   int x = getPosition();
+                    if(x==4){
+                        if(b==true){
+                            compoundButton.setButtonDrawable(R.drawable.on_toggle);
+                        }else {
+                            compoundButton.setButtonDrawable(R.drawable.off_toggle);
+                        }
+
+
+                    }
+                }
+            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int x = getPosition();
+                    switch (x) {
+                        case 0:
+                            Snackbar.make(view,"Profile",Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case 1:
+                            Snackbar.make(view,"About us",Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            Snackbar.make(view,"Rating",Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case 3:
+                            Snackbar.make(view,"Feedback",Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case 5:
+                            Snackbar.make(view,"Share App",Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case 6:
+                            Snackbar.make(view,"Report",Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case 7:
+                            Snackbar.make(view,"Like on Facebook",Snackbar.LENGTH_SHORT).show();
+                            break;
+                        case 8:
+                            Snackbar.make(view,"Like on Twitter",Snackbar.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+            });
+
+
+
         }
     }
 }

@@ -10,6 +10,7 @@
         android:id="@+id/adViewAlpha"
         ads:adSize="BANNER"
         ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
+        android:background="@drawable/logo"
 
         />
     <RelativeLayout

@@ -22,5 +22,6 @@
         ads:adSize="BANNER"
         android:layout_alignParentBottom="true"
         ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
+        android:background="@drawable/logo"
         />
 </RelativeLayout>

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.fansfoot.fansfoot.Adapters.SettingsRecycleViewAdapter;
 
@@ -36,22 +37,27 @@ public class SettingsPage  extends Fragment {
     };
 
     int[] imageSet = {
+            R.drawable.next_arrow,
             R.drawable.setting_icon_event,
             R.drawable.setting_icon_event,
             R.drawable.setting_icon_event,
-            R.drawable.setting_icon_event,
-            R.drawable.switch_icon,
+            R.drawable.off_toggle,
             R.drawable.setting_icon_event,
             R.drawable.setting_icon_event,
             R.drawable.facebook,
             R.drawable.twitter
     };
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.setting_fragment,null,false);
         context = getActivity();
+        ((MainActivity) getActivity()).setActionBarTitle("SETTINGS");
+        ((MainActivity) getActivity()).setActionBarAlpha(getResources().getDrawable(R.drawable.back_icon));
+        ((MainActivity) getActivity()).setActionBarBeta(getResources().getDrawable(R.drawable.search));
         recyclerView = (RecyclerView) view.findViewById(R.id.settingRecycle);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);

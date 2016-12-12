@@ -1,13 +1,21 @@
 package com.fansfoot.fansfoot;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.fansfoot.fansfoot.DefaultPages.GifPage;
 import com.fansfoot.fansfoot.DefaultPages.HomePage;
@@ -22,140 +30,140 @@ import java.net.URISyntaxException;
 
 
 public class MainActivity extends AppCompatActivity {
-    Button HomeButton,SectionButton,VideoButton,ProfileButton,SettingButton;
+    //Button HomeButton, SectionButton, VideoButton, ProfileButton, SettingButton;
     static FragmentManager fragmentManager;
     static FragmentManager supportFrag;
     static Context context;
+
+    RadioGroup bottom_layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.mod_action_bar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+        OpenDefaultFragment();
+        //CallThisToPerformButtonAction();
+        bottom_layout = (RadioGroup)findViewById(R.id.bottom_layout);
+        bottom_layout.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+                View radioButton = radioGroup.findViewById(i);
+                int index = radioGroup.indexOfChild(radioButton);
+
+                switch (index){
+                    case 0:
+                        HomeFragment();
+
+                        break;
+                    case 1:
+                        SelectionFragment();
+                        break;
+                    case 2:
+                        VideoFragment();
+
+                        break;
+                    case 3:
+                        ProfileFragment();
+
+                        break;
+                    case 4:
+                        SettingsFragment();
+                        break;
+                    default:
+                        break;
+
+                }
+
+            }
+
+        });
+    }
+
+    private void OpenDefaultFragment() {
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        ProfilePage profilePage = new ProfilePage();
-        fragmentTransaction.add(R.id.frag,profilePage);
-        fragmentTransaction.addToBackStack(null);
+        HomePage homePage = new HomePage();
+        fragmentTransaction.add(R.id.frag, homePage);
         fragmentTransaction.commit();
-        CallThisToPerformButtonAction();
-<<<<<<< HEAD
-
     }
 
-    public void CallthisForTab(){
-
-        tabLayout = (TabLayout) findViewById(R.id.TabbedLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Alpha"));
-        tabLayout.addTab(tabLayout.newTab().setText("Beta"));
-        tabLayout.addTab(tabLayout.newTab().setText("Gamma"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-       // tabLayout.setupWithViewPager(viewPager);
-        mDemoCollection = new PageAdapter(
-                getSupportFragmentManager(),tabLayout.getTabCount());
-        viewPager = (ViewPager) findViewById(R.id.Pager);
-        viewPager.setAdapter(mDemoCollection);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-=======
->>>>>>> 89a238a9f38d267b40ea1d469ac4f268c296463c
-    }
-
-
-    private void HomeFragment(){
+    private void HomeFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         HomePage home = new HomePage();
-        fragmentTransaction.replace(R.id.frag,home);
+        fragmentManager.popBackStackImmediate();
+        fragmentTransaction.replace(R.id.frag, home);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }
 
-    private void SelectionFragment(){
+    private void SelectionFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-<<<<<<< HEAD
-        SelectionPage profilePage  = new SelectionPage();
-        fragmentTransaction.replace(R.id.frag,profilePage);
-=======
         SelectionPage selectionPage = new SelectionPage();
-        fragmentTransaction.replace(R.id.frag,selectionPage);
-        fragmentTransaction.addToBackStack(null);
->>>>>>> 89a238a9f38d267b40ea1d469ac4f268c296463c
+        fragmentManager.popBackStackImmediate();
+        fragmentTransaction.replace(R.id.frag, selectionPage);
         fragmentTransaction.commit();
     }
 
-    private void ProfileFragment(){
+    private void ProfileFragment() {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        ProfilePage profilePage  = new ProfilePage();
-        fragmentTransaction.replace(R.id.frag,profilePage);
-        fragmentTransaction.addToBackStack(null);
+        ProfilePage profilePage = new ProfilePage();
+        fragmentManager.popBackStackImmediate();
+        fragmentTransaction.replace(R.id.frag, profilePage);
         fragmentTransaction.commit();
     }
 
-    private void VideoFragment(){
+    private void VideoFragment() {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        VideoPage videoPage = null;
-        try {
-            videoPage = new VideoPage();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        fragmentTransaction.replace(R.id.frag,videoPage);
-        fragmentTransaction.addToBackStack(null);
+        VideoPage videoPage = new VideoPage();
+
+        fragmentManager.popBackStackImmediate();
+        fragmentTransaction.replace(R.id.frag, videoPage);
         fragmentTransaction.commit();
     }
 
-    private void SettingsFragment(){
+    private void SettingsFragment() {
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        SettingsPage settingsPage  = new SettingsPage();
-        fragmentTransaction.replace(R.id.frag,settingsPage);
+        SettingsPage settingsPage = new SettingsPage();
+        fragmentManager.popBackStackImmediate();
+        fragmentTransaction.replace(R.id.frag, settingsPage);
         fragmentTransaction.commit();
     }
 
 
-    private void MemesFragment(){
+    private void MemesFragment() {
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        MemesPage memesPage  = new MemesPage();
-        fragmentTransaction.add(R.id.frag,memesPage);
+        MemesPage memesPage = new MemesPage();
+        fragmentTransaction.add(R.id.frag, memesPage);
         fragmentTransaction.commit();
     }
 
-    private void NSFWFragment(){
+    private void NSFWFragment() {
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        NsfwPage nsfwPage  = new NsfwPage();
-        fragmentTransaction.add(R.id.frag,nsfwPage);
+        NsfwPage nsfwPage = new NsfwPage();
+        fragmentTransaction.add(R.id.frag, nsfwPage);
         fragmentTransaction.commit();
     }
 
-    private void AnimatedFragment(){
+    private void AnimatedFragment() {
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        GifPage gifPage  = new GifPage();
-        fragmentTransaction.add(R.id.frag,gifPage);
+        GifPage gifPage = new GifPage();
+        fragmentTransaction.add(R.id.frag, gifPage);
         fragmentTransaction.commit();
     }
 
-    private void CallThisToPerformButtonAction() {
+   /* private void CallThisToPerformButtonAction() {
         HomeButton = (Button) findViewById(R.id.HomeButton);
         SectionButton = (Button) findViewById(R.id.SectionButton);
         VideoButton = (Button) findViewById(R.id.VideoButton);
@@ -165,14 +173,13 @@ public class MainActivity extends AppCompatActivity {
         HomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  CallthisForTab();
+                HomeFragment();
             }
         });
 
         SectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AnimatedFragment();
                 SelectionFragment();
             }
         });
@@ -180,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         VideoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               VideoFragment();
+                VideoFragment();
             }
         });
 
@@ -194,28 +201,72 @@ public class MainActivity extends AppCompatActivity {
         SettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //SettingsFragment();
-               SettingsFragment();
+                //SettingsFragment();
+                SettingsFragment();
             }
         });
 
+    }*/
+
+    public static FragmentManager getBaseFragmentManager() {
+        return fragmentManager;
     }
 
-    public  static FragmentManager getBaseFragmentManager(){
-        return  fragmentManager;
+//    public static MenuInflater gettheMenuInflater() {
+//        return new MenuInflater(context);
+//    }
+
+//    public void setActionBarTitle(String title) {
+//        getSupportActionBar().setTitle(title);
+//    }
+public void setActionBarTitle(String title)
+{
+
+    View v = getSupportActionBar().getCustomView();
+    TextView titleTxtView = (TextView) v.findViewById(R.id.ActionBarText);
+    titleTxtView.setText(title);
+}
+    public void setActionBarAlpha(Drawable title)
+    {
+
+        View v = getSupportActionBar().getCustomView();
+        ImageButton titleTxtView = (ImageButton) v.findViewById(R.id.ActionBarAlphaLogo);
+        titleTxtView.setBackground(title);
+        titleTxtView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view,"Reloading",Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
-<<<<<<< HEAD
+
+    public void setActionBarBeta(Drawable title)
+    {
+        View v = getSupportActionBar().getCustomView();
+        ImageButton titleTxtView = (ImageButton) v.findViewById(R.id.ActionBarBetaLogo);
+        titleTxtView.setBackground(title);
+        titleTxtView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view,"Searching",Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
 
-=======
-    public static MenuInflater gettheMenuInflater() {
-        return new MenuInflater(context);
+
+        try {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return super.dispatchTouchEvent(ev);
     }
-    public void setActionBarTitle(String title) {
-        getSupportActionBar().setTitle(title);
-    }
->>>>>>> 89a238a9f38d267b40ea1d469ac4f268c296463c
-    }
+}
 

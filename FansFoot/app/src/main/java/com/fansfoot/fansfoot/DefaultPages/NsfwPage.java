@@ -52,8 +52,11 @@ public class NsfwPage extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.nsfw_fragment,null,false);
+        View view = inflater.inflate(R.layout.nsfw_fragment,container,false);
         context = getActivity();
+        ((MainActivity) getActivity()).setActionBarTitle("NSFW");
+        ((MainActivity) getActivity()).setActionBarAlpha(getResources().getDrawable(R.drawable.back_icon));
+        ((MainActivity) getActivity()).setActionBarBeta(getResources().getDrawable(R.drawable.search));
         recyclerView = (RecyclerView) view.findViewById(R.id.nfswRecycle);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);
@@ -62,16 +65,16 @@ public class NsfwPage extends Fragment {
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
-        _menu_inflater.inflate(R.menu.refresh_menu,menu);
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setHasOptionsMenu(true);
+//    }
+//
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
+//        _menu_inflater.inflate(R.menu.refresh_menu,menu);
+//    }
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="30sp"
+    android:paddingRight="40sp"
+    android:background="@color/_selectedtabs"
+    >
+    <ImageButton
+        android:id="@+id/ActionBarAlphaLogo"
+        android:layout_width="wrap_content"
+        android:background="@drawable/back_icon"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_weight="3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="my Title"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="@color/_unselectedtabs"
+        android:id="@+id/ActionBarText"
+        android:textSize="22sp"
+
+
+        />
+    <ImageButton
+        android:id="@+id/ActionBarBetaLogo"
+        android:layout_width="wrap_content"
+        android:background="@drawable/search"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content" />
+</LinearLayout>

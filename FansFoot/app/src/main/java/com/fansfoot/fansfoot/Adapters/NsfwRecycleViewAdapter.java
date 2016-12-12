@@ -1,10 +1,12 @@
 package com.fansfoot.fansfoot.Adapters;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +38,7 @@ public class NsfwRecycleViewAdapter extends RecyclerView.Adapter<NsfwRecycleView
 
     @Override
     public NsfwImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mainView = LayoutInflater.from(context).inflate(R.layout.image_ls_elements,parent,false);
+        mainView = LayoutInflater.from(context).inflate(R.layout.nfsw_ls_elements,parent,false);
         viewHolder = new NsfwImageViewHolder(mainView);
         return viewHolder;
     }
@@ -59,12 +61,42 @@ public class NsfwRecycleViewAdapter extends RecyclerView.Adapter<NsfwRecycleView
         public ImageView ViewImage;
         public TextView likesTextView;
         public TextView commentTextView;
+
+        public ImageButton likeBtn;
+        public ImageButton dislikeBtn;
+        public ImageButton commentBtn;
         public NsfwImageViewHolder(View itemView) {
             super(itemView);
-            ImageDetail = (TextView) itemView.findViewById(R.id.TilteID);
-            ViewImage = (ImageView) itemView.findViewById(R.id.MainImage);
-            likesTextView  = (TextView) itemView.findViewById(R.id.ImagePointsValue);
-            commentTextView  = (TextView) itemView.findViewById(R.id.ImageCommentPoints);
+            ImageDetail = (TextView) itemView.findViewById(R.id.nfswTilteID);
+            ViewImage = (ImageView) itemView.findViewById(R.id.nfswMainImage);
+            likesTextView  = (TextView) itemView.findViewById(R.id.nfswImagePointsValue);
+            commentTextView  = (TextView) itemView.findViewById(R.id.nfswImageCommentPoints);
+            likeBtn = (ImageButton) itemView.findViewById(R.id.nfswlikebutton);
+            dislikeBtn = (ImageButton) itemView.findViewById(R.id.nfswdislikebutton);
+            commentBtn = (ImageButton) itemView.findViewById(R.id.nfswcommentbtn);
+
+
+
+            likeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT).show();
+                }
+            });
+
+            dislikeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT).show();
+                }
+            });
+
+            commentBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }

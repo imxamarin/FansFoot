@@ -46,7 +46,9 @@ public class ProfilePage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.profile_fragment,null,false);
         context = getActivity();
-        ((MainActivity) getActivity()).setActionBarTitle("Profile");
+        ((MainActivity) getActivity()).setActionBarTitle("PROFILE");
+        ((MainActivity) getActivity()).setActionBarAlpha(getResources().getDrawable(R.drawable.back_icon));
+        ((MainActivity) getActivity()).setActionBarBeta(getResources().getDrawable(R.drawable.search));
         recyclerView = (RecyclerView) view.findViewById(R.id.ProfileRecycleView);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);
@@ -55,18 +57,18 @@ public class ProfilePage extends Fragment {
         return  view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
-        _menu_inflater.inflate(R.menu.profile_menu,menu);
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setHasOptionsMenu(true);
+//    }
+//
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
+//        _menu_inflater.inflate(R.menu.profile_menu,menu);
+//    }
 
 
 

@@ -29,6 +29,10 @@ public class HomePage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_layout,container,false);
+      ((MainActivity) getActivity()).setActionBarTitle("HOME");
+        ((MainActivity) getActivity()).setActionBarAlpha(getResources().getDrawable(R.drawable.back_icon));
+        ((MainActivity) getActivity()).setActionBarBeta(getResources().getDrawable(R.drawable.search));
+
         tabLayout = (TabLayout) view.findViewById(R.id.TabbedLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Alpha"));
         tabLayout.addTab(tabLayout.newTab().setText("Beta"));
@@ -59,16 +63,18 @@ public class HomePage extends Fragment {
 
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setHasOptionsMenu(true);
+//    }
+//
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
+//        _menu_inflater.inflate(R.menu.tab_menu,menu);
+//    }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
-        _menu_inflater.inflate(R.menu.tab_menu,menu);
-    }
+
 }

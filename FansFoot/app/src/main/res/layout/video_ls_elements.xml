@@ -2,21 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:orientation="vertical"
-    android:padding="10sp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 <TextView
     android:id="@+id/VideoDetail"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Best 100 Gloals in Football 2015/2016"
+    android:text="@string/VideoDescription"
     android:gravity="center"
     />
 
-<VideoView
+<ImageView
     android:id="@+id/MainVideo"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
+    android:layout_height="200dp"
+    android:scaleType="centerCrop"
+    android:src="@drawable/profile_bg"
     android:layout_weight="1"/>
 
     <LinearLayout
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="5sp"
+        android:background="@color/gray_bg"
         >
         <LinearLayout
             android:layout_width="0dp"
@@ -84,24 +86,27 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:src="@drawable/like_icon"
-            android:background="#F5F5F5"
+            android:background="@color/dim_gray_bg"
+            android:layout_marginRight="@dimen/layout_margin"
             />
         <ImageButton
-            android:id="@+id/dislikebutton"
+            android:id="@+id/Videodislikebutton"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
             android:src="@drawable/dislike_icon"
-            android:background="#F5F5F5"
+            android:background="@color/dim_gray_bg"
+            android:layout_marginRight="@dimen/layout_margin"
             />
 
         <ImageButton
-            android:id="@+id/commentbtn"
+            android:id="@+id/Videocommentbtn"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
             android:src="@drawable/comment_icon"
-            android:background="#F5F5F5"
+            android:background="@color/dim_gray_bg"
+            android:layout_marginRight="@dimen/layout_margin"
             />
 
     </LinearLayout>
