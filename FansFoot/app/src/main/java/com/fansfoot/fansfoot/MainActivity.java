@@ -1,56 +1,54 @@
 package com.fansfoot.fansfoot;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuInflater;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 
+import com.fansfoot.fansfoot.DefaultPages.GifPage;
+import com.fansfoot.fansfoot.DefaultPages.HomePage;
+import com.fansfoot.fansfoot.DefaultPages.MemesPage;
+import com.fansfoot.fansfoot.DefaultPages.NsfwPage;
+import com.fansfoot.fansfoot.DefaultPages.ProfilePage;
+import com.fansfoot.fansfoot.DefaultPages.SelectionPage;
+import com.fansfoot.fansfoot.DefaultPages.SettingsPage;
+import com.fansfoot.fansfoot.DefaultPages.VideoPage;
 
-public class MainActivity extends FragmentActivity {
+import java.net.URISyntaxException;
+
+
+public class MainActivity extends AppCompatActivity {
     Button HomeButton,SectionButton,VideoButton,ProfileButton,SettingButton;
     static FragmentManager fragmentManager;
-    Context context;
-    PageAdapter mDemoCollection;
-    ViewPager viewPager;
-    TabLayout tabLayout;
-
+    static FragmentManager supportFrag;
+    static Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CallthisForTab();
         context = this;
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ProfilePage profilePage = new ProfilePage();
+        fragmentTransaction.add(R.id.frag,profilePage);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
         CallThisToPerformButtonAction();
-
-    }
-
-    public void CallthisForTab(){
-        tabLayout = (TabLayout) findViewById(R.id.TabbedLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Alpha"));
-        tabLayout.addTab(tabLayout.newTab().setText("Beta"));
-        tabLayout.addTab(tabLayout.newTab().setText("Gamma"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        mDemoCollection = new PageAdapter(
-                getSupportFragmentManager(),tabLayout.getTabCount());
-        viewPager = (ViewPager) findViewById(R.id.Pager);
-        viewPager.setAdapter(mDemoCollection);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
 
     private void HomeFragment(){
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//
-//        fragmentTransaction.replace(R.id.frag,home);
-//        fragmentTransaction.commit();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        HomePage home = new HomePage();
+        fragmentTransaction.replace(R.id.frag,home);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
     }
 
     private void SelectionFragment(){
@@ -58,6 +56,7 @@ public class MainActivity extends FragmentActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         SelectionPage selectionPage = new SelectionPage();
         fragmentTransaction.replace(R.id.frag,selectionPage);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -66,14 +65,21 @@ public class MainActivity extends FragmentActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         ProfilePage profilePage  = new ProfilePage();
         fragmentTransaction.replace(R.id.frag,profilePage);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
     private void VideoFragment(){
-         fragmentManager = getSupportFragmentManager();
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        VideoPage videoPage = new VideoPage();
+        VideoPage videoPage = null;
+        try {
+            videoPage = new VideoPage();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         fragmentTransaction.replace(R.id.frag,videoPage);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -82,6 +88,31 @@ public class MainActivity extends FragmentActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         SettingsPage settingsPage  = new SettingsPage();
         fragmentTransaction.replace(R.id.frag,settingsPage);
+        fragmentTransaction.commit();
+    }
+
+
+    private void MemesFragment(){
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        MemesPage memesPage  = new MemesPage();
+        fragmentTransaction.add(R.id.frag,memesPage);
+        fragmentTransaction.commit();
+    }
+
+    private void NSFWFragment(){
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        NsfwPage nsfwPage  = new NsfwPage();
+        fragmentTransaction.add(R.id.frag,nsfwPage);
+        fragmentTransaction.commit();
+    }
+
+    private void AnimatedFragment(){
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        GifPage gifPage  = new GifPage();
+        fragmentTransaction.add(R.id.frag,gifPage);
         fragmentTransaction.commit();
     }
 
@@ -102,6 +133,7 @@ public class MainActivity extends FragmentActivity {
         SectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AnimatedFragment();
                 SelectionFragment();
             }
         });
@@ -123,7 +155,8 @@ public class MainActivity extends FragmentActivity {
         SettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            SettingsFragment();
+            //SettingsFragment();
+               SettingsFragment();
             }
         });
 
@@ -132,5 +165,10 @@ public class MainActivity extends FragmentActivity {
     public  static FragmentManager getBaseFragmentManager(){
         return  fragmentManager;
     }
-
+    public static MenuInflater gettheMenuInflater() {
+        return new MenuInflater(context);
+    }
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
     }

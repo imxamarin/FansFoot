@@ -3,24 +3,32 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
     android:orientation="vertical"
+    android:background="@color/gray_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <SearchView
+        android:id="@+id/AlphaSearchView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/gray_bg"
+        android:layout_gravity="center_horizontal"
+        />
 
     <com.google.android.gms.ads.AdView
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/adViewAlpha"
         ads:adSize="BANNER"
         ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
-        android:background="@android:color/background_dark"
+        ads:queryHint="Search"
+        ads:defaultQueryHint="GoogleAds"
         />
 
 
   <android.support.v7.widget.RecyclerView
+      android:id="@+id/AlphaRecycleView"
       android:layout_width="match_parent"
       android:layout_height="match_parent"/>
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.fansfoot.fansfoot;
+package com.fansfoot.fansfoot.DefaultPages;
 
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.fansfoot.fansfoot.R;
+import com.fansfoot.fansfoot.Adapters.SettingsRecycleViewAdapter;
 
 /**
  * Created by xamarin on 05/12/16.
@@ -33,13 +36,13 @@ public class SettingsPage  extends Fragment {
     };
 
     int[] imageSet = {
-            R.drawable.next_arrow,
-            R.drawable.next_arrow,
-            R.drawable.next_arrow,
-            R.drawable.next_arrow,
-            R.drawable.on_toggle,
-            R.drawable.next_arrow,
-            R.drawable.next_arrow,
+            R.drawable.setting_icon_event,
+            R.drawable.setting_icon_event,
+            R.drawable.setting_icon_event,
+            R.drawable.setting_icon_event,
+            R.drawable.switch_icon,
+            R.drawable.setting_icon_event,
+            R.drawable.setting_icon_event,
             R.drawable.facebook,
             R.drawable.twitter
     };

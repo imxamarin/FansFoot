@@ -1,4 +1,4 @@
-package com.fansfoot.fansfoot;
+package com.fansfoot.fansfoot.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,40 +8,41 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fansfoot.fansfoot.R;
+
 /**
  * Created by xamarin on 07/12/16.
  */
 
-public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecycleViewAdapter.GifPageImageViewHolder> {
+public class NsfwRecycleViewAdapter extends RecyclerView.Adapter<NsfwRecycleViewAdapter.NsfwImageViewHolder> {
 
 
     String[] ImageTitle;
     int[] ImageAvaliable;
     String[] ImagePoints;
     String[] ImageComments;
-
     Context context;
     View mainView;
-    GifPageImageViewHolder viewHolder;
+    NsfwImageViewHolder viewHolder;
 
-    public GifPageRecycleViewAdapter(String[] imageTitle, int[] imageAvaliable, String[] imagePoints, String[] imageComments,  Context context) {
+
+    public NsfwRecycleViewAdapter(String[] imageTitle, int[] imageAvaliable, String[] imagePoints, String[] imageComments, Context context) {
         ImageTitle = imageTitle;
         ImageAvaliable = imageAvaliable;
         ImagePoints = imagePoints;
         ImageComments = imageComments;
-
         this.context = context;
     }
 
     @Override
-    public GifPageImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NsfwImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mainView = LayoutInflater.from(context).inflate(R.layout.image_ls_elements,parent,false);
-        viewHolder = new GifPageImageViewHolder (mainView);
+        viewHolder = new NsfwImageViewHolder(mainView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(GifPageImageViewHolder holder, int position) {
+    public void onBindViewHolder(NsfwImageViewHolder holder, int position) {
         holder.ImageDetail.setText(ImageTitle[position]);
         holder.ViewImage.setImageResource(ImageAvaliable[position]);
         holder.likesTextView.setText(ImagePoints[position]);
@@ -53,17 +54,17 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
         return ImageTitle.length;
     }
 
-    public static class GifPageImageViewHolder extends RecyclerView.ViewHolder {
+    public static class NsfwImageViewHolder extends RecyclerView.ViewHolder {
         public TextView ImageDetail;
         public ImageView ViewImage;
         public TextView likesTextView;
         public TextView commentTextView;
-        public GifPageImageViewHolder(View itemView) {
+        public NsfwImageViewHolder(View itemView) {
             super(itemView);
-            ImageDetail = (TextView) itemView.findViewById(R.id.GifTilteID);
-            ViewImage = (ImageView) itemView.findViewById(R.id.GifMainImage);
-            likesTextView  = (TextView) itemView.findViewById(R.id.GifImagePointsValue);
-            commentTextView  = (TextView) itemView.findViewById(R.id.GifImageCommentPoints);
+            ImageDetail = (TextView) itemView.findViewById(R.id.TilteID);
+            ViewImage = (ImageView) itemView.findViewById(R.id.MainImage);
+            likesTextView  = (TextView) itemView.findViewById(R.id.ImagePointsValue);
+            commentTextView  = (TextView) itemView.findViewById(R.id.ImageCommentPoints);
         }
     }
 }

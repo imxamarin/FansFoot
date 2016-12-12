@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">FansFoot</string>
-    <string name="alpha">Alpha</string>
-    <string name="beta">Beta</string>
-    <string name="gama">Gama</string>
+    <string name="HomeButton">HOME</string>
+    <string name="SectionButton">SECTION</string>
+    <string name="VideoButton">VIDEO</string>
+    <string name="ProfileButton">PROFILE</string>
+    <string name="SettingsButton">SETTINGS</string>
 </resources>

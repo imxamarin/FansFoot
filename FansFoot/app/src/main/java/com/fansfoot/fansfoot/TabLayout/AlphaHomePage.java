@@ -1,4 +1,4 @@
-package com.fansfoot.fansfoot;
+package com.fansfoot.fansfoot.TabLayout;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fansfoot.fansfoot.Adapters.AlphaHomeRecycleViewAdapter;
+import com.fansfoot.fansfoot.R;
+
 /**
- * Created by xamarin on 07/12/16.
+ * Created by kafir on 09-Dec-16.
  */
 
-public class NsfwPage extends Fragment {
+public class AlphaHomePage extends Fragment {
 
     Context context;
     RecyclerView recyclerView;
@@ -46,12 +49,12 @@ public class NsfwPage extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.nsfw_fragment,null,false);
-        context = getActivity();
-        recyclerView = (RecyclerView) view.findViewById(R.id.nfswRecycle);
+        View view = inflater.inflate(R.layout.alpha_home_fragment,null,false);
+        context = this.getContext();
+        recyclerView = (RecyclerView) view.findViewById(R.id.AlphaRecycleView);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);
-        recyclerViewAdapter = new ImageRecycleViewAdapter(userDetail,imgGallery,points,comments,context);
+        recyclerViewAdapter = new AlphaHomeRecycleViewAdapter(userDetail,imgGallery,points,comments,context);
         recyclerView.setAdapter(recyclerViewAdapter);
         return view;
     }

@@ -1,17 +1,26 @@
-package com.fansfoot.fansfoot;
+package com.fansfoot.fansfoot.Adapters;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.fansfoot.fansfoot.DefaultPages.GifPage;
+import com.fansfoot.fansfoot.DefaultPages.MemesPage;
+import com.fansfoot.fansfoot.DefaultPages.NsfwPage;
+import com.fansfoot.fansfoot.DefaultPages.SelectionPage;
+import com.fansfoot.fansfoot.DefaultPages.VideoPage;
+import com.fansfoot.fansfoot.MainActivity;
+import com.fansfoot.fansfoot.R;
+
+import java.net.URISyntaxException;
 
 /**
  * Created by xamarin on 05/12/16.
@@ -61,7 +70,7 @@ public class SelectionRecyclerViewAdapter extends RecyclerView.Adapter<Selection
     public  class ViewHolder extends RecyclerView.ViewHolder {
        public TextView textView;
         public ImageView imageView;
-
+        SelectionPage sp = new SelectionPage();
         public ViewHolder(final View itemView)
         {
             super(itemView);
@@ -72,17 +81,33 @@ public class SelectionRecyclerViewAdapter extends RecyclerView.Adapter<Selection
                 @Override
                 public void onClick(View view) {
                     int x = getPosition();
-                    FragmentTransaction fragmentTransaction = MainActivity.getBaseFragmentManager().beginTransaction();
+                    FragmentTransaction fragmentTransaction;
+                    FragmentManager manager = MainActivity.getBaseFragmentManager();
+//                    if(fragment != null){
+//                       fragmentTransaction = MainActivity.getBaseFragmentManager().beginTransaction().remove(fragment).commit();
+//                    }else {
+
+                        fragmentTransaction = manager.beginTransaction();
+//                    }
+
                     switch (x){
                         case 0:
                             MemesPage memes = new MemesPage();
-                            
-                            fragmentTransaction.add(R.id.frag,memes);
+                            Toast.makeText(context,  manager.getFragments().toString()+"", Toast.LENGTH_LONG).show();
+                            fragmentTransaction.replace(R.id.frag,memes);
+                            Toast.makeText(context,  manager.getFragments().toString()+"", Toast.LENGTH_LONG).show();
                             fragmentTransaction.commit();
                             break;
                         case 1:
-                            VideoPage videopage = new VideoPage();
+                            VideoPage videopage = null;
+                            try {
+                                videopage = new VideoPage();
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            }
+
                             fragmentTransaction.replace(R.id.frag,videopage);
+
                             fragmentTransaction.commit();
                             break;
                         case 2:
