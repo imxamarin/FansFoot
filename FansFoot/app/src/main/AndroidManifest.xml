@@ -11,15 +11,17 @@
         <activity android:name=".MainActivity"  android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
        <activity android:name=".HomePage">
        </activity>
 
         <activity android:name=".SelectionFragmentActivity"/>
         <activity android:name=".ProfileFragmentActivity"/>
+=======
+>>>>>>> 89a238a9f38d267b40ea1d469ac4f268c296463c
     </application>
 
 </manifest>

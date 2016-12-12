@@ -1,4 +1,4 @@
-package com.fansfoot.fansfoot;
+package com.fansfoot.fansfoot.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.fansfoot.fansfoot.R;
 
 /**
  * Created by xamarin on 07/12/16.

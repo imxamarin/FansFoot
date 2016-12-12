@@ -1,8 +1,12 @@
-package com.fansfoot.fansfoot;
+package com.fansfoot.fansfoot.Adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.fansfoot.fansfoot.TabLayout.AlphaHomePage;
+import com.fansfoot.fansfoot.TabLayout.BetaHomePage;
+import com.fansfoot.fansfoot.TabLayout.DeltaHomePage;
 
 /**
  * Created by kafir on 09-Dec-16.
