@@ -5,6 +5,9 @@
     android:orientation="vertical"
     android:background="@color/gray_bg"
     android:layout_height="match_parent">
+    <include
+        layout="@layout/cm_settings_toolbar"/>
+
     <com.google.android.gms.ads.AdView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

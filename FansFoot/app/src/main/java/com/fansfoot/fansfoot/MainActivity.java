@@ -41,13 +41,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.mod_toolbar_above);
-
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//        getSupportActionBar().setCustomView(R.layout.cm_action_bar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         context = this;
         OpenDefaultFragment();
         //CallThisToPerformButtonAction();
@@ -167,50 +164,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-   /* private void CallThisToPerformButtonAction() {
-        HomeButton = (Button) findViewById(R.id.HomeButton);
-        SectionButton = (Button) findViewById(R.id.SectionButton);
-        VideoButton = (Button) findViewById(R.id.VideoButton);
-        ProfileButton = (Button) findViewById(R.id.ProfileButton);
-        SettingButton = (Button) findViewById(R.id.SettingButton);
-
-        HomeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                HomeFragment();
-            }
-        });
-
-        SectionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SelectionFragment();
-            }
-        });
-
-        VideoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                VideoFragment();
-            }
-        });
-
-        ProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ProfileFragment();
-            }
-        });
-
-        SettingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //SettingsFragment();
-                SettingsFragment();
-            }
-        });
-
-    }*/
 
     public static FragmentManager getBaseFragmentManager() {
         return fragmentManager;
@@ -223,49 +176,47 @@ public class MainActivity extends AppCompatActivity {
 //    public void setActionBarTitle(String title) {
 //        getSupportActionBar().setTitle(title);
 //    }
-public void setActionBarTitle(String title)
-{
+//public void setActionBarTitle(String title)
+//{
+//    View v = getSupportActionBar().getCustomView();
+//    TextView titleTxtView = (TextView) v.findViewById(R.id.cm_Title);
+//    titleTxtView.setText(title);
+//}
+//    public void setActionBarAlpha(Drawable title)
+//    {
+//
+//        View v = getSupportActionBar().getCustomView();
+//        ImageButton titleTxtView = (ImageButton) v.findViewById(R.id.cm_ActionBar_Refesh);
+//        titleTxtView.setBackground(title);
+//        titleTxtView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view,"Reloading",Snackbar.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
-    View v = getSupportActionBar().getCustomView();
-    TextView titleTxtView = (TextView) v.findViewById(R.id.ActionBarText);
-    titleTxtView.setText(title);
-}
-    public void setActionBarAlpha(Drawable title)
-    {
-
-        View v = getSupportActionBar().getCustomView();
-        ImageButton titleTxtView = (ImageButton) v.findViewById(R.id.ActionBarAlphaLogo);
-        titleTxtView.setBackground(title);
-        titleTxtView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view,"Reloading",Snackbar.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void setActionBarBeta(Drawable title)
-    {
-        View v = getSupportActionBar().getCustomView();
-        ImageButton titleTxtView = (ImageButton) v.findViewById(R.id.ActionBarBetaLogo);
-        titleTxtView.setBackground(title);
-        titleTxtView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view,"Searching",Snackbar.LENGTH_SHORT).show();
-            }
-        });
-    }
+//    public void setActionBarBeta(Drawable title)
+//    {
+//        View v = getSupportActionBar().getCustomView();
+//        ImageButton titleTxtView = (ImageButton) v.findViewById(R.id.ActionBarBetaLogo);
+//        titleTxtView.setBackground(title);
+//        titleTxtView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view,"Searching",Snackbar.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
 
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-
-
         try {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+
 
         } catch (Exception e) {
             e.printStackTrace();

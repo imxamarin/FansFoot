@@ -6,7 +6,8 @@
     android:background="@color/gray_bg"
     android:orientation="vertical"
    >
-
+    <include
+        layout="@layout/cm_nsfw_toolbar"/>
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

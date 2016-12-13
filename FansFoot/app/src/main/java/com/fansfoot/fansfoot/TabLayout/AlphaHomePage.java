@@ -14,6 +14,8 @@ import android.widget.SearchView;
 
 import com.fansfoot.fansfoot.Adapters.AlphaHomeRecycleViewAdapter;
 import com.fansfoot.fansfoot.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 /**
  * Created by kafir on 09-Dec-16.
@@ -54,8 +56,11 @@ public class AlphaHomePage extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.alpha_home_fragment,null,false);
         context = this.getContext();
-        searchView = (SearchView) view.findViewById(R.id.AlphaSearchView);
-        searchView.setQueryHint("adios");
+        AdView mAdView = (AdView) view.findViewById(R.id.adViewAlpha);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+//        searchView = (SearchView) view.findViewById(R.id.AlphaSearchView);
+//        searchView.setQueryHint("adios");
         recyclerView = (RecyclerView) view.findViewById(R.id.AlphaRecycleView);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);

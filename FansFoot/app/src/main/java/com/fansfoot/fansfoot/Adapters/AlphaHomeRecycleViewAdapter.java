@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fansfoot.fansfoot.R;
 
 /**
@@ -43,7 +44,14 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
     @Override
     public void onBindViewHolder(AlphaViewHolder holder, int position) {
         holder.ImageDetail.setText(ImageTitle[position]);
-        holder.ViewImage.setImageResource(ImageAvaliable[position]);
+    //    holder.ViewImage.setImageResource(ImageAvaliable[position]);
+        Glide
+                .with(context)
+                .load("http://goo.gl/gEgYUd")
+                .centerCrop()
+                .placeholder(R.drawable.back_icon)
+                .crossFade()
+                .into(holder.ViewImage);
         holder.likesTextView.setText(ImagePoints[position]);
         holder.commentTextView.setText(ImageComments[position]);
     }

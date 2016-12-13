@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/Profiletoolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="10dp"
+
+    android:background="?attr/colorPrimaryDark">
+
+
+    <TextView
+        android:id="@+id/cmProfileTool_Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:textColor="@color/_unselectedtabs"
+        android:textSize="25sp"
+        android:layout_gravity="center"
+
+        />
+    <TextView
+        android:id="@+id/cm_ProfileToolBar_Edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center"
+        android:text="EDIT"
+        android:textColor="@color/_unselectedtabs"
+        android:textSize="20sp"
+        />
+
+</android.support.v7.widget.Toolbar>

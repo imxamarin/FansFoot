@@ -6,6 +6,8 @@
     android:orientation="vertical"
     android:background="@color/gray_bg"
     android:layout_height="match_parent">
+    <include
+        layout="@layout/cm_video_toolbar"/>
 
     <SearchView
         android:layout_width="match_parent"

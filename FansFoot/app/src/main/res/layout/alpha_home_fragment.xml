@@ -6,17 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <SearchView
 
-        android:id="@+id/AlphaSearchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@color/dim_gray_bg"
-        android:layout_gravity="center_horizontal"
-
-
-        />
 
     <com.google.android.gms.ads.AdView
         android:layout_margin="10dp"
@@ -27,7 +17,7 @@
         ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
         ads:queryHint="Search"
         ads:defaultQueryHint="GoogleAds"
-        android:background="@drawable/logo" />
+        android:background="@drawable/adview_shape" />
 
 
   <android.support.v7.widget.RecyclerView
