@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import java.net.URISyntaxException;
 public class VideoPage  extends Fragment {
 
     Context context;
+    public static FragmentManager fgi;
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerViewAdapter;
     RecyclerView.LayoutManager recylerViewLayoutManager;
@@ -52,10 +54,10 @@ public class VideoPage  extends Fragment {
 
 
 
-    String[] ur = { "https://www.youtube.com/watch?v=jdqsiFw74Jk",
-            "https://www.youtube.com/watch?v=aJ7BoNG-r2c",
-            "https://www.youtube.com/watch?v=jdqsiFw74Jk",
-            "https://www.youtube.com/watch?v=jdqsiFw74Jk"};
+    String[] ur = { "jdqsiFw74Jk",
+            "aJ7BoNG-r2c",
+            "9kct3FSQyvE",
+            "jdqsiFw74Jk"};
 
     String [] points = {"1","2","3","2"};
     String[] comments = {"56","48","78","96"};
@@ -68,6 +70,7 @@ public class VideoPage  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.video_fragment,container,false);
         context = getActivity();
+        fgi = getChildFragmentManager();
         final SwipeRefreshLayout swipe = (SwipeRefreshLayout) view.findViewById(R.id.VideoSwipe);
         swipe.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDarkest),getResources().getColor(R.color.holo_blue_light));
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -126,5 +129,10 @@ public class VideoPage  extends Fragment {
 //        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
 //        _menu_inflater.inflate(R.menu.refresh_menu,menu);
 //    }
+
+    public static FragmentManager getChildFragment(){
+        return fgi;
+    }
+
 }
 

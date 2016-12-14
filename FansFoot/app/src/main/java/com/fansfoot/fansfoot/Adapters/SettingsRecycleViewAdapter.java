@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fansfoot.fansfoot.DefaultPages.AboutUsPage;
+import com.fansfoot.fansfoot.DefaultPages.FeedbackPage;
 import com.fansfoot.fansfoot.DefaultPages.MemesPage;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
@@ -108,7 +109,11 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
                             Snackbar.make(view,"Rating",Snackbar.LENGTH_SHORT).show();
                             break;
                         case 3:
-                            Snackbar.make(view,"Feedback",Snackbar.LENGTH_SHORT).show();
+                            FeedbackPage memesq = new FeedbackPage();
+                            manager.popBackStackImmediate();
+                            fragmentTransaction.replace(R.id.frag,memesq);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
                             break;
                         case 5:
                             Snackbar.make(view,"Share App",Snackbar.LENGTH_SHORT).show();

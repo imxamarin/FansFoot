@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="@color/dim_gray_bg"
+    android:layout_marginTop="10dp"
     android:layout_height="wrap_content">
 <TextView
     android:id="@+id/VideoDetail"
@@ -14,12 +15,12 @@
     android:paddingLeft="10sp"
     />
 
-<ImageView
+<FrameLayout
     android:id="@+id/MainVideo"
     android:layout_width="match_parent"
     android:layout_height="200dp"
     android:scaleType="centerCrop"
-    android:src="@drawable/profile_bg"
+    android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
     android:layout_weight="1"/>
 
     <LinearLayout
