@@ -2,25 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10sp"
-    android:background="@color/gray_bg"
+    android:paddingTop="10sp"
+    android:paddingLeft="10sp"
+    android:background="@color/dim_gray_bg"
     >
 <TextView
     android:id="@+id/detailTextView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Name"
-    android:textSize="20sp"
+    android:textSize="16sp"
     android:textColor="#122964"
     />
-<TextView
-    android:id="@+id/valueTextView"
-    android:layout_width="wrap_content"
+<EditText
+    android:id="@+id/valueEditView"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Hulu"
-    android:textSize="15sp"
+    android:textSize="12sp"
     android:paddingLeft="10sp"
-    android:textColor="@color/dim_gray_bg"
+    android:editable="false"
+    android:textColor="@color/dark_gray_bg"
     />
     <View
         android:layout_width="wrap_content"

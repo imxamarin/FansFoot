@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +41,7 @@ public class HomePage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.home_layout,container,false);
+
         context = getContext();
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.Hometoolbar);
@@ -47,23 +51,21 @@ public class HomePage extends Fragment {
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         final TextView title = (TextView) view.findViewById(R.id.cmHomeTool_Title);
-        final SearchView search = (SearchView) view.findViewById(R.id.cm_HomeToolBar_search);
+        final CheckBox searchBtn = (CheckBox) view.findViewById(R.id.cm_HomeToolBar_search);
+        final SearchView searchview = (SearchView) view.findViewById(R.id.AlphaSearchView);
         ImageButton refresh = (ImageButton) view.findViewById(R.id.cm_HomeToolBar_Refesh);
-        search.setOnSearchClickListener(new View.OnClickListener() {
+        searchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                title.setVisibility(View.INVISIBLE);
-
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b==true){
+                    searchview.setVisibility(View.VISIBLE);
+                }else {
+                    searchview.setVisibility(View.GONE);
+                }
             }
         });
 
-        search.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                title.setVisibility(View.VISIBLE);
-                return false;
-            }
-        });
+
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

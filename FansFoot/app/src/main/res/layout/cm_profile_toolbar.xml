@@ -7,7 +7,17 @@
     android:paddingRight="10dp"
 
     android:background="?attr/colorPrimaryDark">
-
+    <CheckBox
+        android:id="@+id/cm_ProfileToolBar_Logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center"
+        android:text="LOGOUT"
+        android:button="@null"
+        android:textColor="@color/_unselectedtabs"
+        android:textSize="20sp"
+        android:checked="true"
+        />
 
     <TextView
         android:id="@+id/cmProfileTool_Title"
@@ -19,12 +29,13 @@
         android:layout_gravity="center"
 
         />
-    <TextView
+    <CheckBox
         android:id="@+id/cm_ProfileToolBar_Edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right|center"
         android:text="EDIT"
+        android:button="@null"
         android:textColor="@color/_unselectedtabs"
         android:textSize="20sp"
         />

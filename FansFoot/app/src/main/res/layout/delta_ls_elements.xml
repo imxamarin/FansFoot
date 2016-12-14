@@ -2,14 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@color/gray_bg"
+    android:layout_marginTop="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/DeltaTilteID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="10sp"
         android:text="Best 100 Gloals in Football 2015/2016"
-        android:gravity="center"
+        android:gravity="left"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/URLColor"
+
         />
     <ImageView
         android:id="@+id/DeltaMainImage"
@@ -82,8 +87,8 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:src="@drawable/like_icon"
-            android:background="@color/dim_gray_bg"
-            android:layout_marginRight="@dimen/layout_margin"
+            android:background="@drawable/fb_buttons_shape"
+
             />
         <ImageButton
             android:id="@+id/Deltadislikebutton"
@@ -91,8 +96,8 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:src="@drawable/dislike_icon"
-            android:background="@color/dim_gray_bg"
-            android:layout_marginRight="@dimen/layout_margin"
+            android:background="@drawable/fb_buttons_shape"
+
             />
 
         <ImageButton
@@ -101,8 +106,8 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:src="@drawable/comment_icon"
-            android:background="@color/dim_gray_bg"
-            android:layout_marginRight="@dimen/layout_margin"
+            android:background="@drawable/fb_buttons_shape"
+
             />
 
     </LinearLayout>

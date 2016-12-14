@@ -7,16 +7,24 @@
     android:isScrollContainer="true"
     android:background="?attr/colorPrimaryDark">
 
-    <android.support.v7.widget.SearchView
+    <!--<android.support.v7.widget.SearchView-->
+        <!--android:id="@+id/cm_HomeToolBar_search"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:searchIcon="@drawable/bar_search"-->
+        <!--android:layout_gravity="left|center"-->
+        <!--app:queryBackground="@color/_unselectedtabs"-->
+        <!--app:submitBackground="@color/_unselectedtabs"-->
+        <!--android:isScrollContainer="false"-->
+        <!--android:scrollbarAlwaysDrawHorizontalTrack="false"-->
+        <!--/>-->
+    <CheckBox
         android:id="@+id/cm_HomeToolBar_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:searchIcon="@drawable/bar_search"
         android:layout_gravity="left|center"
-        app:queryBackground="@color/_unselectedtabs"
-        app:submitBackground="@color/_unselectedtabs"
-        android:isScrollContainer="false"
-        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        android:button="@drawable/bar_search"
+
         />
     <TextView
         android:id="@+id/cmHomeTool_Title"

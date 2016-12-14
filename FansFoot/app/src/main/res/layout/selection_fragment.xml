@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:id="@+id/myspace"
+    android:background="@color/purewhite"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,6 +26,10 @@
         ads:adSize="BANNER"
         android:layout_alignParentBottom="true"
         ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
-        android:background="@drawable/logo"
+        ads:queryHint="Search"
+        ads:defaultQueryHint="GoogleAds"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/ad_rect_shape"
         />
 </LinearLayout>

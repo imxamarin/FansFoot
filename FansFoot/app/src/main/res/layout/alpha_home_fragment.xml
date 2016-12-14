@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/gray_bg"
+    android:background="@color/dim_gray_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
 
     <com.google.android.gms.ads.AdView
-        android:layout_margin="10dp"
+
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/adViewAlpha"
@@ -17,11 +18,17 @@
         ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
         ads:queryHint="Search"
         ads:defaultQueryHint="GoogleAds"
-        android:background="@drawable/adview_shape" />
+        android:background="@drawable/ad_rect_shape" />
 
-
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/AlphaSwipe"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
   <android.support.v7.widget.RecyclerView
       android:id="@+id/AlphaRecycleView"
+      android:paddingRight="5dp"
+      android:paddingLeft="5dp"
       android:layout_width="match_parent"
       android:layout_height="match_parent"/>
+</android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

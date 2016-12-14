@@ -20,13 +20,14 @@ import com.fansfoot.fansfoot.R;
 
 public class AlphaHomeRecycleViewAdapter extends RecyclerView.Adapter<AlphaHomeRecycleViewAdapter.AlphaViewHolder> {
     String[] ImageTitle;
-    int[] ImageAvaliable;
+    String[] ImageAvaliable;
+
     String[] ImagePoints;
     String[] ImageComments;
     Context context;
     View mainView;
 AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
-    public AlphaHomeRecycleViewAdapter(String[] imageTitle, int[] imageAvaliable, String[] imagePoints, String[] imageComments, Context context) {
+    public AlphaHomeRecycleViewAdapter(String[] imageTitle, String[] imageAvaliable, String[] imagePoints, String[] imageComments, Context context) {
         ImageTitle = imageTitle;
         ImageAvaliable = imageAvaliable;
         ImagePoints = imagePoints;
@@ -47,7 +48,7 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
     //    holder.ViewImage.setImageResource(ImageAvaliable[position]);
         Glide
                 .with(context)
-                .load("http://goo.gl/gEgYUd")
+                .load(ImageAvaliable[position])
                 .centerCrop()
                 .placeholder(R.drawable.back_icon)
                 .crossFade()

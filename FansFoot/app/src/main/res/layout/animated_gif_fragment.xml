@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:background="@color/gray_bg"
+    android:background="@color/dim_gray_bg"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include
         layout="@layout/cm_gif_toolbar"/>
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@color/dim_gray_bg"
-        />
+
 
     <com.google.android.gms.ads.AdView
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/adViewAlpha"
         ads:adSize="BANNER"
         ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
-        android:background="@drawable/logo"
+        ads:queryHint="Search"
+        ads:defaultQueryHint="GoogleAds"
+        android:background="@drawable/ad_rect_shape"
         />
 
-
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/GifSwipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
         android:id="@+id/gifRecycle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

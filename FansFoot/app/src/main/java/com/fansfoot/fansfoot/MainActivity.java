@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+
         OpenDefaultFragment();
         //CallThisToPerformButtonAction();
         bottom_layout = (RadioGroup)findViewById(R.id.bottom_layout);

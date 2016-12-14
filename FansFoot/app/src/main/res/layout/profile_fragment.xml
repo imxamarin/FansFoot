@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/purewhite"
     android:layout_height="match_parent">
     <include
         layout="@layout/cm_profile_toolbar"/>
@@ -12,8 +13,11 @@
         android:id="@+id/adViewAlpha"
         ads:adSize="BANNER"
         ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
-        android:background="@drawable/logo"
-
+        ads:queryHint="Search"
+        ads:defaultQueryHint="GoogleAds"
+        android:background="@drawable/ad_rect_shape"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         />
     <RelativeLayout
         android:id="@+id/ProfileCover"
@@ -27,14 +31,6 @@
 
        android:id="@+id/coverimage"
        android:scaleType="fitXY" />
-    <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:src="@drawable/circleprofile"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:id="@+id/imageoutercircle"-->
-        <!--/>-->
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -119,12 +115,95 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/ProfileRecycleView"
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+   android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10sp"
+    android:paddingLeft="10sp"
+    android:background="@color/dim_gray_bg"
+    >
+    <TextView
+        android:id="@+id/ProfileNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:textSize="16sp"
+        android:textColor="#122964"
+        />
+    <EditText
+        android:id="@+id/ProfileNameEditView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:text="Rohit"
+        android:textSize="14sp"
+        android:paddingLeft="10sp"
+        android:inputType="textPersonName"
+        android:textColor="@color/dark_gray_bg"
+        />
+
+    <TextView
+        android:id="@+id/ProfileCityTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City"
+        android:textSize="16sp"
+        android:textColor="#122964"
+        />
+    <EditText
+        android:id="@+id/ProfileCityEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chandigarh"
+        android:textSize="14sp"
+        android:paddingLeft="10sp"
+        android:inputType="textPostalAddress"
+        android:textColor="@color/dark_gray_bg"
+        />
+    <TextView
+        android:id="@+id/ProfileCountryTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Country"
+        android:textSize="16sp"
+        android:textColor="#122964"
+        />
+    <EditText
+        android:id="@+id/ProfileCountryEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="India"
+        android:textSize="14sp"
+        android:paddingLeft="10sp"
+        android:inputType="textPostalAddress"
+        android:textColor="@color/dark_gray_bg"
+        />
+    <TextView
+        android:id="@+id/ProfileBirthdayTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Birthday"
+        android:textSize="16sp"
+        android:textColor="#122964"
+        />
+    <EditText
+        android:id="@+id/ProfileBirthdayEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="30 Feb"
+        android:textSize="14sp"
+        android:paddingLeft="10sp"
+        android:inputType="date"
+        android:textColor="@color/dark_gray_bg"
+        />
+</LinearLayout>
+</ScrollView>
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/ProfileRecycleView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
 
 
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:padding="16sp"
     android:orientation="vertical"
-    android:background="@color/gray_bg"
+    android:background="@color/purewhite"
     android:layout_height="wrap_content">
 
     <RelativeLayout
@@ -33,7 +33,8 @@
         android:layout_height="1dp"
         android:layout_marginTop="10sp"
         android:layout_below="@id/SettingMenuBar"
-        android:background="#EFEFF0"
+        android:background="@color/gray_bg"
+
         android:id="@+id/view" />
 
 </LinearLayout>

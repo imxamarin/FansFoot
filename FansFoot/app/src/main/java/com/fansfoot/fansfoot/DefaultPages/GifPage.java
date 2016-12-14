@@ -2,9 +2,11 @@ package com.fansfoot.fansfoot.DefaultPages;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,8 +57,27 @@ public class GifPage extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.animated_gif_fragment,container,false);
+        final View view = inflater.inflate(R.layout.animated_gif_fragment,container,false);
         context = getContext();
+        final SwipeRefreshLayout swipe = (SwipeRefreshLayout) view.findViewById(R.id.GifSwipe);
+        swipe.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDarkest),getResources().getColor(R.color.holo_blue_light));
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
+
+                final Handler handler = new Handler();
+                Runnable runable = new Runnable() {
+                    @Override
+                    public void run() {
+                        swipe.setRefreshing(false);
+                    }
+                };
+                handler.postDelayed(runable, 2000);
+
+            }
+
+        });
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.giftoolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);

@@ -9,6 +9,14 @@
     android:orientation="vertical">
     <include
         layout="@layout/cm_home_toolbar"/>
+    <android.support.v7.widget.SearchView
+        android:id="@+id/AlphaSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/adview_shape"
+        android:visibility="gone"
+        />
 
         <android.support.design.widget.TabLayout
             android:layout_width="match_parent"

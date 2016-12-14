@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:layout_marginTop="10dp"
     android:background="@color/gray_bg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -9,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Best 100 Gloals in Football 2015/2016"
-        android:gravity="center"
+        android:gravity="left"
+        android:textColor="@color/URLColor"
+        android:paddingLeft="10sp"
         />
     <ImageView
         android:id="@+id/memesMainImage"
@@ -82,8 +85,8 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:src="@drawable/like_icon"
-            android:background="@color/dim_gray_bg"
-            android:layout_marginRight="@dimen/layout_margin"
+            android:background="@drawable/fb_buttons_shape"
+
             />
         <ImageButton
             android:id="@+id/memesdislikebutton"
@@ -91,8 +94,8 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:src="@drawable/dislike_icon"
-            android:background="@color/dim_gray_bg"
-            android:layout_marginRight="@dimen/layout_margin"
+            android:background="@drawable/fb_buttons_shape"
+
             />
 
         <ImageButton
@@ -101,8 +104,8 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:src="@drawable/comment_icon"
-            android:background="@color/dim_gray_bg"
-            android:layout_marginRight="@dimen/layout_margin"
+            android:background="@drawable/fb_buttons_shape"
+
             />
 
     </LinearLayout>

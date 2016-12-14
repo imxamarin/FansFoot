@@ -2,6 +2,8 @@ package com.fansfoot.fansfoot.Adapters;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fansfoot.fansfoot.DefaultPages.AboutUsPage;
+import com.fansfoot.fansfoot.DefaultPages.MemesPage;
+import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 
 /**
@@ -84,12 +89,20 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
                 @Override
                 public void onClick(View view) {
                     int x = getPosition();
+                    FragmentTransaction fragmentTransaction;
+                    FragmentManager manager = MainActivity.getBaseFragmentManager();
+                    manager.popBackStackImmediate();
+                    fragmentTransaction = manager.beginTransaction();
                     switch (x) {
                         case 0:
                             Snackbar.make(view,"Profile",Snackbar.LENGTH_SHORT).show();
                             break;
                         case 1:
-                            Snackbar.make(view,"About us",Snackbar.LENGTH_SHORT).show();
+                            AboutUsPage memes = new AboutUsPage();
+                            manager.popBackStackImmediate();
+                            fragmentTransaction.replace(R.id.frag,memes);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
                             break;
                         case 2:
                             Snackbar.make(view,"Rating",Snackbar.LENGTH_SHORT).show();

@@ -1,10 +1,12 @@
 package com.fansfoot.fansfoot.DefaultPages;
 
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,8 +66,27 @@ public class VideoPage  extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.video_fragment,container,false);
+        final View view = inflater.inflate(R.layout.video_fragment,container,false);
         context = getActivity();
+        final SwipeRefreshLayout swipe = (SwipeRefreshLayout) view.findViewById(R.id.VideoSwipe);
+        swipe.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDarkest),getResources().getColor(R.color.holo_blue_light));
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
+
+                final Handler handler = new Handler();
+                Runnable runable = new Runnable() {
+                    @Override
+                    public void run() {
+                        swipe.setRefreshing(false);
+                    }
+                };
+                handler.postDelayed(runable, 2000);
+
+            }
+
+        });
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.Videotoolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);

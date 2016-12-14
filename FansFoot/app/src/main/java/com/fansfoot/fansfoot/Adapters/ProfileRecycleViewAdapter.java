@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fansfoot.fansfoot.R;
@@ -37,7 +38,7 @@ public class ProfileRecycleViewAdapter extends RecyclerView.Adapter<ProfileRecyc
     @Override
     public void onBindViewHolder(ProfileViewHolder holder, int position) {
         holder.textViewDetails.setText(ProfileDetail[position]);
-        holder.textViewValues.setText(ProfileValues[position]);
+        holder.EdittextViewValues.setText(ProfileValues[position]);
     }
 
     @Override
@@ -47,11 +48,11 @@ public class ProfileRecycleViewAdapter extends RecyclerView.Adapter<ProfileRecyc
 
     public static class ProfileViewHolder  extends RecyclerView.ViewHolder {
         public TextView textViewDetails;
-        public TextView textViewValues;
+        public EditText EdittextViewValues;
         public ProfileViewHolder(View itemView) {
             super(itemView);
             textViewDetails = (TextView) itemView.findViewById(R.id.detailTextView);
-            textViewValues = (TextView) itemView.findViewById(R.id.valueTextView);
+            EdittextViewValues = (EditText) itemView.findViewById(R.id.valueEditView);
         }
     }
 

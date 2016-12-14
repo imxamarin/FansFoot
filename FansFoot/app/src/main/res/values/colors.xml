@@ -2,13 +2,18 @@
 <resources>
     <color name="colorPrimary">#122964</color>
     <color name="colorPrimaryDark">#122964</color>
+    <color name="colorPrimaryDarkest">#121b64</color>
     <color name="colorAccent">#FF4081</color>
     <color name="darkblack">#000000</color>
     <color name="_unselectedtabs">#FFFFFF</color>
-    <color name="_selectedtabs">#122964</color>
+    <color name="_selectedtabs">#0E2954</color>
+    <color name="_selectedtabsdark">#121b64</color>
     <color name="_nonselectedtabs">#ff33b5e5</color>
+    <color name="purewhite">#FFFFFF</color>
+
     <color name="gray_bg">#d3d3d3</color>
-    <color name="dim_gray_bg">#696969</color>
+    <color name="light_gray_bg">#bcbcbc</color>
+    <color name="dim_gray_bg">#dfdfdf</color>
     <color name="dark_gray_bg">#2F4F4F</color>
     <!-- A light Holo shade of blue -->
     <color name="holo_blue_light">#ff33b5e5</color>
@@ -20,6 +25,7 @@
     <color name="holo_red_light">#ffff4444</color>
     <!-- A dark Holo shade of blue -->
     <color name="holo_blue_dark">#ff0099cc</color>
+    <color name="holo_blue_darkest">#ff0077cc</color>
     <!-- A dark Holo shade of green -->
     <color name="holo_green_dark">#ff669900</color>
     <!-- A dark Holo shade of red -->
@@ -34,7 +40,7 @@
     <color name="holo_blue_bright">#ff00ddff</color>
     <!-- A really bright Holo shade of gray -->
     <color name="holo_gray_bright">#33CCCCCC</color>
-
+    <color name="URLColor">#122964</color>
     <integer-array name="androidcolors">
         <item>@color/_selectedtabs</item>
         <item>@color/_nonselectedtabs</item>
