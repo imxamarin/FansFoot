@@ -26,7 +26,7 @@ public class AboutUsPage extends Fragment  {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.about_us_fragment,null,false);
+        final View view = inflater.inflate(R.layout.about_us_fragment,container,false);
         TextView tv = (TextView) view.findViewById(R.id.textID);
         tv.setText("Oh, Indy. Oh, Indy\n" +
                 "The skies are so windy\n" +

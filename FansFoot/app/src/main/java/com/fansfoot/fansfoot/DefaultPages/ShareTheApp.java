@@ -14,19 +14,18 @@ import android.webkit.WebViewClient;
 import com.fansfoot.fansfoot.R;
 
 /**
- * Created by xamarin on 14/12/16.
+ * Created by xamarin on 15/12/16.
  */
 
-public class RatingPage extends Fragment {
-
+public class ShareTheApp extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.rating_web_view,container,false);
+        View view = inflater.inflate(R.layout.share_webview_page,container,false);
         final ProgressDialog pd = ProgressDialog.show(getActivity(), "", "Please wait, your request is being processed...", true);
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
-        final WebView webView =(WebView) view.findViewById(R.id.RatingWebView);
+        final WebView webView =(WebView) view.findViewById(R.id.ShareWebView);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
 

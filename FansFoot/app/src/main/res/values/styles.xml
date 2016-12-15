@@ -15,6 +15,11 @@
     <style name="splashScreenTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_01</item>
     </style>
-
+    <!-- Dialog  theme. -->
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <item name="colorAccent">@color/colorPrimaryDarkest</item>
+    <item name="android:textColorPrimary">@color/darkblack</item>
+    <item name="android:background">@color/dim_gray_bg</item>
+    </style>
 
 </resources>

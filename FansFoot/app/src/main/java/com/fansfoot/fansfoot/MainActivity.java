@@ -169,6 +169,9 @@ public class MainActivity extends AppCompatActivity {
     public static FragmentManager getBaseFragmentManager() {
         return fragmentManager;
     }
+    public static Context getContext() {
+        return context;
+    }
 
 //    public static MenuInflater gettheMenuInflater() {
 //        return new MenuInflater(context);

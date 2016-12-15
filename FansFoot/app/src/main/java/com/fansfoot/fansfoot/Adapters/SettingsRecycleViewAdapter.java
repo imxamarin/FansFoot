@@ -16,8 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fansfoot.fansfoot.DefaultPages.AboutUsPage;
+import com.fansfoot.fansfoot.DefaultPages.FbLikePage;
 import com.fansfoot.fansfoot.DefaultPages.FeedbackPage;
 import com.fansfoot.fansfoot.DefaultPages.MemesPage;
+import com.fansfoot.fansfoot.DefaultPages.ProfilePage;
+import com.fansfoot.fansfoot.DefaultPages.RatingPage;
+import com.fansfoot.fansfoot.DefaultPages.ReportPage;
+import com.fansfoot.fansfoot.DefaultPages.ShareTheApp;
+import com.fansfoot.fansfoot.DefaultPages.TwitterLikePage;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 
@@ -96,36 +102,60 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
                     fragmentTransaction = manager.beginTransaction();
                     switch (x) {
                         case 0:
-                            Snackbar.make(view,"Profile",Snackbar.LENGTH_SHORT).show();
+                            ProfilePage profilePage = new ProfilePage();
+                            manager.popBackStackImmediate();
+                            fragmentTransaction.replace(R.id.frag,profilePage);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
                             break;
                         case 1:
-                            AboutUsPage memes = new AboutUsPage();
+                            AboutUsPage aboutUsPage = new AboutUsPage();
                             manager.popBackStackImmediate();
-                            fragmentTransaction.replace(R.id.frag,memes);
+                            fragmentTransaction.replace(R.id.frag,aboutUsPage);
                             fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();
                             break;
                         case 2:
-                            Snackbar.make(view,"Rating",Snackbar.LENGTH_SHORT).show();
+                            RatingPage ratingPage = new RatingPage();
+                            manager.popBackStackImmediate();
+                            fragmentTransaction.replace(R.id.frag,ratingPage);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
                             break;
                         case 3:
-                            FeedbackPage memesq = new FeedbackPage();
+                            FeedbackPage feedbackPage = new FeedbackPage();
                             manager.popBackStackImmediate();
-                            fragmentTransaction.replace(R.id.frag,memesq);
+                            fragmentTransaction.replace(R.id.frag,feedbackPage);
                             fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();
                             break;
                         case 5:
-                            Snackbar.make(view,"Share App",Snackbar.LENGTH_SHORT).show();
+                            ShareTheApp shareThePage = new ShareTheApp();
+                            manager.popBackStackImmediate();
+                            fragmentTransaction.replace(R.id.frag,shareThePage);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
                             break;
                         case 6:
-                            Snackbar.make(view,"Report",Snackbar.LENGTH_SHORT).show();
+                            ReportPage reportPage = new ReportPage();
+                            manager.popBackStackImmediate();
+                            fragmentTransaction.replace(R.id.frag,reportPage);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
                             break;
                         case 7:
-                            Snackbar.make(view,"Like on Facebook",Snackbar.LENGTH_SHORT).show();
+                            FbLikePage fbLikePage = new FbLikePage();
+                            manager.popBackStackImmediate();
+                            fragmentTransaction.replace(R.id.frag,fbLikePage);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
                             break;
                         case 8:
-                            Snackbar.make(view,"Like on Twitter",Snackbar.LENGTH_SHORT).show();
+                            TwitterLikePage twLikePage = new TwitterLikePage();
+                            manager.popBackStackImmediate();
+                            fragmentTransaction.replace(R.id.frag,twLikePage);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
                             break;
                         default:
                             break;

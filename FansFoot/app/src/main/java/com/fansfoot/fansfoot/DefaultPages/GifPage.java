@@ -54,6 +54,13 @@ public class GifPage extends Fragment {
             R.drawable.post_img,
             R.drawable.post_img
     };
+    String[] pics = {"http://www.redbitdev.com/wp-content/uploads/2014/04/xamarin.jpeg",
+            "http://www.windows10update.com/wp-content/uploads/2016/03/xamarin_logo.jpg",
+            "http://www.hexacta.com/wp-content/uploads/2016/03/xamarin.jpg",
+            "https://sergeytihon.files.wordpress.com/2015/04/w2.jpg",
+            "http://www.redbitdev.com/wp-content/uploads/2014/04/xamarin.jpeg"
+    };
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -100,7 +107,7 @@ public class GifPage extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.gifRecycle);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);
-        recyclerViewAdapter = new GifPageRecycleViewAdapter(userDetail,imgGallery,points,comments,context);
+        recyclerViewAdapter = new GifPageRecycleViewAdapter(userDetail,pics,points,comments,context);
         recyclerView.setAdapter(recyclerViewAdapter);
         return view;
     }
