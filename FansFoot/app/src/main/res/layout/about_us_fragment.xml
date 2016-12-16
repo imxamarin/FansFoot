@@ -4,7 +4,7 @@
     android:background="@color/holo_gray_light"
     android:layout_height="match_parent">
  <include
-     layout="@layout/cm_gif_toolbar"/>
+     layout="@layout/cm_about_us"/>
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">

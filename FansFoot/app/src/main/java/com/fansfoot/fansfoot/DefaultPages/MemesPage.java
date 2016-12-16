@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
 import com.fansfoot.fansfoot.Adapters.MemesRecycleViewAdapter;
@@ -100,13 +102,14 @@ public class MemesPage extends Fragment {
                 Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
             }
         });
-        ImageButton back = (ImageButton) view.findViewById(R.id.cm_memesToolBar_search);
-        back.setOnClickListener(new View.OnClickListener() {
+        CheckBox back = (CheckBox) view.findViewById(R.id.cm_memesToolBar_search);
+        back.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 getActivity().onBackPressed();
             }
         });
+
         recyclerView = (RecyclerView) view.findViewById(R.id.memesRecycle);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);

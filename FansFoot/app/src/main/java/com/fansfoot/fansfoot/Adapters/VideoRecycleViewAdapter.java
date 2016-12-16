@@ -100,6 +100,7 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
                 .load(thumbnail)
                 .centerCrop()
                 .crossFade()
+                .placeholder(R.drawable.videotemp)
                 .into(holder.YoutubeView);
 
 //        holder.ViewVideo.setId(youTubePlayerSupportFragment.getId());

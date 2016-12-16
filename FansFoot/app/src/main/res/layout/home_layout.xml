@@ -15,6 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/adview_shape"
+        android:queryHint="Search"
+        app:defaultQueryHint="Search"
         android:visibility="gone"
         />
 
@@ -28,8 +30,10 @@
             app:tabBackground="@drawable/tab_selector"
             app:tabIndicatorColor="@android:color/transparent"
             app:tabIndicatorHeight="0dp"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
             app:tabTextColor="@color/_unselectedtabs"
             app:tabSelectedTextColor="@color/_unselectedtabs"
+
 
 />
 

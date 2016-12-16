@@ -59,19 +59,6 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                 .load(ImageAvaliable[position])
                 .centerCrop()
                 .placeholder(R.drawable.post_img)
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.alphaPb.setVisibility(View.GONE);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.alphaPb.setVisibility(View.GONE);
-                        return false;
-                    }
-                })
                 .crossFade()
                 .into(holder.ViewImage);
         holder.likesTextView.setText(ImagePoints[position]);
@@ -91,7 +78,7 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
         public ImageButton likeBtn;
         public ImageButton dislikeBtn;
         public ImageButton commentBtn;
-        public ProgressBar alphaPb;
+      //  public ProgressBar alphaPb;
         public void JumpToFaceBookForLogin(){
             int x = getPosition();
             FragmentTransaction fragmentTransaction;
@@ -116,7 +103,7 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
             likeBtn = (ImageButton) itemView.findViewById(R.id.Alphalikebutton);
             dislikeBtn = (ImageButton) itemView.findViewById(R.id.Alphadislikebutton);
             commentBtn = (ImageButton) itemView.findViewById(R.id.Alphacommentbtn);
-            alphaPb = (ProgressBar) itemView.findViewById(R.id.Alphaprogress);
+           // alphaPb = (ProgressBar) itemView.findViewById(R.id.Alphaprogress);
 
 
 

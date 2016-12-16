@@ -38,7 +38,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements
 //        if (!b) {
         Log.d("start","provider"+provider);
         Log.d("start","youTubePlayer"+youTubePlayer);
-            youTubePlayer.loadVideo("jdqsiFw74Jk");
+            youTubePlayer.loadVideo("G7LkvVV2Iv8");
             youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
             youTubePlayer.play();
 //        }

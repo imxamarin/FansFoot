@@ -6,20 +6,20 @@
     android:paddingRight="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimaryDark">
+    android:background="@color/_selectedtabs">
 
-    <ImageButton
+    <CheckBox
         android:id="@+id/cm_gifToolBar_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/back_icon"
+        android:layout_width="60sp"
+        android:layout_height="50sp"
+        android:button="@drawable/back_icon"
         android:layout_gravity="left|center"
         />
     <TextView
         android:id="@+id/cmgifTool_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ANIMATED GIF"
+        android:text="Animated GIF"
         android:textColor="@color/_unselectedtabs"
         android:textSize="25sp"
         android:layout_gravity="center"

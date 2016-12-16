@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
 import com.fansfoot.fansfoot.MainActivity;
@@ -54,10 +56,10 @@ public class VideoPage  extends Fragment {
 
 
 
-    String[] ur = { "jdqsiFw74Jk",
-            "aJ7BoNG-r2c",
-            "9kct3FSQyvE",
-            "jdqsiFw74Jk"};
+    String[] ur = { "RrJiXmmphbs",
+            "oI1v64xT4uA",
+            "Zlwwm9oNdto",
+            "G7LkvVV2Iv8"};
 
     String [] points = {"1","2","3","2"};
     String[] comments = {"56","48","78","96"};
@@ -103,13 +105,15 @@ public class VideoPage  extends Fragment {
                 Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
             }
         });
-        ImageButton back = (ImageButton) view.findViewById(R.id.cm_VideoToolBar_search);
-        back.setOnClickListener(new View.OnClickListener() {
+        CheckBox back = (CheckBox) view.findViewById(R.id.cm_VideoToolBar_search);
+        back.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 getActivity().onBackPressed();
             }
         });
+
+
         recyclerView = (RecyclerView) view.findViewById(R.id.VideoRecycleView);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);

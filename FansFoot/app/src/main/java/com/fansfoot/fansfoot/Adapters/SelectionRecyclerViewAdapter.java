@@ -60,6 +60,9 @@ public class SelectionRecyclerViewAdapter extends RecyclerView.Adapter<Selection
     public void onBindViewHolder(SelectionRecyclerViewAdapter.ViewHolder holder, int position) {
        holder.textView.setText(SubjectValues[position]);
       holder.imageView.setImageResource(ImageValues[position]);
+        if (position==3){
+            holder.LineView.setVisibility(View.GONE);
+        }
 
     }
 
@@ -72,12 +75,15 @@ public class SelectionRecyclerViewAdapter extends RecyclerView.Adapter<Selection
     public  class ViewHolder extends RecyclerView.ViewHolder {
        public TextView textView;
         public ImageView imageView;
+        public View LineView;
         SelectionPage sp = new SelectionPage();
         public ViewHolder(final View itemView)
         {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.TitleView);
             imageView = (ImageView) itemView.findViewById(R.id.ImgView);
+            LineView = (View) itemView.findViewById(R.id.LineCategoryview);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

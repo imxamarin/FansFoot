@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.fansfoot.fansfoot.DefaultPages.GifPage;
 import com.fansfoot.fansfoot.DefaultPages.HomePage;
+import com.fansfoot.fansfoot.DefaultPages.LoginPage;
 import com.fansfoot.fansfoot.DefaultPages.MemesPage;
 import com.fansfoot.fansfoot.DefaultPages.NsfwPage;
 import com.fansfoot.fansfoot.DefaultPages.ProfilePage;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
+//        setTheme(R.style.AppTheme);
 //        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 //        getSupportActionBar().setCustomView(R.layout.cm_action_bar);
         super.onCreate(savedInstanceState);
@@ -115,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
     private void ProfileFragment() {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        ProfilePage profilePage = new ProfilePage();
+        LoginPage loginprofilePage = new LoginPage();
         fragmentManager.popBackStackImmediate();
-        fragmentTransaction.replace(R.id.frag, profilePage);
+        fragmentTransaction.replace(R.id.frag, loginprofilePage);
         fragmentTransaction.commit();
     }
 

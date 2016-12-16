@@ -6,21 +6,20 @@
     android:layout_height="wrap_content"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:background="?attr/colorPrimaryDark">
+    android:background="@color/_selectedtabs">
 
-    <ImageButton
+    <CheckBox
         android:id="@+id/cm_nsfwToolBar_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
+        android:layout_width="60sp"
+        android:layout_height="50sp"
         android:layout_gravity="left|center"
-        android:background="@drawable/back_icon"
+        android:button="@drawable/back_icon"
         />
     <TextView
         android:id="@+id/cmnsfwTool_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="NSFW"
+        android:text="Nsfw"
         android:textColor="@color/_unselectedtabs"
         android:textSize="25sp"
         android:layout_gravity="center"

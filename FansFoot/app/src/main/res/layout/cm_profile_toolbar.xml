@@ -6,16 +6,17 @@
     android:layout_height="wrap_content"
     android:paddingRight="10dp"
 
-    android:background="?attr/colorPrimaryDark">
+    android:background="@color/_selectedtabs">
     <CheckBox
         android:id="@+id/cm_ProfileToolBar_Logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80sp"
+        android:layout_height="50sp"
+        android:background="@drawable/search_bar_bg"
         android:layout_gravity="left|center"
         android:text="LOGOUT"
         android:button="@null"
         android:textColor="@color/_unselectedtabs"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:checked="true"
         />
 
@@ -31,13 +32,14 @@
         />
     <CheckBox
         android:id="@+id/cm_ProfileToolBar_Edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60sp"
+        android:layout_height="50sp"
+        android:background="@drawable/search_bar_bg"
         android:layout_gravity="right|center"
         android:text="EDIT"
         android:button="@null"
         android:textColor="@color/_unselectedtabs"
-        android:textSize="20sp"
+        android:textSize="16sp"
         />
 
 </android.support.v7.widget.Toolbar>

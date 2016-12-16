@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">FansFoot</string>
-    <string name="HomeButton">HOME</string>
-    <string name="SectionButton">SECTION</string>
-    <string name="VideoButton">VIDEO</string>
-    <string name="ProfileButton">PROFILE</string>
-    <string name="SettingsButton">SETTINGS</string>
+    <string name="HomeButton">Home</string>
+    <string name="SectionButton">Sections</string>
+    <string name="VideoButton">Videos</string>
+    <string name="ProfileButton">Profile</string>
+    <string name="SettingsButton">Settings</string>
     <string name="VideoDescription">Best 100 Gloals in Football 2015/2016</string>
 </resources>

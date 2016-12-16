@@ -1,6 +1,7 @@
 package com.fansfoot.fansfoot.DefaultPages;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -54,6 +55,9 @@ public class HomePage extends Fragment {
         final CheckBox searchBtn = (CheckBox) view.findViewById(R.id.cm_HomeToolBar_search);
         final SearchView searchview = (SearchView) view.findViewById(R.id.AlphaSearchView);
         ImageButton refresh = (ImageButton) view.findViewById(R.id.cm_HomeToolBar_Refesh);
+
+
+
         searchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -74,9 +78,9 @@ public class HomePage extends Fragment {
         });
 
         tabLayout = (TabLayout) view.findViewById(R.id.TabbedLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("HOT"));
-        tabLayout.addTab(tabLayout.newTab().setText("TRENDING"));
-        tabLayout.addTab(tabLayout.newTab().setText("FRESH"));
+        tabLayout.addTab(tabLayout.newTab().setText("Hot"));
+        tabLayout.addTab(tabLayout.newTab().setText("Trending"));
+        tabLayout.addTab(tabLayout.newTab().setText("Fresh"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         mDemoCollection = new PageAdapter(
                 this.getChildFragmentManager(), tabLayout.getTabCount());
