@@ -19,6 +19,8 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.fansfoot.fansfoot.API.Post;
+import com.fansfoot.fansfoot.API.YoutubePost;
 import com.fansfoot.fansfoot.DefaultActivities.YoutubePlayerActivity;
 import com.fansfoot.fansfoot.DefaultPages.FbLikePage;
 import com.fansfoot.fansfoot.DefaultPages.HomePage;
@@ -30,26 +32,22 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 
+import java.util.List;
+
 /**
  * Created by xamarin on 05/12/16.
  */
 
 public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleViewAdapter.VideoViewHolder>{
 
-    String[] VideoTitle;
-    String[] VideoAvaliable;
-    String[] VideoPoints;
-    String[] VideoComments;
+    List<YoutubePost> UrlList;
     static Context context;
     View mainView;
     YouTubePlayerSupportFragment youTubePlayerSupportFragment;
     VideoRecycleViewAdapter.VideoViewHolder viewHolders;
 //    static YouTubePlayerSupportFragment youTubePlayerFragment;
-    public VideoRecycleViewAdapter(String[] videoTitle, String[] videoAvaliable, String [] videoPoints, String[] videoComments, Context context) {
-        VideoTitle = videoTitle;
-        VideoAvaliable = videoAvaliable;
-        VideoPoints = videoPoints;
-        VideoComments = videoComments;
+    public VideoRecycleViewAdapter(Context context,List<YoutubePost> urlList) {
+        UrlList = urlList;
         this.context = context;
     }
 
@@ -60,57 +58,28 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
         return viewHolders;
     }
 
-
-
     @Override
     public void onBindViewHolder(VideoViewHolder holder, final int position) {
-        holder.VideoDetail.setText(VideoTitle[position]);
-//        youTubePlayerSupportFragment = YouTubePlayerSupportFragment.newInstance();
-//        FragmentTransaction transaction = VideoPage.getChildFragment().beginTransaction();
-//        transaction.add(holder.ViewVideo.getId(),youTubePlayerSupportFragment).addToBackStack(null).commit();
-//        youTubePlayerSupportFragment.initialize("AIzaSyDKVkI5QRYt486jYFoKUW4npL0wt6dDGAo", new YouTubePlayer.OnInitializedListener() {
-//            @Override
-//            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-//                if (!b) {
-//                    youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.MINIMAL);
-//                    youTubePlayer.loadVideo(VideoAvaliable[position]);
-//                    youTubePlayer.play();
-//
-//                }else {
-//                    Toast.makeText(context,"Thor", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-//                String errorMessage = youTubeInitializationResult.toString();
-//                Toast.makeText(context, errorMessage+""+position, Toast.LENGTH_LONG).show();
-//            }
-//        });
 
-
-
-             String[] url = VideoAvaliable[position].split("=");
+             String[] url = UrlList.get(position).getPic().split("=");
         String thumbnail = "http://img.youtube.com/vi/"+url[0]+"/0.jpg";
-//
-//        Glide.with(context).load(thumbnail).into(holder.ViewVideo);
 
+        holder.VideoDetail.setText(UrlList.get(position).getTital());
         Glide
                 .with(context)
-                .load(thumbnail)
-                .centerCrop()
-                .crossFade()
+                .load(UrlList.get(position).getVideoTumb())
+                .fitCenter()
                 .placeholder(R.drawable.videotemp)
+                .crossFade()
                 .into(holder.YoutubeView);
+        holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
+        holder.commentTextView.setText(UrlList.get(position).getComments().toString());
 
-//        holder.ViewVideo.setId(youTubePlayerSupportFragment.getId());
-        holder.likesTextView.setText(VideoPoints[position]);
-        holder.commentTextView.setText(VideoComments[position]);
     }
 
     @Override
     public int getItemCount() {
-        return VideoTitle.length;
+        return UrlList.size();
     }
 
 

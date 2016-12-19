@@ -13,9 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.fansfoot.fansfoot.API.Post;
 import com.fansfoot.fansfoot.DefaultPages.FbLikePage;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
+
+import java.util.List;
 
 /**
  * Created by xamarin on 07/12/16.
@@ -24,20 +27,14 @@ import com.fansfoot.fansfoot.R;
 public class NsfwRecycleViewAdapter extends RecyclerView.Adapter<NsfwRecycleViewAdapter.NsfwImageViewHolder> {
 
 
-    String[] ImageTitle;
-    String[] ImageAvaliable;
-    String[] ImagePoints;
-    String[] ImageComments;
+    List<Post> UrlList;
     Context context;
     View mainView;
     NsfwImageViewHolder viewHolder;
 
 
-    public NsfwRecycleViewAdapter(String[] imageTitle, String[] imageAvaliable, String[] imagePoints, String[] imageComments, Context context) {
-        ImageTitle = imageTitle;
-        ImageAvaliable = imageAvaliable;
-        ImagePoints = imagePoints;
-        ImageComments = imageComments;
+    public NsfwRecycleViewAdapter( Context context,List<Post> urlList) {
+        UrlList = urlList;
         this.context = context;
     }
 
@@ -50,21 +47,21 @@ public class NsfwRecycleViewAdapter extends RecyclerView.Adapter<NsfwRecycleView
 
     @Override
     public void onBindViewHolder(NsfwImageViewHolder holder, int position) {
-        holder.ImageDetail.setText(ImageTitle[position]);
+        holder.ImageDetail.setText(UrlList.get(position).getTital());
         Glide
                 .with(context)
-                .load(ImageAvaliable[position])
-                .centerCrop()
+                .load(UrlList.get(position).getPic())
+                .fitCenter()
                 .placeholder(R.drawable.post_img)
                 .crossFade()
                 .into(holder.ViewImage);
-        holder.likesTextView.setText(ImagePoints[position]);
-        holder.commentTextView.setText(ImageComments[position]);
+        holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
+        holder.commentTextView.setText(UrlList.get(position).getComments().toString());
     }
 
     @Override
     public int getItemCount() {
-        return ImageTitle.length;
+        return UrlList.size();
     }
 
     public static class NsfwImageViewHolder extends RecyclerView.ViewHolder {

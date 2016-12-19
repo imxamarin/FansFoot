@@ -24,7 +24,7 @@ public class SplashScreen extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        img.setBackgroundResource(R.drawable.splash_01_copy);
+                        img.setBackgroundResource(R.drawable.splash2);
                         finish();
                     }
                 }, SPLASH_TIME_OUT);

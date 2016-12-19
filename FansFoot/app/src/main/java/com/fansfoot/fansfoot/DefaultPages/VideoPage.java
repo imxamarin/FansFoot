@@ -1,5 +1,6 @@
 package com.fansfoot.fansfoot.DefaultPages;
 
+import android.app.ProgressDialog;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,12 +23,35 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
+import com.android.volley.Cache;
+import com.android.volley.Network;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.fansfoot.fansfoot.API.ConstServer;
+import com.fansfoot.fansfoot.API.FansfootServer;
+import com.fansfoot.fansfoot.API.Post;
+import com.fansfoot.fansfoot.API.YouTube;
+import com.fansfoot.fansfoot.API.YoutubePost;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.fansfoot.fansfoot.Adapters.VideoRecycleViewAdapter;
+import com.google.gson.Gson;
+import com.mugen.Mugen;
+import com.mugen.MugenCallbacks;
+import com.mugen.attachers.BaseAttacher;
+
+import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by xamarin on 05/12/16.
@@ -38,33 +63,17 @@ public class VideoPage  extends Fragment {
     public static FragmentManager fgi;
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerViewAdapter;
-    RecyclerView.LayoutManager recylerViewLayoutManager;
-    String[] userDetail = {
-            "Name",
-            "City",
-            "Country",
-            "Birthday"
-    };
-
-
-    String[] userValues = {
-            "Rohit",
-            "Chandigarh",
-            "India",
-            "30 Feb"
-    };
-
-
-
-    String[] ur = { "RrJiXmmphbs",
-            "oI1v64xT4uA",
-            "Zlwwm9oNdto",
-            "G7LkvVV2Iv8"};
-
-    String [] points = {"1","2","3","2"};
-    String[] comments = {"56","48","78","96"};
-    URI[] uris;
-
+    RequestQueue mRequestQueue;
+    YouTube fansfootServers;
+    List<YoutubePost> posts = new ArrayList<>();
+    private int previousTotal = 0;
+    private boolean loading = true;
+    private int visibleThreshold = 5;
+    int firstVisibleItem, visibleItemCount, totalItemCount;
+    LinearLayoutManager recylerViewLayoutManager;
+    int newValue  = 0;
+    ProgressDialog pd;
+    private boolean isLoading = false;
 
 
     @Nullable
@@ -72,6 +81,15 @@ public class VideoPage  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.video_fragment,container,false);
         context = getActivity();
+        pd = ProgressDialog.show(getActivity(), "", "Please wait, your request is being processed...", true);
+        pd.setCancelable(false);
+        pd.setCanceledOnTouchOutside(false);
+
+        Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
+        Network network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
+        SyncOP(newValue);
         fgi = getChildFragmentManager();
         final SwipeRefreshLayout swipe = (SwipeRefreshLayout) view.findViewById(R.id.VideoSwipe);
         swipe.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDarkest),getResources().getColor(R.color.holo_blue_light));
@@ -117,26 +135,82 @@ public class VideoPage  extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.VideoRecycleView);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);
-        recyclerViewAdapter = new VideoRecycleViewAdapter(userDetail,ur,points,comments,context);
+
+        BaseAttacher attacher = Mugen.with(recyclerView, new MugenCallbacks() {
+            @Override
+            public void onLoadMore() {
+                SyncOP(newValue);
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+
+            @Override
+            public boolean hasLoadedAllItems() {
+                return false;
+            }
+        }).start();
+
+        attacher.setLoadMoreEnabled(true);
+
+        attacher.setLoadMoreOffset(2);
+
+
+        recyclerViewAdapter = new VideoRecycleViewAdapter(context,posts);
         recyclerView.setAdapter(recyclerViewAdapter);
         return  view;
     }
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setHasOptionsMenu(true);
-//    }
-//
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
-//        _menu_inflater.inflate(R.menu.refresh_menu,menu);
-//    }
+
+    public void SyncOP(int pageNumber){
+        pd.show();
+        isLoading=true;
+        String ModUrl = ConstServer._baseUrl+
+                ConstServer._type+
+                ConstServer.get_channel_type+
+                ConstServer._ConCat+
+                ConstServer._post_type+
+                ConstServer.VideopostType+
+                ConstServer._ConCat+
+                ConstServer._pagesToLoad+pageNumber+
+                ConstServer._ConCat+
+                ConstServer._deviceToken+"123456"+
+                ConstServer._ConCat+
+                ConstServer._device_type+
+                ConstServer._ConCat+
+                ConstServer._USERID+"123";
+        Log.d("yuha",""+ModUrl);
+        JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                ModUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                pd.dismiss();
+                isLoading=false;
+                newValue=newValue+1;
+                Gson _Gson = new Gson();
+                fansfootServers =  _Gson.fromJson(response.toString(), YouTube.class);
+                posts.addAll(fansfootServers.getPost());
+                Log.d("wala",""+posts.size());
+                if( posts.size()!=0){
+                    recyclerViewAdapter.notifyDataSetChanged();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pd.dismiss();
+                isLoading=false;
+            }
+        });
+        mRequestQueue.add(_JsonObjectRequest);
+    }
 
     public static FragmentManager getChildFragment(){
         return fgi;
     }
+
+
 
 }
 

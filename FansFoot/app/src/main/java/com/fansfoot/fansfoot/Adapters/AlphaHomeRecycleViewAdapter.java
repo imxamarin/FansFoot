@@ -18,28 +18,25 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.fansfoot.fansfoot.API.Post;
 import com.fansfoot.fansfoot.DefaultPages.FbLikePage;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kafir on 10-Dec-16.
  */
 
 public class AlphaHomeRecycleViewAdapter extends RecyclerView.Adapter<AlphaHomeRecycleViewAdapter.AlphaViewHolder> {
-    String[] ImageTitle;
-    String[] ImageAvaliable;
-
-    String[] ImagePoints;
-    String[] ImageComments;
+     List<Post> UrlList;
     Context context;
     View mainView;
 AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
-    public AlphaHomeRecycleViewAdapter(String[] imageTitle, String[] imageAvaliable, String[] imagePoints, String[] imageComments, Context context) {
-        ImageTitle = imageTitle;
-        ImageAvaliable = imageAvaliable;
-        ImagePoints = imagePoints;
-        ImageComments = imageComments;
+    public AlphaHomeRecycleViewAdapter( Context context,List<Post> urlList) {
+        UrlList = urlList;
         this.context = context;
     }
 
@@ -52,22 +49,21 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
 
     @Override
     public void onBindViewHolder(final AlphaViewHolder holder, int position) {
-        holder.ImageDetail.setText(ImageTitle[position]);
-    //    holder.ViewImage.setImageResource(ImageAvaliable[position]);
+        holder.ImageDetail.setText(UrlList.get(position).getTital());
         Glide
                 .with(context)
-                .load(ImageAvaliable[position])
-                .centerCrop()
+                .load(UrlList.get(position).getPic())
+                .fitCenter()
                 .placeholder(R.drawable.post_img)
                 .crossFade()
                 .into(holder.ViewImage);
-        holder.likesTextView.setText(ImagePoints[position]);
-        holder.commentTextView.setText(ImageComments[position]);
+        holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
+        holder.commentTextView.setText(UrlList.get(position).getComments().toString());
     }
 
     @Override
     public int getItemCount() {
-        return ImageTitle.length;
+        return UrlList.size();
     }
 
     public static class AlphaViewHolder extends RecyclerView.ViewHolder {
@@ -78,7 +74,6 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
         public ImageButton likeBtn;
         public ImageButton dislikeBtn;
         public ImageButton commentBtn;
-      //  public ProgressBar alphaPb;
         public void JumpToFaceBookForLogin(){
             int x = getPosition();
             FragmentTransaction fragmentTransaction;

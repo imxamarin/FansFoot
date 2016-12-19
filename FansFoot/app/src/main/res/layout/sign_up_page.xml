@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="Name"
-            android:textColorHint="@color/darkblack"
+            android:textColorHint="@color/dim_gray_bg"
             android:paddingLeft="10dp"
             android:background="@color/purewhite"
             android:inputType="textEmailAddress"
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="root@gmail.com"
-            android:textColorHint="@color/darkblack"
+            android:textColorHint="@color/dim_gray_bg"
             android:background="@color/purewhite"
             android:inputType="textEmailAddress"
             android:layout_marginBottom="5dp"
@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="Password"
-            android:textColorHint="@color/darkblack"
+            android:textColorHint="@color/dim_gray_bg"
             android:background="@color/purewhite"
             android:inputType="textPassword"
             android:layout_marginBottom="5dp"
@@ -96,7 +96,7 @@
             android:hint="Confirm Password"
             android:background="@color/purewhite"
             android:inputType="textPassword"
-            android:textColorHint="@color/darkblack"
+            android:textColorHint="@color/dim_gray_bg"
             android:layout_marginBottom="5dp"
             android:paddingLeft="10dp"
             />
@@ -105,11 +105,12 @@
             <Button
                 android:id="@+id/SignUpRegBtn"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/reg_button_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="SIGN UP"
                 android:textSize="20sp"
+                android:background="@drawable/login_button_shape"
+                android:textColor="@color/purewhite"
                 />
 
     </LinearLayout>
