@@ -34,7 +34,7 @@ public class SignUpPage extends Fragment {
         final View view = inflater.inflate(R.layout.sign_up_page,container,false);
         FbBtn = (ImageButton) view.findViewById(R.id.SignUpFbBtn);
         NameEdTxt = (EditText) view.findViewById(R.id.SignUpNameEditText);
-        EmailEdTxt = (EditText) view.findViewById(R.id.LoginEmailEditText);
+        EmailEdTxt = (EditText) view.findViewById(R.id.SignUpEmailEditText);
         PasswdEdTxt = (EditText) view.findViewById(R.id.SignUpPasswordEditText);
         ConnPasswdTxt = (EditText) view.findViewById(R.id.SignUpConnPasswdEditText);
         SignUpRegBtn = (Button) view.findViewById(R.id.SignUpRegBtn);

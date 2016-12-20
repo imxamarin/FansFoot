@@ -28,6 +28,8 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
 import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FansfootServer;
 import com.fansfoot.fansfoot.API.Post;
@@ -60,7 +62,7 @@ public class AlphaHomePage extends Fragment {
     RecyclerView.Adapter recyclerViewAdapter;
     private int previousTotal = 0;
     private boolean loading = true;
-
+    CallbackManager callbackManager;
     private int visibleThreshold = 5;
     int firstVisibleItem, visibleItemCount, totalItemCount;
     LinearLayoutManager recylerViewLayoutManager;
@@ -68,12 +70,14 @@ public class AlphaHomePage extends Fragment {
      ProgressDialog pd;
     private boolean isLoading = false;
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.alpha_home_fragment,null,false);
         context = this.getContext();
-        pd = ProgressDialog.show(getActivity(), "", "Please wait, your request is being processed...", true);
+        pd = ProgressDialog.show(getActivity(), "", ConstServer.get_Load_Message, true);
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
         Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
@@ -92,6 +96,8 @@ public class AlphaHomePage extends Fragment {
                 Runnable runable = new Runnable() {
                     @Override
                     public void run() {
+                        newValue = 0;
+                        SyncOP(newValue);
                         swipe.setRefreshing(false);
                     }
                 };
@@ -167,8 +173,11 @@ public class AlphaHomePage extends Fragment {
     }
 
     public void SyncOP(int pageNumber){
-        pd.show();
-        isLoading=true;
+        if(pageNumber>0){
+            pd.show();
+            isLoading=true;
+        }
+
         String ModUrl = ConstServer._baseUrl+
                 ConstServer._type+
                 ConstServer.get_post_type+

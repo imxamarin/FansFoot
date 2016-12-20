@@ -74,7 +74,7 @@ public class GifPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.animated_gif_fragment,container,false);
         context = getContext();
-        pd = ProgressDialog.show(getActivity(), "", "Please wait, your request is being processed...", true);
+        pd = ProgressDialog.show(getActivity(), "", ConstServer.get_Load_Message, true);
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
         Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
@@ -94,6 +94,8 @@ public class GifPage extends Fragment {
                 Runnable runable = new Runnable() {
                     @Override
                     public void run() {
+                        newValue = 0;
+                        SyncOP(newValue);
                         swipe.setRefreshing(false);
                     }
                 };
@@ -154,8 +156,10 @@ public class GifPage extends Fragment {
 
 
     public void SyncOP(int pageNumber){
-        pd.show();
-        isLoading=true;
+        if(pageNumber>0){
+            pd.show();
+            isLoading=true;
+        }
         String ModUrl = ConstServer._baseUrl+
                 ConstServer._type+
                 ConstServer.get_channel_type+

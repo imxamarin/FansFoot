@@ -81,7 +81,7 @@ public class VideoPage  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.video_fragment,container,false);
         context = getActivity();
-        pd = ProgressDialog.show(getActivity(), "", "Please wait, your request is being processed...", true);
+        pd = ProgressDialog.show(getActivity(), "", ConstServer.get_Load_Message, true);
         pd.setCancelable(false);
         pd.setCanceledOnTouchOutside(false);
 
@@ -102,6 +102,8 @@ public class VideoPage  extends Fragment {
                 Runnable runable = new Runnable() {
                     @Override
                     public void run() {
+                        newValue = 0;
+                        SyncOP(newValue);
                         swipe.setRefreshing(false);
                     }
                 };
@@ -164,8 +166,10 @@ public class VideoPage  extends Fragment {
     }
 
     public void SyncOP(int pageNumber){
-        pd.show();
-        isLoading=true;
+        if(pageNumber>0){
+            pd.show();
+            isLoading=true;
+        }
         String ModUrl = ConstServer._baseUrl+
                 ConstServer._type+
                 ConstServer.get_channel_type+

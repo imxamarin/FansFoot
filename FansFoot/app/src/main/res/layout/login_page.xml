@@ -34,14 +34,24 @@
             android:src="@drawable/logo"
             android:layout_marginBottom="10dp"
             />
-        <ImageButton
+        <!--<ImageButton-->
+            <!--android:id="@+id/LoginFbBtn"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/login_with_facebook"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--/>-->
+        <com.facebook.login.widget.LoginButton
             android:id="@+id/LoginFbBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/login_with_facebook"
+
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
-            />
+
+             />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

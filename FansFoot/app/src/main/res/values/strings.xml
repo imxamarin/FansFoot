@@ -6,4 +6,9 @@
     <string name="ProfileButton">Profile</string>
     <string name="SettingsButton">Settings</string>
     <string name="VideoDescription">Best 100 Gloals in Football 2015/2016</string>
+    <string name="facebook_app_id">1820758254812177</string>
+    <string name="com_facebook_loginview_log_in_button">LOGIN</string>
+    <string name="com_facebook_loginview_log_out_button">LOGOUT</string>
+    <string name="com_facebook_loginview_log_in_button_long">Log in with Facebook</string>
+
 </resources>

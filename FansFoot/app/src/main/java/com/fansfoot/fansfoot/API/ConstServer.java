@@ -24,6 +24,7 @@ public class ConstServer {
     public static final String VideopostType = "videos";
     public static final String get_post_type = "post_show";
     public static final String get_channel_type = "channels";
+    public static final String get_Load_Message = "Please wait, your request is being processed...";
 
 
 

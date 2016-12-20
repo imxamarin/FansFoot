@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.fansfoot.fansfoot.API.FacebookStatus;
 import com.fansfoot.fansfoot.API.Post;
 import com.fansfoot.fansfoot.DefaultPages.FbLikePage;
 import com.fansfoot.fansfoot.MainActivity;
@@ -82,48 +83,102 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
             likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar snackbar = Snackbar
-                            .make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT)
-                            .setAction("LOGIN", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    JumpToFaceBookForLogin();
-                                }
-                            });
+                    boolean fb_status = FacebookStatus.CheckFbLogin();
 
-                    snackbar.show();
+                    if(fb_status == true)
+                    {
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Whatsup",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }else {
+
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Login using Facebook",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }
+
                 }
             });
 
             dislikeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar snackbar = Snackbar
-                            .make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT)
-                            .setAction("LOGIN", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    JumpToFaceBookForLogin();
-                                }
-                            });
+                    boolean fb_status = FacebookStatus.CheckFbLogin();
 
-                    snackbar.show();
+                    if(fb_status == true)
+                    {
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Whatsup",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }else {
+
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Login using Facebook",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }
+
                 }
             });
 
             commentBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar snackbar = Snackbar
-                            .make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT)
-                            .setAction("LOGIN", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    JumpToFaceBookForLogin();
-                                }
-                            });
+                    boolean fb_status = FacebookStatus.CheckFbLogin();
 
-                    snackbar.show();
+                    if(fb_status == true)
+                    {
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Whatsup",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }else {
+
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Login using Facebook",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }
+
                 }
             });
         }

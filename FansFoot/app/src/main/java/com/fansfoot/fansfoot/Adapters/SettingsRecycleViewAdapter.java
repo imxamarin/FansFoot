@@ -15,9 +15,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fansfoot.fansfoot.API.FacebookStatus;
 import com.fansfoot.fansfoot.DefaultPages.AboutUsPage;
 import com.fansfoot.fansfoot.DefaultPages.FbLikePage;
 import com.fansfoot.fansfoot.DefaultPages.FeedbackPage;
+import com.fansfoot.fansfoot.DefaultPages.LoginPage;
 import com.fansfoot.fansfoot.DefaultPages.MemesPage;
 import com.fansfoot.fansfoot.DefaultPages.ProfilePage;
 import com.fansfoot.fansfoot.DefaultPages.RatingPage;
@@ -102,12 +104,27 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
                     fragmentTransaction = manager.beginTransaction();
                     switch (x) {
                         case 0:
-                            ProfilePage profilePage = new ProfilePage();
-                            manager.popBackStackImmediate();
-                            fragmentTransaction.replace(R.id.frag,profilePage);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-                            break;
+
+                            boolean fb_status = FacebookStatus.CheckFbLogin();
+
+                            if(fb_status == true)
+                            {
+                                ProfilePage profilePage = new ProfilePage();
+                                manager.popBackStackImmediate();
+                                fragmentTransaction.replace(R.id.frag,profilePage);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+                                break;
+                            }else {
+                                LoginPage profilePage = new LoginPage();
+                                manager.popBackStackImmediate();
+                                fragmentTransaction.replace(R.id.frag,profilePage);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+                                break;
+                            }
+
+
                         case 1:
                             AboutUsPage aboutUsPage = new AboutUsPage();
                             manager.popBackStackImmediate();

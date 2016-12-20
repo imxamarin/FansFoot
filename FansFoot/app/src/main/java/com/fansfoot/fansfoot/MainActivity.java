@@ -18,6 +18,9 @@ import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.fansfoot.fansfoot.API.FacebookStatus;
 import com.fansfoot.fansfoot.DefaultPages.GifPage;
 import com.fansfoot.fansfoot.DefaultPages.HomePage;
 import com.fansfoot.fansfoot.DefaultPages.LoginPage;
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
     RadioGroup bottom_layout;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        setTheme(R.style.AppTheme);
@@ -47,9 +52,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        CallbackManager  callbackManager = CallbackManager.Factory.create();
         OpenDefaultFragment();
         //CallThisToPerformButtonAction();
+
         bottom_layout = (RadioGroup)findViewById(R.id.bottom_layout);
         bottom_layout.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -115,11 +122,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void ProfileFragment() {
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        LoginPage loginprofilePage = new LoginPage();
-        fragmentManager.popBackStackImmediate();
-        fragmentTransaction.replace(R.id.frag, loginprofilePage);
-        fragmentTransaction.commit();
+        boolean fb_status = FacebookStatus.CheckFbLogin();
+
+        if(fb_status == true)
+        {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            ProfilePage loginprofilePage = new ProfilePage();
+            fragmentManager.popBackStackImmediate();
+            fragmentTransaction.replace(R.id.frag, loginprofilePage);
+            fragmentTransaction.commit();
+        }else {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            LoginPage loginprofilePage = new LoginPage();
+            fragmentManager.popBackStackImmediate();
+            fragmentTransaction.replace(R.id.frag, loginprofilePage);
+            fragmentTransaction.commit();
+        }
     }
 
     private void VideoFragment() {

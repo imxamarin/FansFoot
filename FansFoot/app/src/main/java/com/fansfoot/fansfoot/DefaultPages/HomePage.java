@@ -74,6 +74,7 @@ public class HomePage extends Fragment {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
+
             }
         });
 

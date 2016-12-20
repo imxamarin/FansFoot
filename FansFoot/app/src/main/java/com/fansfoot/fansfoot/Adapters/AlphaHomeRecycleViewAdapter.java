@@ -18,6 +18,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.fansfoot.fansfoot.API.FacebookStatus;
 import com.fansfoot.fansfoot.API.Post;
 import com.fansfoot.fansfoot.DefaultPages.FbLikePage;
 import com.fansfoot.fansfoot.MainActivity;
@@ -88,9 +91,13 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
         }
 
 
+
+
+
         public AlphaViewHolder(View itemView) {
 
             super(itemView);
+
             ImageDetail = (TextView) itemView.findViewById(R.id.AlphaTilteID);
             ViewImage = (ImageView) itemView.findViewById(R.id.AlphaMainImage);
             likesTextView  = (TextView) itemView.findViewById(R.id.AlphaImagePointsValue);
@@ -106,50 +113,107 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
             likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar snackbar = Snackbar
-                            .make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT)
-                            .setAction("LOGIN", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    JumpToFaceBookForLogin();
-                                }
-                            });
+                    boolean fb_status = FacebookStatus.CheckFbLogin();
 
-                    snackbar.show();
+                    if(fb_status == true)
+                    {
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Whatsup",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }else {
+
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Login using Facebook",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }
+
                 }
             });
 
             dislikeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar snackbar = Snackbar
-                            .make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT)
-                            .setAction("LOGIN", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    JumpToFaceBookForLogin();
-                                }
-                            });
+                    boolean fb_status = FacebookStatus.CheckFbLogin();
 
-                    snackbar.show();
+                    if(fb_status == true)
+                    {
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Whatsup",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }else {
+
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Login using Facebook",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }
+
+
                 }
             });
 
             commentBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar snackbar = Snackbar
-                            .make(view,"Login Using Facebook",Snackbar.LENGTH_SHORT)
-                            .setAction("LOGIN", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    JumpToFaceBookForLogin();
-                                }
-                            });
+                    boolean fb_status = FacebookStatus.CheckFbLogin();
 
-                    snackbar.show();
+                    if(fb_status == true)
+                    {
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Whatsup",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }else {
+
+                        Snackbar snackbar = Snackbar
+                                .make(view,"Login using Facebook",Snackbar.LENGTH_SHORT)
+                                .setAction("LOGIN", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        JumpToFaceBookForLogin();
+                                    }
+                                });
+
+                        snackbar.show();
+                    }
+
                 }
             });
+
+
 
         }
     }

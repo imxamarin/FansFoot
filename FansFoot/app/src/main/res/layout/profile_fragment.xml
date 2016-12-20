@@ -31,13 +31,14 @@
 
        android:id="@+id/coverimage"
        android:scaleType="fitXY" />
-        <ImageView
+        <com.facebook.login.widget.ProfilePictureView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/profile_pic"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
-            android:id="@+id/imageView" />
+            android:id="@+id/imageView"
+            />
+
     </RelativeLayout>
     <LinearLayout
         android:orientation="horizontal"
