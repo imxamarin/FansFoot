@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/cm_post_toolbar"/>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_alignParentTop="true"
+        android:id="@+id/PostTilteID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Best 100 Gloals in Football 2015/2016"
+        android:gravity="left"
+        android:textColor="@color/URLColor"
+        android:paddingLeft="10sp"
+        />
+    <ImageView
+        android:layout_below="@id/PostTilteID"
+        android:id="@+id/PostMainImage"
+        android:layout_width="match_parent"
+         android:adjustViewBounds="true"
+        android:layout_height="wrap_content"
+        android:background="@drawable/post_img"
+        />
+
+
+    <WebView
+        android:layout_centerVertical="true"
+        android:layout_below="@id/PostMainImage"
+        android:id="@+id/facebookPlugin"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.google.android.gms.ads.AdView
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/adViewAlpha"
+        ads:adSize="BANNER"
+        ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
+        ads:queryHint="Search"
+        ads:defaultQueryHint="GoogleAds"
+        android:background="@drawable/ad_rect_shape"
+        />
+</RelativeLayout>
+
+</LinearLayout>

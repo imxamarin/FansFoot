@@ -26,6 +26,21 @@ public class ConstServer {
     public static final String get_channel_type = "channels";
     public static final String get_Load_Message = "Please wait, your request is being processed...";
 
+//    http://quenelle.fansfoot.com/mobile/web/?register_type=facebook&facebook_id=&username=&email=&profilepicture=&device_token=
+
+    public static final String Register_type = "register_type=";
+    public static final String Register_Type_Facebook = "facebook";
+    public static final String Facebook_ID = "facebook_id=";
+    public static final String Facebook_UserName = "username=";
+    public static final String Facebook_EmailID = "email=";
+    public static final String Facebook_profilePic = "profilepicture=";
+
+
+
+
+
+
+
 
 
 }

@@ -31,6 +31,11 @@
         <activity
             android:name=".DefaultActivities.YoutubePlayerActivity"
             android:screenOrientation="userLandscape" />
+        <activity
+            android:name=".DefaultActivities.PostPage"
+             />
+
+
         <activity android:name=".DefaultActivities.SplashScreen" android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,50 +1,31 @@
 package com.fansfoot.fansfoot.DefaultPages;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.os.Build;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.ProfilePictureView;
 import com.fansfoot.fansfoot.API.FacebookStatus;
-import com.fansfoot.fansfoot.Adapters.ProfileRecycleViewAdapter;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
-
-import org.json.JSONObject;
 
 /**
  * Created by xamarin on 05/12/16.
@@ -70,12 +51,22 @@ public class ProfilePage extends Fragment {
             "India",
             "30 Feb"
     };
+    EditText ProfileNameEdtext;
+    EditText ProfileCityEdtext;
+    EditText ProfileCountryEdtext;
+    EditText ProfileBirthDayEdtext;
+    SharedPreferences sharedPreferences;
+
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.profile_fragment,null,false);
         context = getActivity();
+
+         sharedPreferences = getActivity().getSharedPreferences("FacebookPrefrence",Context.MODE_PRIVATE);
+
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.Profiletoolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
@@ -83,16 +74,15 @@ public class ProfilePage extends Fragment {
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         final CheckBox editbtn = (CheckBox) view.findViewById(R.id.cm_ProfileToolBar_Edit);
         final Button logoutbtn = (Button) view.findViewById(R.id.cm_ProfileToolBar_Logout);
-        final EditText ProfileNameEdtext = (EditText) view.findViewById(R.id.ProfileNameEditView);
-        final EditText ProfileCityEdtext = (EditText) view.findViewById(R.id.ProfileCityEditView);
-        final EditText ProfileCountryEdtext = (EditText) view.findViewById(R.id.ProfileCountryEditView);
-        final EditText ProfileBirthDayEdtext = (EditText) view.findViewById(R.id.ProfileBirthdayEditView);
-        FacebookStatus.GraphReq();
-
+         ProfileNameEdtext = (EditText) view.findViewById(R.id.ProfileNameEditView);
+         ProfileCityEdtext = (EditText) view.findViewById(R.id.ProfileCityEditView);
+        ProfileCountryEdtext = (EditText) view.findViewById(R.id.ProfileCountryEditView);
+        ProfileBirthDayEdtext = (EditText) view.findViewById(R.id.ProfileBirthdayEditView);
         profilePictureView = (ProfilePictureView) view.findViewById(R.id.imageView);
 
-        profilePictureView.setProfileId(FacebookStatus.FBUserID());
 
+
+        profilePictureView.setProfileId(FacebookStatus.FBUserID());
         disableEditText(ProfileNameEdtext);
         disableEditText(ProfileCityEdtext);
         disableEditText(ProfileCountryEdtext);
@@ -133,6 +123,16 @@ public class ProfilePage extends Fragment {
                 }
             }
         });
+        String name = sharedPreferences.getString("FbName","RoHIT");
+        String locationCity = sharedPreferences.getString("FblocationCity","Okohama");
+        String locationCountry = sharedPreferences.getString("FblocationCountry","Japan");
+        String birthday = sharedPreferences.getString("Fbbirthday","India");
+
+
+        ProfileNameEdtext.setText(name);
+        ProfileCityEdtext.setText(locationCity);
+        ProfileCountryEdtext.setText(locationCountry);
+        ProfileBirthDayEdtext.setText(birthday);
 
 
 //        recyclerView = (RecyclerView) view.findViewById(R.id.ProfileRecycleView);
@@ -142,6 +142,9 @@ public class ProfilePage extends Fragment {
 //        recyclerView.setAdapter(recyclerViewAdapter);
         return  view;
     }
+
+
+
     private void disableEditText(EditText editText) {
         editText.setFocusable(false);
         editText.setEnabled(false);

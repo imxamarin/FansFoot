@@ -2,12 +2,15 @@ package com.fansfoot.fansfoot.DefaultPages;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +19,27 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 
+import static android.content.ContentValues.TAG;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -39,6 +52,8 @@ public class LoginPage extends Fragment {
     EditText EmailEdTxt,PasswdEdTxt;
     LoginButton FbBtn;
     CallbackManager callbackManager;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
 
     @Override
@@ -61,6 +76,7 @@ public class LoginPage extends Fragment {
 
         final View view = inflater.inflate(R.layout.login_page,container,false);
 
+        sharedPreferences =getActivity().getSharedPreferences("FacebookPrefrence", Context.MODE_PRIVATE);
 
 
         Loginbtn = (Button) view.findViewById(R.id.LoginButton);
@@ -69,12 +85,54 @@ public class LoginPage extends Fragment {
         SignUpBtn = (Button) view.findViewById(R.id.LoginSignUpButton);
         EmailEdTxt = (EditText) view.findViewById(R.id.LoginEmailEditText);
         PasswdEdTxt = (EditText) view.findViewById(R.id.LoginPasswordEditText);
-
-        FbBtn.setReadPermissions(Arrays.asList("public_profile", "email", "user_birthday","user_hometown","user_about_me"));
+        FbBtn.setReadPermissions(Arrays.asList("user_location", "email", "user_birthday","user_hometown","user_about_me"));
         FbBtn.setFragment(this);
         FbBtn.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+               if(loginResult.getAccessToken().getUserId()!= null){
+                   GraphRequest request = GraphRequest.newMeRequest(
+                           AccessToken.getCurrentAccessToken(),
+                           new GraphRequest.GraphJSONObjectCallback() {
+                               @Override
+                               public void onCompleted(JSONObject object, GraphResponse response) {
+                                   Log.v("LoginActivityAlpha", response.toString());
+                                   try {
+                                       String email = object.getString("email");
+                                       String id = object.getString("id");
+                                       String birthday = object.getString("birthday"); // 01/31/1980 format
+                                       String name = object.getString("name");
+                                       String location = object.getJSONObject("location").getString("name");
+                                       String homelocation = object.getJSONObject("hometown").getString("name");
+                                       String picture = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                                       String[] s = location.split(",");
+                                       String locationCity = s[0];
+                                       String locationCountry = s[1];
+
+
+                                       editor = sharedPreferences.edit();
+                                       editor.putString("FbName", name);
+                                       editor.putString("Fbemail", email);
+                                       editor.putString("FbID", id);
+                                       editor.putString("Fbbirthday", birthday);
+                                       editor.putString("FblocationCity", locationCity);
+                                       editor.putString("FblocationCountry", locationCountry);
+                                       editor.putString("Fbpicture", picture);
+                                       Log.v("ActivityAlpha", response.toString());
+                                       editor.commit();
+
+                                   } catch (JSONException e) {
+                                       e.printStackTrace();
+                                   }
+
+                               }
+                           });
+                   Bundle parameters = new Bundle();
+                   parameters.putString("fields", "id,name,email,gender,birthday,hometown,location,picture");
+                   request.setParameters(parameters);
+                   request.executeAsync();
+               }
+
                 Snackbar.make(view,"Login Sucessful",Snackbar.LENGTH_SHORT).show();
                 DoThisOperation();
             }
@@ -174,4 +232,6 @@ public class LoginPage extends Fragment {
         fragmentTransaction.replace(R.id.frag,profilePage);
         fragmentTransaction.commit();
     }
+
+
 }

@@ -85,7 +85,7 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
 
 
 
-    public static class VideoViewHolder  extends RecyclerView.ViewHolder  {
+    public class VideoViewHolder  extends RecyclerView.ViewHolder  {
         public TextView VideoDetail;
         public ImageView YoutubeView;
         public ImageButton YoutubePlay;
@@ -106,6 +106,16 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
             dislikeBtn = (ImageButton) itemView.findViewById(R.id.Videodislikebutton);
             commentBtn = (ImageButton) itemView.findViewById(R.id.Videocommentbtn);
 
+            YoutubeView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int x = getPosition();
+                    String imageId = UrlList.get(x).getPic();
+                    String TextId = UrlList.get(x).getTital();
+                }
+            });
+
+
             YoutubePlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -114,6 +124,8 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
 
                 }
             });
+
+
 
 
             likeBtn.setOnClickListener(new View.OnClickListener() {

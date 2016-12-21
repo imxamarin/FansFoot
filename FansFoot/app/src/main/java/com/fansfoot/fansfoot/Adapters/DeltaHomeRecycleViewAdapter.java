@@ -60,7 +60,7 @@ public class DeltaHomeRecycleViewAdapter extends RecyclerView.Adapter<DeltaHomeR
         return UrlList.size();
     }
 
-    public static class DeltaViewHolder extends RecyclerView.ViewHolder {
+    public class DeltaViewHolder extends RecyclerView.ViewHolder {
         public TextView ImageDetail;
         public ImageView ViewImage;
         public TextView likesTextView;
@@ -77,6 +77,14 @@ public class DeltaHomeRecycleViewAdapter extends RecyclerView.Adapter<DeltaHomeR
             likeBtn = (ImageButton) itemView.findViewById(R.id.Deltalikebutton);
             dislikeBtn = (ImageButton) itemView.findViewById(R.id.Deltadislikebutton);
             commentBtn = (ImageButton) itemView.findViewById(R.id.Deltacommentbtn);
+            ImageDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int x = getPosition();
+                    String imageId = UrlList.get(x).getPic();
+                    String TextId = UrlList.get(x).getTital();
+                }
+            });
 
 
             likeBtn.setOnClickListener(new View.OnClickListener() {

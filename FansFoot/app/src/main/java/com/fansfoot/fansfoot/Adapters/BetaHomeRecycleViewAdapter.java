@@ -61,7 +61,7 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
         return UrlList.size();
     }
 
-    public static class BetaViewHolder extends RecyclerView.ViewHolder {
+    public class BetaViewHolder extends RecyclerView.ViewHolder {
         public TextView ImageDetail;
         public ImageView ViewImage;
         public TextView likesTextView;
@@ -79,6 +79,14 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
             dislikeBtn = (ImageButton) itemView.findViewById(R.id.Betadislikebutton);
             commentBtn = (ImageButton) itemView.findViewById(R.id.Betacommentbtn);
 
+            ImageDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int x = getPosition();
+                    String imageId = UrlList.get(x).getPic();
+                    String TextId = UrlList.get(x).getTital();
+                }
+            });
 
             likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

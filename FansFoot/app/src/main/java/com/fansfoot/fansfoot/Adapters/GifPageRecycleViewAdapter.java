@@ -66,7 +66,7 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
         return UrlList.size();
     }
 
-    public static class GifPageImageViewHolder extends RecyclerView.ViewHolder {
+    public class GifPageImageViewHolder extends RecyclerView.ViewHolder {
         public TextView ImageDetail;
         public ImageView ViewImage;
         public TextView likesTextView;
@@ -86,6 +86,14 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
             commentBtn = (ImageButton) itemView.findViewById(R.id.Gifcommentbtn);
 
              imageViewTarget  = new GlideDrawableImageViewTarget(ViewImage);
+            ImageDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int x = getPosition();
+                    String imageId = UrlList.get(x).getPic();
+                    String TextId = UrlList.get(x).getTital();
+                }
+            });
 
             likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

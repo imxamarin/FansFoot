@@ -64,7 +64,7 @@ public class MemesRecycleViewAdapter extends RecyclerView.Adapter<MemesRecycleVi
         return UrlList.size();
     }
 
-    public static class MemesImageViewHolder extends RecyclerView.ViewHolder {
+    public class MemesImageViewHolder extends RecyclerView.ViewHolder {
         public TextView ImageDetail;
         public ImageView ViewImage;
         public TextView likesTextView;
@@ -82,6 +82,14 @@ public class MemesRecycleViewAdapter extends RecyclerView.Adapter<MemesRecycleVi
             dislikeBtn = (ImageButton) itemView.findViewById(R.id.memesdislikebutton);
             commentBtn = (ImageButton) itemView.findViewById(R.id.memescommentbtn);
 
+            ImageDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int x = getPosition();
+                    String imageId = UrlList.get(x).getPic();
+                    String TextId = UrlList.get(x).getTital();
+                }
+            });
 
 
 

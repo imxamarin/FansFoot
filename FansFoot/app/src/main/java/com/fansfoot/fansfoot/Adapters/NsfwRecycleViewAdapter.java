@@ -65,7 +65,7 @@ public class NsfwRecycleViewAdapter extends RecyclerView.Adapter<NsfwRecycleView
         return UrlList.size();
     }
 
-    public static class NsfwImageViewHolder extends RecyclerView.ViewHolder {
+    public class NsfwImageViewHolder extends RecyclerView.ViewHolder {
         public TextView ImageDetail;
         public ImageView ViewImage;
         public TextView likesTextView;
@@ -84,6 +84,14 @@ public class NsfwRecycleViewAdapter extends RecyclerView.Adapter<NsfwRecycleView
             dislikeBtn = (ImageButton) itemView.findViewById(R.id.nfswdislikebutton);
             commentBtn = (ImageButton) itemView.findViewById(R.id.nfswcommentbtn);
 
+            ImageDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int x = getPosition();
+                    String imageId = UrlList.get(x).getPic();
+                    String TextId = UrlList.get(x).getTital();
+                }
+            });
 
 
             likeBtn.setOnClickListener(new View.OnClickListener() {
