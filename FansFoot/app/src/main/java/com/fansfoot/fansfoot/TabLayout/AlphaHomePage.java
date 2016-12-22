@@ -92,16 +92,17 @@ public class AlphaHomePage extends Fragment {
             public void onRefresh() {
                 Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
 
-                final Handler handler = new Handler();
-                Runnable runable = new Runnable() {
-                    @Override
-                    public void run() {
+//                final Handler handler = new Handler();
+//                Runnable runable = new Runnable() {
+//                    @Override
+//                    public void run() {
+                       posts = new ArrayList<>();
                         newValue = 0;
                         SyncOP(newValue);
                         swipe.setRefreshing(false);
-                    }
-                };
-                handler.postDelayed(runable, 2000);
+//                    }
+//                };
+//                handler.postDelayed(runable, 2000);
             }
 
         });
@@ -199,12 +200,14 @@ public class AlphaHomePage extends Fragment {
             public void onResponse(JSONObject response) {
                 pd.dismiss();
                 isLoading=false;
+                Log.d("Responce",""+response.toString());
                 Gson _Gson = new Gson();
                 newValue=newValue+1;
                 fansfootServers =  _Gson.fromJson(response.toString(), FansfootServer.class);
                 posts.addAll(fansfootServers.getPost());
                 Log.d("check",""+posts.size());
                 if( posts.size()!=0){
+
                     recyclerViewAdapter.notifyDataSetChanged();
                 }
             }

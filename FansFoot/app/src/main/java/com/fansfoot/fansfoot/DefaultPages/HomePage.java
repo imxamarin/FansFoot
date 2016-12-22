@@ -19,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.fansfoot.fansfoot.API.FacebookStatus;
 import com.fansfoot.fansfoot.Adapters.PageAdapter;
 import com.fansfoot.fansfoot.R;
 

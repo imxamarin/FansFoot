@@ -19,6 +19,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.volley.Cache;
+import com.android.volley.Network;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -29,8 +39,11 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.fansfoot.fansfoot.API.ConstServer;
+import com.fansfoot.fansfoot.API.FacebookFansfoot;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,14 +60,14 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  */
 
 public class LoginPage extends Fragment {
-
+    RequestQueue mRequestQueue;
     Button Loginbtn,ForgetpasswdBtn,SignUpBtn;
     EditText EmailEdTxt,PasswdEdTxt;
     LoginButton FbBtn;
     CallbackManager callbackManager;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-
+    FacebookFansfoot facebookFansfoot;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +81,7 @@ public class LoginPage extends Fragment {
         super.onAttach(context);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+
     }
 
     @Nullable
@@ -77,6 +91,11 @@ public class LoginPage extends Fragment {
         final View view = inflater.inflate(R.layout.login_page,container,false);
 
         sharedPreferences =getActivity().getSharedPreferences("FacebookPrefrence", Context.MODE_PRIVATE);
+        Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+        Network network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
+
 
 
         Loginbtn = (Button) view.findViewById(R.id.LoginButton);
@@ -108,8 +127,6 @@ public class LoginPage extends Fragment {
                                        String[] s = location.split(",");
                                        String locationCity = s[0];
                                        String locationCountry = s[1];
-
-
                                        editor = sharedPreferences.edit();
                                        editor.putString("FbName", name);
                                        editor.putString("Fbemail", email);
@@ -133,6 +150,7 @@ public class LoginPage extends Fragment {
                    request.executeAsync();
                }
 
+                DoTheCallToFB();
                 Snackbar.make(view,"Login Sucessful",Snackbar.LENGTH_SHORT).show();
                 DoThisOperation();
             }
@@ -201,6 +219,55 @@ public class LoginPage extends Fragment {
         return view;
     }
 
+    private void DoTheCallToFB() {
+        String ModUrl = ConstServer._MainbaseUrl+
+                ConstServer._type+
+                ConstServer.post_signUp+
+                ConstServer._ConCat+
+                ConstServer.Register_type+
+                ConstServer.Register_Type_Facebook+
+                ConstServer._ConCat+
+                ConstServer.Facebook_ID+
+                sharedPreferences.getString("FbID","339322503127553")+
+                ConstServer._ConCat+
+                ConstServer.Facebook_UserName+
+                sharedPreferences.getString("FbName","Raj")+
+                ConstServer._ConCat+
+                ConstServer.Facebook_EmailID+sharedPreferences.getString("Fbemail","amit.verma@trigma.in")+
+                ConstServer._ConCat+
+                ConstServer.Facebook_profilePic+sharedPreferences.getString("Fbpicture","https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/15590483_339385113121292_4884085331937605536_n.jpg?oh=7fc509aa2ff6e22729678893bc82c158&oe=58F5283F")+
+                ConstServer._ConCat+
+                ConstServer._deviceToken+"123"+
+                ConstServer._ConCat+
+                ConstServer._device_type;
+        Log.d("ChkLog",ModUrl);
+
+        JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                ModUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                Gson _Gson = new Gson();
+                facebookFansfoot =  _Gson.fromJson(response.toString(), FacebookFansfoot.class);
+                Log.d("ChkLog",facebookFansfoot.getMessage());
+                Log.d("ChkLog",facebookFansfoot.getUserId());
+                Log.d("ChkLog",facebookFansfoot.getDeviceToken());
+                editor.putString("FbFFID", facebookFansfoot.getUserId());
+                editor.putString("FbFFMSG", facebookFansfoot.getMessage());
+                editor.putInt("FbFFSTATUS", facebookFansfoot.getStatus());
+                editor.commit();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        mRequestQueue.add(_JsonObjectRequest);
+
+    }
 
 
     public boolean CheckFields(EditText ed){
