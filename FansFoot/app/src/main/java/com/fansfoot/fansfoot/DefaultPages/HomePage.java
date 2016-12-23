@@ -1,5 +1,6 @@
 package com.fansfoot.fansfoot.DefaultPages;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,13 +33,18 @@ public class HomePage extends Fragment {
     ViewPager viewPager;
     TabLayout tabLayout;
     Context context;
-
+    ProgressDialog progress;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.home_layout,container,false);
 
         context = getContext();
+        progress = new ProgressDialog(context);
+        progress.setMessage("Downloading Music");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.Hometoolbar);
 
@@ -49,7 +55,7 @@ public class HomePage extends Fragment {
         final TextView title = (TextView) view.findViewById(R.id.cmHomeTool_Title);
         final CheckBox searchBtn = (CheckBox) view.findViewById(R.id.cm_HomeToolBar_search);
         final SearchView searchview = (SearchView) view.findViewById(R.id.AlphaSearchView);
-        ImageButton refresh = (ImageButton) view.findViewById(R.id.cm_HomeToolBar_Refesh);
+        CheckBox refresh = (CheckBox) view.findViewById(R.id.cm_HomeToolBar_Refesh);
 
 
 
@@ -64,14 +70,6 @@ public class HomePage extends Fragment {
             }
         });
 
-
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
-
-            }
-        });
 
         tabLayout = (TabLayout) view.findViewById(R.id.TabbedLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Hot"));
@@ -102,22 +100,28 @@ public class HomePage extends Fragment {
 
             }
         });
+
+
+
+
+        refresh.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b==true){
+                    progress.show();
+                  viewPager.refreshDrawableState();
+                }else {
+                    tabLayout.refreshDrawableState();
+                    progress.dismiss();
+                }
+
+            }
+        });
+
         return view;
 
     }
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setHasOptionsMenu(true);
-//    }
-//
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        MenuInflater _menu_inflater = MainActivity.gettheMenuInflater();
-//        _menu_inflater.inflate(R.menu.tab_menu,menu);
-//    }
 
 
 

@@ -24,11 +24,24 @@
         android:id="@+id/BetaSwipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/BetaRecycleView"
         android:paddingRight="5dp"
         android:paddingLeft="5dp"
+        android:layout_above="@+id/betaProgressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+        <ProgressBar
+            android:id="@+id/betaProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            style="?android:attr/progressBarStyle" />
+        </RelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

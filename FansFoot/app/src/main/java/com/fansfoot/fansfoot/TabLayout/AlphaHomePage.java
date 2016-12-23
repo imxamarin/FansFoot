@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 
 import com.android.volley.Cache;
@@ -67,7 +70,7 @@ public class AlphaHomePage extends Fragment {
     int firstVisibleItem, visibleItemCount, totalItemCount;
     LinearLayoutManager recylerViewLayoutManager;
     int newValue  = 0;
-     ProgressDialog pd;
+    ProgressBar progressBar;
     private boolean isLoading = false;
 
 
@@ -77,9 +80,8 @@ public class AlphaHomePage extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.alpha_home_fragment,null,false);
         context = this.getContext();
-        pd = ProgressDialog.show(getActivity(), "", ConstServer.get_Load_Message, true);
-        pd.setCancelable(false);
-        pd.setCanceledOnTouchOutside(false);
+
+        progressBar = (ProgressBar) view.findViewById(R.id.alphaProgressbar);
         Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
@@ -96,7 +98,7 @@ public class AlphaHomePage extends Fragment {
 //                Runnable runable = new Runnable() {
 //                    @Override
 //                    public void run() {
-                       posts = new ArrayList<>();
+                       posts.clear();
                         newValue = 0;
                         SyncOP(newValue);
                         swipe.setRefreshing(false);
@@ -175,7 +177,8 @@ public class AlphaHomePage extends Fragment {
 
     public void SyncOP(int pageNumber){
         if(pageNumber>0){
-            pd.show();
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setEnabled(true);
             isLoading=true;
         }
 
@@ -198,7 +201,9 @@ public class AlphaHomePage extends Fragment {
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                pd.dismiss();
+             progressBar.setVisibility(View.GONE);
+                progressBar.setEnabled(false);
+
                 isLoading=false;
                 Log.d("Responce",""+response.toString());
                 Gson _Gson = new Gson();
@@ -214,7 +219,8 @@ public class AlphaHomePage extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                pd.dismiss();
+                progressBar.setVisibility(View.GONE);
+                progressBar.setEnabled(false);
                 isLoading=false;
 
             }

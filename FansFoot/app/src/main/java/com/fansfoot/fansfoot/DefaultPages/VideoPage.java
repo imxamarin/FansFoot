@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -72,7 +73,7 @@ public class VideoPage  extends Fragment {
     int firstVisibleItem, visibleItemCount, totalItemCount;
     LinearLayoutManager recylerViewLayoutManager;
     int newValue  = 0;
-    ProgressDialog pd;
+    ProgressBar progressBar;
     private boolean isLoading = false;
 
 
@@ -81,9 +82,7 @@ public class VideoPage  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.video_fragment,container,false);
         context = getActivity();
-        pd = ProgressDialog.show(getActivity(), "", ConstServer.get_Load_Message, true);
-        pd.setCancelable(false);
-        pd.setCanceledOnTouchOutside(false);
+        progressBar = (ProgressBar) view.findViewById(R.id.videoProgressBar);
 
         Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
@@ -98,16 +97,17 @@ public class VideoPage  extends Fragment {
             public void onRefresh() {
                 Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
 
-                final Handler handler = new Handler();
-                Runnable runable = new Runnable() {
-                    @Override
-                    public void run() {
+//                final Handler handler = new Handler();
+//                Runnable runable = new Runnable() {
+//                    @Override
+//                    public void run() {
+                         posts.clear();
                         newValue = 0;
                         SyncOP(newValue);
                         swipe.setRefreshing(false);
-                    }
-                };
-                handler.postDelayed(runable, 2000);
+//                    }
+//                };
+//                handler.postDelayed(runable, 2000);
 
             }
 
@@ -167,7 +167,8 @@ public class VideoPage  extends Fragment {
 
     public void SyncOP(int pageNumber){
         if(pageNumber>0){
-            pd.show();
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setEnabled(true);
             isLoading=true;
         }
         String ModUrl = ConstServer._baseUrl+
@@ -189,7 +190,8 @@ public class VideoPage  extends Fragment {
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                pd.dismiss();
+                progressBar.setVisibility(View.GONE);
+                progressBar.setEnabled(false);
                 isLoading=false;
                 newValue=newValue+1;
                 Gson _Gson = new Gson();
@@ -203,7 +205,8 @@ public class VideoPage  extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                pd.dismiss();
+                progressBar.setVisibility(View.GONE);
+                progressBar.setEnabled(false);
                 isLoading=false;
             }
         });

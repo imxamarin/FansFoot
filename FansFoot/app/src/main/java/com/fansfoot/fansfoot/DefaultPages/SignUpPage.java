@@ -1,15 +1,18 @@
 package com.fansfoot.fansfoot.DefaultPages;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,6 +20,9 @@ import android.widget.ImageButton;
 import com.fansfoot.fansfoot.DefaultActivities.YoutubePlayerActivity;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by xamarin on 16/12/16.
@@ -27,11 +33,13 @@ public class SignUpPage extends Fragment {
     Button SignUpRegBtn;
     EditText  NameEdTxt,EmailEdTxt,PasswdEdTxt,ConnPasswdTxt;
     ImageButton  FbBtn;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.sign_up_page,container,false);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         FbBtn = (ImageButton) view.findViewById(R.id.SignUpFbBtn);
         NameEdTxt = (EditText) view.findViewById(R.id.SignUpNameEditText);
         EmailEdTxt = (EditText) view.findViewById(R.id.SignUpEmailEditText);
@@ -42,13 +50,25 @@ public class SignUpPage extends Fragment {
             @Override
             public void onClick(View view) {
                 if(CheckFields(NameEdTxt)&& CheckFields(EmailEdTxt) && CheckFields(PasswdEdTxt) && CheckFields(ConnPasswdTxt)){
-                    FragmentTransaction fragmentTransaction;
-                    FragmentManager manager = MainActivity.getBaseFragmentManager();
-                    fragmentTransaction = manager.beginTransaction();
-                    ProfilePage profilePage = new ProfilePage();
-                    fragmentTransaction.replace(R.id.frag,profilePage);
-                    fragmentTransaction.commit();
-                }else {
+                    if(CheckEmail(EmailEdTxt) ) {
+                        if(ConnPassword(PasswdEdTxt,ConnPasswdTxt)) {
+                            if (CheckPassword(PasswdEdTxt,ConnPasswdTxt)){
+                            FragmentTransaction fragmentTransaction;
+                            FragmentManager manager = MainActivity.getBaseFragmentManager();
+                            fragmentTransaction = manager.beginTransaction();
+                            ProfilePage profilePage = new ProfilePage();
+                            fragmentTransaction.replace(R.id.frag, profilePage);
+                            fragmentTransaction.commit();
+                            }else {
+                                Snackbar.make(view,"Password cant be short",Snackbar.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Snackbar.make(view,"Passwords dont match",Snackbar.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Snackbar.make(view,"Enter a valid Email ID",Snackbar.LENGTH_SHORT).show();
+                    }
+                    }else {
                     Snackbar.make(view,"Fields Cannot Be Empty",Snackbar.LENGTH_SHORT).show();
                 }
             }
@@ -61,7 +81,7 @@ public class SignUpPage extends Fragment {
                 FragmentManager manager = MainActivity.getBaseFragmentManager();
                 manager.popBackStackImmediate();
                 fragmentTransaction = manager.beginTransaction();
-                FbLikePage fbLikePage = new FbLikePage();
+                LoginPage fbLikePage = new LoginPage();
                 manager.popBackStackImmediate();
                 fragmentTransaction.replace(R.id.frag,fbLikePage);
                 fragmentTransaction.addToBackStack(null);
@@ -83,5 +103,52 @@ public class SignUpPage extends Fragment {
         }
 
     }
+
+
+    public boolean CheckEmail(EditText editText){
+        String ed_text = editText.getText().toString().trim();
+        String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(ed_text);
+        Log.d("Validation",matcher.matches()+"");
+        if(!matcher.matches()){
+            editText.setTextColor(Color.RED);
+        }else {
+            editText.setTextColor(Color.BLACK);
+        }
+        return matcher.matches();
+
+    }
+
+
+    public boolean CheckPassword(EditText edittext,EditText editTexter){
+        String ed_text = edittext.getText().toString().trim();
+        if(ed_text.length()>7 && ed_text.length()<15){
+            edittext.setTextColor(Color.BLACK);
+            editTexter.setTextColor(Color.BLACK);
+            return true;
+        }else {
+            edittext.setTextColor(Color.RED);
+            editTexter.setTextColor(Color.RED);
+            return false;
+        }
+
+    }
+
+
+    public boolean ConnPassword(EditText alpha,EditText beta){
+        String ed_Alpha = alpha.getText().toString().trim();
+        String ed_Beta = beta.getText().toString().trim();
+        if(ed_Alpha.equals(ed_Beta)){
+            alpha.setTextColor(Color.BLACK);
+            beta.setTextColor(Color.BLACK);
+            return true;
+        }else {
+            alpha.setTextColor(Color.RED);
+            beta.setTextColor(Color.RED);
+            return false;
+        }
+    }
+
 
 }

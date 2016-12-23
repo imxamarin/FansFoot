@@ -3,6 +3,7 @@ package com.fansfoot.fansfoot.DefaultPages;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Debug;
 import android.support.annotation.Nullable;
@@ -51,6 +52,8 @@ import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.content.ContentValues.TAG;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -66,7 +69,11 @@ public class LoginPage extends Fragment {
     LoginButton FbBtn;
     CallbackManager callbackManager;
     SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferencesBeta;
+    SharedPreferences sharedPreferencesDelta;
     SharedPreferences.Editor editor;
+    SharedPreferences.Editor editorBeta;
+    SharedPreferences.Editor editorDelta;
     FacebookFansfoot facebookFansfoot;
 
     @Override
@@ -89,15 +96,13 @@ public class LoginPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.login_page,container,false);
-
         sharedPreferences =getActivity().getSharedPreferences("FacebookPrefrence", Context.MODE_PRIVATE);
+        sharedPreferencesBeta =getActivity().getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
+        sharedPreferencesDelta =getActivity().getSharedPreferences("FansFootServersPerfrence", Context.MODE_PRIVATE);
         Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
-
-
-
         Loginbtn = (Button) view.findViewById(R.id.LoginButton);
         FbBtn = (LoginButton) view.findViewById(R.id.LoginFbBtn);
         ForgetpasswdBtn = (Button) view.findViewById(R.id.LoginForgetPasswdButton);
@@ -149,7 +154,6 @@ public class LoginPage extends Fragment {
                    request.setParameters(parameters);
                    request.executeAsync();
                }
-
                 DoTheCallToFB();
                 Snackbar.make(view,"Login Sucessful",Snackbar.LENGTH_SHORT).show();
                 DoThisOperation();
@@ -170,13 +174,22 @@ public class LoginPage extends Fragment {
         Loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(MainActivity.getContext(), "yuhu", Toast.LENGTH_SHORT).show();
                 if(CheckFields(EmailEdTxt)&& CheckFields(PasswdEdTxt)){
-                    FragmentTransaction fragmentTransaction;
-                    FragmentManager manager = MainActivity.getBaseFragmentManager();
-                    fragmentTransaction = manager.beginTransaction();
-                    ProfilePage profilePage = new ProfilePage();
-                    fragmentTransaction.replace(R.id.frag,profilePage);
-                    fragmentTransaction.commit();
+                    if(CheckEmail(EmailEdTxt)) {
+                        if(CheckPassword(PasswdEdTxt)) {
+                            FragmentTransaction fragmentTransaction;
+                            FragmentManager manager = MainActivity.getBaseFragmentManager();
+                            fragmentTransaction = manager.beginTransaction();
+                            ProfilePage profilePage = new ProfilePage();
+                            fragmentTransaction.replace(R.id.frag, profilePage);
+                            fragmentTransaction.commit();
+                        }else {
+                            Snackbar.make(view,"Password cant be short",Snackbar.LENGTH_SHORT).show();
+                        }
+                    }else {
+                        Snackbar.make(view,"Enter a Valid Email ID",Snackbar.LENGTH_SHORT).show();
+                    }
                 }else {
                     Snackbar.make(view,"Fields Cannot Be Empty",Snackbar.LENGTH_SHORT).show();
                 }
@@ -252,10 +265,11 @@ public class LoginPage extends Fragment {
                 Log.d("ChkLog",facebookFansfoot.getMessage());
                 Log.d("ChkLog",facebookFansfoot.getUserId());
                 Log.d("ChkLog",facebookFansfoot.getDeviceToken());
-                editor.putString("FbFFID", facebookFansfoot.getUserId());
-                editor.putString("FbFFMSG", facebookFansfoot.getMessage());
-                editor.putInt("FbFFSTATUS", facebookFansfoot.getStatus());
-                editor.commit();
+                editorBeta = sharedPreferencesBeta.edit();
+                editorBeta.putString("FbFFID", facebookFansfoot.getUserId());
+                editorBeta.putString("FbFFMSG", facebookFansfoot.getMessage());
+                editorBeta.putInt("FbFFSTATUS", facebookFansfoot.getStatus());
+                editorBeta.commit();
 
             }
         }, new Response.ErrorListener() {
@@ -282,6 +296,32 @@ public class LoginPage extends Fragment {
 
     }
 
+    public boolean CheckEmail(EditText editText){
+        String ed_text = editText.getText().toString().trim();
+        String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(ed_text);
+        Log.d("Validation",matcher.matches()+"");
+        if(!matcher.matches()){
+            editText.setTextColor(Color.RED);
+        }else {
+            editText.setTextColor(Color.BLACK);
+        }
+        return matcher.matches();
+
+    }
+
+    public boolean CheckPassword(EditText edittext){
+        String ed_text = edittext.getText().toString().trim();
+        if(ed_text.length()>7 && ed_text.length()<15){
+            edittext.setTextColor(Color.BLACK);
+            return true;
+        }else {
+            edittext.setTextColor(Color.RED);
+            return false;
+        }
+
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

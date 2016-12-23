@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -103,13 +104,13 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                 if(fb_status == true) {
                     boolean val = holder.JumpToAlterFacebookLikeAPI(UrlList.get(position).getPostId());
                     if (val == true) {
-                        holder.dislikeBtn.setEnabled(true);
-                        int vals = Integer.parseInt(holder.likesTextView.getText().toString());
-                        Log.d("value", "" + vals);
-                        int m = vals + 1;
-                        Log.d("val", "" + m);
-                        holder.likesTextView.setText(m + "");
-                        view.setEnabled(false);
+                            holder.dislikeBtn.setEnabled(true);
+                            int vals = Integer.parseInt(holder.likesTextView.getText().toString());
+                            Log.d("value", "" + vals);
+                            int m = vals + 1;
+                            Log.d("val", "" + m);
+                            holder.likesTextView.setText(m + "");
+                            view.setEnabled(false);
                     }}else {
 
                         Snackbar snackbar = Snackbar
@@ -176,7 +177,7 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
         public ImageButton dislikeBtn;
         public ImageButton commentBtn;
         SharedPreferences sharedPreferences;
-        SharedPreferences.Editor editor;
+        SharedPreferences sharedPreferencesBeta;
        FBLike fblike;
 
         public boolean likeResponce = true;
@@ -204,7 +205,7 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                     post_ID+
                     ConstServer._ConCat+
                     ConstServer._PostUserID+
-                    sharedPreferences.getString("FbFFID",AccessToken.getCurrentAccessToken().getUserId())+
+                    sharedPreferencesBeta.getString("FbFFID",AccessToken.getCurrentAccessToken().getUserId())+
                     ConstServer._ConCat+
                     ConstServer.LikeStatus;
 
@@ -244,7 +245,7 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                     post_ID+
                     ConstServer._ConCat+
                     ConstServer._PostUserID+
-                    sharedPreferences.getString("FbFFID",AccessToken.getCurrentAccessToken().getUserId())+
+                    sharedPreferencesBeta.getString("FbFFID",AccessToken.getCurrentAccessToken().getUserId())+
                     ConstServer._ConCat+
                     ConstServer.DisLikeStatus;
 
@@ -279,6 +280,7 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
             super(itemView);
 
             sharedPreferences =MainActivity.getContext().getSharedPreferences("FacebookPrefrence", Context.MODE_PRIVATE);
+            sharedPreferencesBeta =MainActivity.getContext().getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
             Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
             Network network = new BasicNetwork(new HurlStack());
             mRequestQueue = new RequestQueue(cache, network);

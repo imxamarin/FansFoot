@@ -80,9 +80,22 @@ public class ProfilePage extends Fragment {
         ProfileBirthDayEdtext = (EditText) view.findViewById(R.id.ProfileBirthdayEditView);
         profilePictureView = (ProfilePictureView) view.findViewById(R.id.imageView);
 
+        if(FacebookStatus.CheckFbLogin()){
+            profilePictureView.setProfileId(FacebookStatus.FBUserID());
+
+        }
+        String name = sharedPreferences.getString("FbName","RoHIT");
+        String locationCity = sharedPreferences.getString("FblocationCity","Okohama");
+        String locationCountry = sharedPreferences.getString("FblocationCountry","Japan");
+        String birthday = sharedPreferences.getString("Fbbirthday","India");
 
 
-        profilePictureView.setProfileId(FacebookStatus.FBUserID());
+        ProfileNameEdtext.setText(name);
+        ProfileCityEdtext.setText(locationCity);
+        ProfileCountryEdtext.setText(locationCountry);
+        ProfileBirthDayEdtext.setText(birthday);
+
+
         disableEditText(ProfileNameEdtext);
         disableEditText(ProfileCityEdtext);
         disableEditText(ProfileCountryEdtext);
@@ -123,16 +136,7 @@ public class ProfilePage extends Fragment {
                 }
             }
         });
-        String name = sharedPreferences.getString("FbName","RoHIT");
-        String locationCity = sharedPreferences.getString("FblocationCity","Okohama");
-        String locationCountry = sharedPreferences.getString("FblocationCountry","Japan");
-        String birthday = sharedPreferences.getString("Fbbirthday","India");
 
-
-        ProfileNameEdtext.setText(name);
-        ProfileCityEdtext.setText(locationCity);
-        ProfileCountryEdtext.setText(locationCountry);
-        ProfileBirthDayEdtext.setText(birthday);
 
 
 //        recyclerView = (RecyclerView) view.findViewById(R.id.ProfileRecycleView);

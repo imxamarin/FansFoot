@@ -25,11 +25,24 @@
         android:id="@+id/MemesSwipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/memesRecycle"
         android:paddingRight="5dp"
         android:paddingLeft="5dp"
+        android:layout_above="@+id/MemesProgressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+        <ProgressBar
+            android:id="@+id/MemesProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            style="?android:attr/progressBarStyle" />
+    </RelativeLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

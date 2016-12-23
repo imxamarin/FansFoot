@@ -6,7 +6,7 @@ package com.fansfoot.fansfoot.API;
 
 public class ConstServer {
 
-    public static final String _baseUrl = "http://quenelle.fansfoot.com/mobile/web/?";
+    public static final String _baseUrl = "http://fansfoot.com/mobile/web/?";
     public static final String _MainbaseUrl = "http://fansfoot.com/mobile/web/?";
     public static final String _type = "type=";
     public static final String _post_type = "post_type=";
@@ -38,14 +38,11 @@ public class ConstServer {
     public static final String _PostUserID="post_userID=";
     public static final String LikeStatus="status=1";
     public static final String DisLikeStatus="status=0";
-
-
-
-
-
-
-
-
+    public static final String UserEmail="email=";
+    public static final String UserPassword="password=";
+    public static final String LoginType="login";
+    public static final String Sign_up_RegType="manual";
+    public static final String SignUp_Password = "password=";
 
 
 

@@ -18,7 +18,7 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements
         YouTubePlayer.OnInitializedListener {
     private static final int RECOVERY_REQUEST = 1;
     private YouTubePlayerView youTubeView;
-
+    String TitleImg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +26,8 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_youtube_player);
+        Intent intent = getIntent();
+        TitleImg = intent.getStringExtra("VideoTitle");
          youTubeView = (YouTubePlayerView) findViewById(R.id.youtubeView);
         youTubeView.initialize("AIzaSyDKVkI5QRYt486jYFoKUW4npL0wt6dDGAo",this);
 
@@ -38,7 +40,8 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements
 //        if (!b) {
         Log.d("start","provider"+provider);
         Log.d("start","youTubePlayer"+youTubePlayer);
-            youTubePlayer.loadVideo("G7LkvVV2Iv8");
+        Log.d("startTilte",TitleImg);
+            youTubePlayer.loadVideo(TitleImg);
             youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
             youTubePlayer.play();
 //        }
