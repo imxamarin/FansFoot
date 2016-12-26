@@ -98,10 +98,10 @@ public class AlphaHomePage extends Fragment {
 //                Runnable runable = new Runnable() {
 //                    @Override
 //                    public void run() {
-                       posts.clear();
-                        newValue = 0;
-                        SyncOP(newValue);
-                        swipe.setRefreshing(false);
+                posts.clear();
+                newValue = 0;
+                SyncOP(newValue);
+                swipe.setRefreshing(false);
 //                    }
 //                };
 //                handler.postDelayed(runable, 2000);
@@ -118,21 +118,21 @@ public class AlphaHomePage extends Fragment {
         recyclerView.setLayoutManager(recylerViewLayoutManager);
 
         BaseAttacher attacher = Mugen.with(recyclerView, new MugenCallbacks() {
-                    @Override
-                    public void onLoadMore() {
-                        SyncOP(newValue);
-                    }
+            @Override
+            public void onLoadMore() {
+                SyncOP(newValue);
+            }
 
-                    @Override
-                    public boolean isLoading() {
-                        return isLoading;
-                    }
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
 
-                    @Override
-                    public boolean hasLoadedAllItems() {
-                        return false;
-                    }
-                }).start();
+            @Override
+            public boolean hasLoadedAllItems() {
+                return false;
+            }
+        }).start();
 
         attacher.setLoadMoreEnabled(true);
 
@@ -201,7 +201,7 @@ public class AlphaHomePage extends Fragment {
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-             progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 progressBar.setEnabled(false);
 
                 isLoading=false;
