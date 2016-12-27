@@ -3,10 +3,12 @@ package com.fansfoot.fansfoot.DefaultPages;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -20,9 +22,13 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FacebookStatus;
 import com.fansfoot.fansfoot.Adapters.PageAdapter;
+import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
+
+import static com.fansfoot.fansfoot.R.id.view;
 
 /**
  * Created by kafir on 09-Dec-16.
@@ -40,14 +46,10 @@ public class HomePage extends Fragment {
         final View view = inflater.inflate(R.layout.home_layout,container,false);
 
         context = getContext();
-        progress = new ProgressDialog(context);
-        progress.setMessage("Downloading Music");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
+        progress = ProgressDialog.show(getActivity(), "", "Please wait, Getting the new data...", true);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.Hometoolbar);
-
+        viewPager = (ViewPager) view.findViewById(R.id.Pager);
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -57,7 +59,14 @@ public class HomePage extends Fragment {
         final SearchView searchview = (SearchView) view.findViewById(R.id.AlphaSearchView);
         CheckBox refresh = (CheckBox) view.findViewById(R.id.cm_HomeToolBar_Refesh);
 
-
+        searchview.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                searchview.setVisibility(View.GONE);
+                searchview.clearFocus();
+                return true;
+            }
+        });
 
         searchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -70,17 +79,36 @@ public class HomePage extends Fragment {
             }
         });
 
+        searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (query.length() > 0) {
+                    FragmentTransaction transaction = MainActivity.getBaseFragmentManager().beginTransaction();
+                    Fragment newFragment = new SearchFragment(); //your search fragment
+                    Bundle args = new Bundle();
+                    args.putString("query_string", query);
+                    newFragment.setArguments(args);
+                    transaction.replace(R.id.frag, newFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+                }
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        });
+
 
         tabLayout = (TabLayout) view.findViewById(R.id.TabbedLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Hot"));
         tabLayout.addTab(tabLayout.newTab().setText("Trending"));
         tabLayout.addTab(tabLayout.newTab().setText("Fresh"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        mDemoCollection = new PageAdapter(
-                this.getChildFragmentManager(), tabLayout.getTabCount());
-        viewPager = (ViewPager) view.findViewById(R.id.Pager);
-        viewPager.setAdapter(mDemoCollection);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+       CallthisOne();
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -104,16 +132,24 @@ public class HomePage extends Fragment {
 
 
 
+
+
+
         refresh.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b==true){
+
                     progress.show();
-                  viewPager.refreshDrawableState();
-                }else {
-                    tabLayout.refreshDrawableState();
-                    progress.dismiss();
-                }
+                    final Handler handler = new Handler();
+                    Runnable runable = new Runnable() {
+                        @Override
+                        public void run() {
+                            CallthisOne();
+                        }
+                    };
+                    handler.postDelayed(runable, 5000);
+
+
 
             }
         });
@@ -122,7 +158,14 @@ public class HomePage extends Fragment {
 
     }
 
+    private void CallthisOne() {
 
+        mDemoCollection = new PageAdapter(
+                this.getChildFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(mDemoCollection);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        progress.dismiss();
+    }
 
 
 }

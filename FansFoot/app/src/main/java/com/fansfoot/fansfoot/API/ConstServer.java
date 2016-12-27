@@ -25,6 +25,7 @@ public class ConstServer {
     public static final String MemespostType = "memes";
     public static final String VideopostType = "videos";
     public static final String get_post_type = "post_show";
+    public static final String get_search_type = "search_post_show";
     public static final String get_channel_type = "channels";
     public static final String get_Load_Message = "Please wait, your request is being processed...";
     public static final String Register_type = "register_type=";
@@ -43,8 +44,10 @@ public class ConstServer {
     public static final String LoginType="login";
     public static final String Sign_up_RegType="manual";
     public static final String SignUp_Password = "password=";
-
-
+    public static final String Forget_Password = "forget_password";
+    public static final String key = "key=";
+    public static final String my_profile = "my_profile";
+    public static final String my_profile_USERID = "USERID=";
 
 
 }

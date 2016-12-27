@@ -2,6 +2,7 @@ package com.fansfoot.fansfoot.TabLayout;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -72,7 +73,7 @@ public class AlphaHomePage extends Fragment {
     int newValue  = 0;
     ProgressBar progressBar;
     private boolean isLoading = false;
-
+    SharedPreferences sharedPreferencesBeta;
 
 
     @Nullable
@@ -80,7 +81,7 @@ public class AlphaHomePage extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.alpha_home_fragment,null,false);
         context = this.getContext();
-
+        sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
         progressBar = (ProgressBar) view.findViewById(R.id.alphaProgressbar);
         Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
@@ -138,38 +139,6 @@ public class AlphaHomePage extends Fragment {
 
         attacher.setLoadMoreOffset(2);
 
-
-//                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//                    @Override
-//                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                        if (dy > 0) //check for scroll down
-//                        {
-//                            visibleItemCount = recyclerView.getChildCount();
-//                            totalItemCount = recylerViewLayoutManager.getItemCount();
-//                            firstVisibleItem = recylerViewLayoutManager.findFirstVisibleItemPosition();
-//
-//                            if (loading) {
-//                                if (totalItemCount > previousTotal) {
-//                                    loading = false;
-//                                    previousTotal = totalItemCount;
-//                                }
-//                            }
-//                            if (!loading && (totalItemCount - visibleItemCount)
-//                                    <= (firstVisibleItem + visibleThreshold)) {
-//                                // End has been reached
-//                                int cs = newValue++;
-//                                SyncOP(cs);
-//                                loading = true;
-//                            }
-//                        }
-//                    }
-//
-//
-//                });
-
-
-
-
         recyclerViewAdapter = new AlphaHomeRecycleViewAdapter(context,posts);
         recyclerView.setAdapter(recyclerViewAdapter);
         return view;
@@ -195,7 +164,9 @@ public class AlphaHomePage extends Fragment {
                 ConstServer._ConCat+
                 ConstServer._device_type+
                 ConstServer._ConCat+
-                ConstServer._USERID+"123";
+                ConstServer._USERID+
+                sharedPreferencesBeta.getString("UUID","C10105484848")
+                ;
 
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {

@@ -5,9 +5,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +31,22 @@ public class AboutUsPage extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.about_us_fragment,container,false);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.cm_about_us);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+
+        CheckBox checkBox = (CheckBox) view.findViewById(R.id.cm_back_about);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                getActivity().onBackPressed();
+            }
+        });
         TextView tv = (TextView) view.findViewById(R.id.textID);
+
         tv.setText("Oh, Indy. Oh, Indy\n" +
                 "The skies are so windy\n" +
                 "Is that a flying man with a killer bod?\n" +

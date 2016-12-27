@@ -5,7 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/_selectedtabs">
+    <CheckBox
+        android:id="@+id/cm_back_signUp"
+        android:layout_width="60sp"
+        android:layout_height="50sp"
+        android:button="@drawable/back_icon"
+        android:layout_gravity="left|center"
 
+        />
     <TextView
         android:id="@+id/cmSelectionTool_Title"
         android:layout_width="wrap_content"

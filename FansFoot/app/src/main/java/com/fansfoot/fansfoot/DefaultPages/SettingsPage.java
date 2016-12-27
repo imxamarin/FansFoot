@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.fansfoot.fansfoot.Adapters.SettingsRecycleViewAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 /**
  * Created by xamarin on 05/12/16.
@@ -43,7 +45,7 @@ public class SettingsPage  extends Fragment {
             R.drawable.setting_icon_event,
             R.drawable.setting_icon_event,
             R.drawable.setting_icon_event,
-            R.drawable.off_toggle,
+            R.drawable.on_toggle,
             R.drawable.setting_icon_event,
             R.drawable.setting_icon_event,
             R.drawable.facebook,
@@ -62,7 +64,9 @@ public class SettingsPage  extends Fragment {
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
+        AdView mAdView = (AdView) view.findViewById(R.id.adViewSettings);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         recyclerView = (RecyclerView) view.findViewById(R.id.settingRecycle);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);

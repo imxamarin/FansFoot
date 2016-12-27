@@ -12,13 +12,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ScrollView
+        android:layout_above="@+id/adViewAlpha"
         android:fillViewport="true"
-        android:scrollbars = "vertical"
+        android:scrollbars = "none"
         android:scrollbarStyle="insideInset"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-    <RelativeLayout
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
@@ -40,113 +43,13 @@
         android:background="@drawable/post_img"
         />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_below="@id/PostMainImage"
-        android:id="@+id/facebookPlugin"
-        android:layout_centerInParent="true">
+  <WebView
+      android:id="@+id/commentView"
+      android:layout_below="@id/PostMainImage"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"/>
 
-        <LinearLayout
-            android:id="@+id/AlphaSectionFB"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:padding="10dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_marginRight="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Comments"
-                />
-
-        </LinearLayout>
-
-            <LinearLayout
-                android:layout_weight="1.3"
-                android:orientation="horizontal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:padding="10dp"
-                    android:layout_height="wrap_content"
-                    android:text="SORT BY"
-                    />
-               <Spinner
-                   android:id="@+id/Spiner"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   />
-
-            </LinearLayout>
-
-        </LinearLayout>
-       <RelativeLayout
-           android:background="@color/holo_gray_light"
-           android:layout_below="@id/AlphaSectionFB"
-           android:layout_width="match_parent"
-           android:layout_margin="10dp"
-           android:layout_height="wrap_content">
-       <EditText
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:id="@+id/FbComment"
-           android:padding="10dp"
-           android:hint="Add a Comment"
-           android:inputType="text"
-           android:shadowColor="#4b000000"
-           android:shadowDy="1"
-           android:shadowDx="1"
-           android:shadowRadius="1"
-           android:cursorVisible="true"
-
-
-           />
-        <LinearLayout
-            android:padding="10dp"
-            android:id="@+id/FbShareLayout"
-            android:orientation="horizontal"
-            android:layout_below="@id/FbComment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:background="@color/holo_gray_light"
-            >
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-          <TextView
-              android:checkMark="@color/colorPrimary"
-              android:layout_weight="2"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:text="Also Post On Facebook"
-           />
-           <com.facebook.share.widget.ShareButton
-               android:layout_weight="1"
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:background="@color/colorPrimary"/>
-        </LinearLayout>
-
-       </RelativeLayout>
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>
     </ScrollView>
     <com.google.android.gms.ads.AdView
         android:layout_alignParentBottom="true"

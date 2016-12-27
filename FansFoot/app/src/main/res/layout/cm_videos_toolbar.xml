@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/Videostoolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:background="@color/_selectedtabs">
+
+
+    <TextView
+        android:id="@+id/cmVideoTool_Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Videos"
+        android:textColor="@color/_unselectedtabs"
+        android:textSize="25sp"
+        android:layout_gravity="center"
+        />
+    <ImageButton
+        android:id="@+id/cm_VideosToolBar_Refesh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center"
+
+        android:background="@drawable/refresh"
+        />
+
+</android.support.v7.widget.Toolbar>

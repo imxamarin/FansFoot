@@ -1,6 +1,8 @@
 package com.fansfoot.fansfoot.DefaultActivities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -8,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,25 +31,44 @@ public class PostPage extends AppCompatActivity {
 
     TextView textView;
     ImageView imageView;
-    EditText FbComment;
-    LinearLayout linearLayout;
-    Spinner spinner;
+    WebView webView;
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_page);
         textView = (TextView) findViewById(R.id.PostTilteID);
-        FbComment = (EditText) findViewById(R.id.FbComment);
+        webView = (WebView) findViewById(R.id.commentView);
         imageView = (ImageView) findViewById(R.id.PostMainImage);
-        linearLayout = (LinearLayout) findViewById(R.id.FbShareLayout);
-        spinner = (Spinner) findViewById(R.id.Spiner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.FB_Array,android.R.layout.simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
         Intent intent = getIntent();
         String TitleImg = intent.getStringExtra("ImageTitle");
         String TitlePic = intent.getStringExtra("ImageURL");
+        String ImageFBURL = intent.getStringExtra("ImageFBURL");
+        progressDialog = ProgressDialog.show(PostPage.this, "", "Please wait, your request is being processed...", true);
+        if(!ImageFBURL.isEmpty()){
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setDomStorageEnabled(true);
+
+            webView.setWebViewClient(new WebViewClient() {
+
+
+                @Override
+                public void onPageStarted(WebView view, String url, Bitmap favicon)
+                {
+                    progressDialog.show();
+                }
+
+
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    progressDialog.dismiss();
+
+                    String webUrl = webView.getUrl();
+
+                }
+            });
+            webView.loadUrl(ImageFBURL);
+        }
         if(textView != null){
             textView.setText(TitleImg);
             Glide
@@ -56,34 +80,7 @@ public class PostPage extends AppCompatActivity {
                     .into(imageView);
         }
 
-//        FbComment.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                if (motionEvent.getAction() == MotionEvent.ACTION_UP){
-//                    linearLayout.setVisibility(View.VISIBLE);
-//                }else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//                    linearLayout.setVisibility(View.GONE);
-//                }else if (motionEvent.getAction() == MotionEvent.ACTION_OUTSIDE) {
-//                    linearLayout.setVisibility(View.GONE);
-//                }else if (motionEvent.getAction() == MotionEvent.ACTION_CANCEL) {
-//                    linearLayout.setVisibility(View.GONE);
-//                }
-//
-//
-//                return true;
-//            }
-//        });
 
-        FbComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(b==true){
-                    Snackbar.make(view,"Hola",Snackbar.LENGTH_SHORT).show();
-                }else {
-                    Snackbar.make(view,"Lola",Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        });
 
 
     }

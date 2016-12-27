@@ -37,9 +37,11 @@ import com.fansfoot.fansfoot.API.FBLike;
 import com.fansfoot.fansfoot.API.FacebookStatus;
 import com.fansfoot.fansfoot.API.Post;
 import com.fansfoot.fansfoot.API.YoutubePost;
+import com.fansfoot.fansfoot.DefaultActivities.PostPage;
 import com.fansfoot.fansfoot.DefaultActivities.YoutubePlayerActivity;
 import com.fansfoot.fansfoot.DefaultPages.FbLikePage;
 import com.fansfoot.fansfoot.DefaultPages.HomePage;
+import com.fansfoot.fansfoot.DefaultPages.LoginPage;
 import com.fansfoot.fansfoot.DefaultPages.VideoPage;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
@@ -64,6 +66,8 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
     View mainView;
     YouTubePlayerSupportFragment youTubePlayerSupportFragment;
     VideoRecycleViewAdapter.VideoViewHolder viewHolders;
+    SharedPreferences sharedPreferencesBeta;
+    SharedPreferences.Editor betaEditor;
 //    static YouTubePlayerSupportFragment youTubePlayerFragment;
     public VideoRecycleViewAdapter(Context context,List<YoutubePost> urlList) {
         UrlList = urlList;
@@ -81,78 +85,123 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
     public void onBindViewHolder(final VideoViewHolder holder, final int position) {
 
 
-        holder.VideoDetail.setText(UrlList.get(position).getTital());
-        Glide
-                .with(context)
-                .load(UrlList.get(position).getVideoTumb())
-                .fitCenter()
-                .placeholder(R.drawable.videotemp)
-                .crossFade()
-                .into(holder.YoutubeView);
-        holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
-        holder.commentTextView.setText(UrlList.get(position).getComments().toString());
-        holder.likeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean fb_status = FacebookStatus.CheckFbLogin();
-                Log.d("valuse", "" + fb_status);
-                if(fb_status == true) {
-                    boolean val = holder.JumpToAlterFacebookLikeAPI(UrlList.get(position).getPostId());
-                    if (val == true) {
-                        holder.dislikeBtn.setEnabled(true);
-                        int vals = Integer.parseInt(holder.likesTextView.getText().toString());
-                        Log.d("value", "" + vals);
-                        int m = vals + 1;
-                        Log.d("val", "" + m);
-                        holder.likesTextView.setText(m + "");
-                        view.setEnabled(false);
-                    }}else {
+        if(UrlList.get(position).getStatus()==1) {
+            holder.VideoDetail.setText(UrlList.get(position).getTital());
+            Glide
+                    .with(context)
+                    .load(UrlList.get(position).getVideoTumb())
+                    .fitCenter()
+                    .placeholder(R.drawable.videotemp)
+                    .crossFade()
+                    .into(holder.YoutubeView);
+            Log.d("likes", UrlList.get(position).getTotalLike().toString());
 
-                    Snackbar snackbar = Snackbar
-                            .make(view,"Login using Facebook",Snackbar.LENGTH_SHORT)
-                            .setAction("LOGIN", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
+            holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
+            holder.commentTextView.setText(UrlList.get(position).getComments().toString());
+            sharedPreferencesBeta = context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
+            holder.likeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean fb_status = FacebookStatus.CheckFbLogin();
+                    Log.d("valuse", "" + fb_status);
+                    if (fb_status == true) {
+                        boolean val = holder.JumpToAlterFacebookLikeAPI(UrlList.get(position).getPostId());
+                        if (val == true) {
+                            holder.dislikeBtn.setEnabled(true);
+                            int vals = Integer.parseInt(holder.likesTextView.getText().toString());
+                            Log.d("value", "" + vals);
+                            int m = vals + 1;
+                            Log.d("val", "" + m);
+                            holder.likesTextView.setText(m + "");
+                            view.setEnabled(false);
+                        }
+                    } else {
+                        boolean value = sharedPreferencesBeta.getString("FbFFID", "").isEmpty();
+                        if (!value) {
+                            boolean val = holder.JumpToAlterFacebookLikeAPI(UrlList.get(position).getPostId());
+                            Log.d("as", "koop");
+                            if (val == true) {
+                                holder.dislikeBtn.setEnabled(true);
+                                int vals = Integer.parseInt(holder.likesTextView.getText().toString());
+                                Log.d("value", "" + vals);
+                                int m = vals + 1;
+                                Log.d("val", "" + m);
+                                holder.likesTextView.setText(m + "");
+                                view.setEnabled(false);
+                            }
+
+
+                        } else {
+                            Snackbar snackbar = Snackbar
+                                    .make(view, "Login using Facebook", Snackbar.LENGTH_SHORT)
+                                    .setAction("LOGIN", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            holder.JumpToFaceBookForLogin();
+                                        }
+                                    });
+
+                            snackbar.show();
+                        }
+                    }
+
+                }
+            });
+
+            holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean fb_status = FacebookStatus.CheckFbLogin();
+                    if (fb_status == true) {
+                        boolean val = holder.JumpToAlterFacebookDisLikeAPI(UrlList.get(position).getPostId());
+                        if (val == true) {
+                            holder.likeBtn.setEnabled(true);
+                            int vals = Integer.parseInt(holder.likesTextView.getText().toString());
+                            Log.d("value", "" + vals);
+                            if(vals > 0) {
+                                int m = vals - 1;
+                                Log.d("val", "" + m);
+                                holder.likesTextView.setText(m + "");
+
+                            }
+                            view.setEnabled(false);
+                        }
+                    } else {
+                        boolean value = sharedPreferencesBeta.getString("FbFFID", "").isEmpty();
+                        if (!value) {
+                            boolean val = holder.JumpToAlterFacebookDisLikeAPI(UrlList.get(position).getPostId());
+                            Log.d("as", "koop");
+                            if (val == true) {
+                                holder.likeBtn.setEnabled(true);
+                                int vals = Integer.parseInt(holder.likesTextView.getText().toString());
+                                Log.d("value", "" + vals);
+                                if(vals > 0) {
+                                    int m = vals - 1;
+                                    Log.d("val", "" + m);
+                                    holder.likesTextView.setText(m + "");
 
                                 }
-                            });
+                                view.setEnabled(false);
+                            }
 
-                    snackbar.show();
+
+                        } else {
+                            Snackbar snackbar = Snackbar
+                                    .make(view, "Login using Facebook", Snackbar.LENGTH_SHORT)
+                                    .setAction("LOGIN", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            holder.JumpToFaceBookForLogin();
+                                        }
+                                    });
+
+                            snackbar.show();
+                        }
+                    }
+
                 }
-
-            }
-        });
-
-        holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean fb_status = FacebookStatus.CheckFbLogin();
-                if(fb_status == true) {
-                    boolean val = holder.JumpToAlterFacebookDisLikeAPI(UrlList.get(position).getPostId());
-                    if (val == true) {
-                        holder.likeBtn.setEnabled(true);
-                        int vals = Integer.parseInt(holder.likesTextView.getText().toString());
-                        Log.d("value", "" + vals);
-                        int m = vals - 1;
-                        Log.d("val", "" + m);
-                        holder.likesTextView.setText(m + "");
-                        view.setEnabled(false);
-                    }}else {
-
-                    Snackbar snackbar = Snackbar
-                            .make(view,"Login using Facebook",Snackbar.LENGTH_SHORT)
-                            .setAction("LOGIN", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                }
-                            });
-
-                    snackbar.show();
-                }
-
-            }
-        });
+            });
+        }
 
 
     }
@@ -205,6 +254,22 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
                 }
             });
 
+
+            VideoDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int x = getPosition();
+                    String ImageURL  = UrlList.get(x).getPic();
+                    String ImageTitle = UrlList.get(x).getTital();
+                    String ImageFBURL = UrlList.get(x).getFbCommnetUrl();
+                    Intent intent = new Intent(MainActivity.getContext(), PostPage.class);
+                    intent.putExtra("ImageTitle", ImageTitle);
+                    intent.putExtra("ImageURL", ImageURL);
+                    intent.putExtra("ImageFBURL", ImageFBURL);
+                    MainActivity.getContext().startActivity(intent);
+
+                }
+            });
             YoutubePlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -232,16 +297,9 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
 
                     if(fb_status == true)
                     {
-                        Snackbar snackbar = Snackbar
-                                .make(view,"Whatsup",Snackbar.LENGTH_SHORT)
-                                .setAction("LOGIN", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        JumpToFaceBookForLogin();
-                                    }
-                                });
 
-                        snackbar.show();
+
+
                     }else {
 
                         Snackbar snackbar = Snackbar
@@ -263,6 +321,10 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
 
 
         public boolean JumpToAlterFacebookLikeAPI(String post_ID){
+            String userID = "";
+            if(FacebookStatus.CheckFbLogin()){
+                userID = AccessToken.getCurrentAccessToken().getUserId();
+            }
             String ModUrl = ConstServer._baseUrl+
                     ConstServer._type+
                     ConstServer._typePostLike+
@@ -271,7 +333,7 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
                     post_ID+
                     ConstServer._ConCat+
                     ConstServer._PostUserID+
-                    sharedPreferencesBeta.getString("FbFFID", AccessToken.getCurrentAccessToken().getUserId())+
+                    sharedPreferencesBeta.getString("FbFFID",userID)+
                     ConstServer._ConCat+
                     ConstServer.LikeStatus;
 
@@ -303,6 +365,10 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
 
 
         public boolean JumpToAlterFacebookDisLikeAPI(String post_ID){
+            String userID = "";
+            if(FacebookStatus.CheckFbLogin()){
+                userID = AccessToken.getCurrentAccessToken().getUserId();
+            }
             String ModUrl = ConstServer._baseUrl+
                     ConstServer._type+
                     ConstServer._typePostLike+
@@ -311,7 +377,7 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
                     post_ID+
                     ConstServer._ConCat+
                     ConstServer._PostUserID+
-                    sharedPreferencesBeta.getString("FbFFID",AccessToken.getCurrentAccessToken().getUserId())+
+                    sharedPreferencesBeta.getString("FbFFID",userID)+
                     ConstServer._ConCat+
                     ConstServer.DisLikeStatus;
 
@@ -346,7 +412,7 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
             FragmentManager manager = MainActivity.getBaseFragmentManager();
             manager.popBackStackImmediate();
             fragmentTransaction = manager.beginTransaction();
-            FbLikePage fbLikePage = new FbLikePage();
+            LoginPage fbLikePage = new LoginPage();
             manager.popBackStackImmediate();
             fragmentTransaction.replace(R.id.frag,fbLikePage);
             fragmentTransaction.addToBackStack(null);

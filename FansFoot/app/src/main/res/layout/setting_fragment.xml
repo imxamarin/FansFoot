@@ -12,12 +12,12 @@
         android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/adViewAlpha"
+        android:id="@+id/adViewSettings"
         ads:adSize="BANNER"
-        ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
+        ads:adUnitId="@string/banner_ad_unit_id"
         ads:queryHint="Search"
         ads:defaultQueryHint="GoogleAds"
-        android:background="@drawable/ad_rect_shape"
+
         />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/settingRecycle"

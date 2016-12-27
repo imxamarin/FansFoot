@@ -10,12 +10,11 @@
     <com.google.android.gms.ads.AdView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/adViewAlpha"
+        android:id="@+id/adViewProfile"
         ads:adSize="BANNER"
-        ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
+        ads:adUnitId="@string/banner_ad_unit_id"
         ads:queryHint="Search"
         ads:defaultQueryHint="GoogleAds"
-        android:background="@drawable/ad_rect_shape"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         />
@@ -60,9 +59,10 @@
                 android:textColor="#333333"
                 />
             <TextView
+                android:id="@+id/Pro_points"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="28"
+                android:text="0"
                 android:gravity="center"
                 android:textColor="#333333"
                 />
@@ -83,6 +83,7 @@
                 android:textColor="#333333"
                 />
             <TextView
+                android:id="@+id/Pro_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -106,9 +107,10 @@
                 android:textColor="#333333"
                 />
             <TextView
+                android:id="@+id/Pro_Post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3"
+                android:text="0"
                 android:layout_gravity="center_vertical"
                 android:textColor="#333333"
                 />

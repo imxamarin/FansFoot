@@ -28,7 +28,7 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:layout_alignParentRight="true"
-    android:checked="false"
+    android:checked="true"
     android:paddingRight="16dp"
     />
         </RelativeLayout>

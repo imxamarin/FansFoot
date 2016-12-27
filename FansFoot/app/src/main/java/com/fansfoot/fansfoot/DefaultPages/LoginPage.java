@@ -42,8 +42,11 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FacebookFansfoot;
+import com.fansfoot.fansfoot.API.FansFootLogin;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -75,7 +78,10 @@ public class LoginPage extends Fragment {
     SharedPreferences.Editor editorBeta;
     SharedPreferences.Editor editorDelta;
     FacebookFansfoot facebookFansfoot;
+    FansFootLogin fansFootLogin;
 
+
+   public Boolean LoginStatus = true;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +109,9 @@ public class LoginPage extends Fragment {
         Network network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
+        AdView mAdView = (AdView) view.findViewById(R.id.adViewLogin);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         Loginbtn = (Button) view.findViewById(R.id.LoginButton);
         FbBtn = (LoginButton) view.findViewById(R.id.LoginFbBtn);
         ForgetpasswdBtn = (Button) view.findViewById(R.id.LoginForgetPasswdButton);
@@ -173,17 +182,65 @@ public class LoginPage extends Fragment {
 
         Loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.getContext(), "yuhu", Toast.LENGTH_SHORT).show();
+            public void onClick(final View view) {
+                Loginbtn.setEnabled(false);
                 if(CheckFields(EmailEdTxt)&& CheckFields(PasswdEdTxt)){
                     if(CheckEmail(EmailEdTxt)) {
                         if(CheckPassword(PasswdEdTxt)) {
-                            FragmentTransaction fragmentTransaction;
-                            FragmentManager manager = MainActivity.getBaseFragmentManager();
-                            fragmentTransaction = manager.beginTransaction();
-                            ProfilePage profilePage = new ProfilePage();
-                            fragmentTransaction.replace(R.id.frag, profilePage);
-                            fragmentTransaction.commit();
+                            String ModUrl = ConstServer._MainbaseUrl+
+                                    ConstServer._type+
+                                    ConstServer.LoginType+
+                                    ConstServer._ConCat+
+                                    ConstServer.UserEmail+
+                                    EmailEdTxt.getText().toString().trim()+
+                                    ConstServer._ConCat+
+                                    ConstServer.UserPassword+
+                                    PasswdEdTxt.getText().toString().trim()+
+                                    ConstServer._ConCat+
+                                    ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
+                                    ConstServer._ConCat+
+                                    ConstServer._device_type;
+                            Log.d("URL",ModUrl);
+                            JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                                    ModUrl, null, new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Log.d("CheckJson",response.toString());
+                                    Gson _Gson = new Gson();
+                                    fansFootLogin = _Gson.fromJson(response.toString(),FansFootLogin.class);
+                                    if(fansFootLogin.getStatus()==1){
+//                                        editorDelta = sharedPreferencesDelta.edit();
+//                                        editorDelta.putString("FbFFID", fansFootLogin.getUserId());
+//                                        editorDelta.putString("FbFFMSG", fansFootLogin.getMessage());
+//                                        editorDelta.putInt("FbFFSTATUS", fansFootLogin.getStatus());
+//                                        editorDelta.commit();
+                                        editorBeta = sharedPreferencesBeta.edit();
+                                        editorBeta.putString("FbFFID", fansFootLogin.getUserId());
+                                        editorBeta.putString("FbFFMSG", fansFootLogin.getMessage());
+                                        editorBeta.putInt("FbFFSTATUS", fansFootLogin.getStatus());
+                                        editorBeta.commit();
+                                        Snackbar.make(view,"Login Successful",Snackbar.LENGTH_SHORT).show();
+                                        FragmentTransaction fragmentTransaction;
+                                        FragmentManager manager = MainActivity.getBaseFragmentManager();
+                                        fragmentTransaction = manager.beginTransaction();
+                                        ProfilePage profilePage = new ProfilePage();
+                                        fragmentTransaction.replace(R.id.frag, profilePage);
+                                        fragmentTransaction.commit();
+                                    }else{
+                                        Snackbar.make(view,"Email or Password dont match",Snackbar.LENGTH_SHORT).show();
+
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Snackbar.make(view,"Something Went Wrong Try Again",Snackbar.LENGTH_SHORT).show();
+                                }
+                            });
+                            mRequestQueue.add(_JsonObjectRequest);
+
+
                         }else {
                             Snackbar.make(view,"Password cant be short",Snackbar.LENGTH_SHORT).show();
                         }
@@ -193,12 +250,15 @@ public class LoginPage extends Fragment {
                 }else {
                     Snackbar.make(view,"Fields Cannot Be Empty",Snackbar.LENGTH_SHORT).show();
                 }
+
+                Loginbtn.setEnabled(true);
             }
         });
 
         SignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SignUpBtn.setEnabled(false);
                     FragmentTransaction fragmentTransaction;
                     FragmentManager manager = MainActivity.getBaseFragmentManager();
                     fragmentTransaction = manager.beginTransaction();
@@ -206,6 +266,7 @@ public class LoginPage extends Fragment {
                     fragmentTransaction.replace(R.id.frag,profileSignUpPage);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
+                SignUpBtn.setEnabled(true);
 
             }
         });
@@ -214,7 +275,7 @@ public class LoginPage extends Fragment {
         ForgetpasswdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                SignUpBtn.setEnabled(false);
                     FragmentTransaction fragmentTransaction;
                     FragmentManager manager = MainActivity.getBaseFragmentManager();
                     fragmentTransaction = manager.beginTransaction();
@@ -222,7 +283,7 @@ public class LoginPage extends Fragment {
                     fragmentTransaction.replace(R.id.frag,profileForgetPage);
                      fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
-
+                SignUpBtn.setEnabled(true);
             }
         });
 
@@ -231,6 +292,61 @@ public class LoginPage extends Fragment {
 
         return view;
     }
+
+    private boolean CallthisToCheckServerLogin() {
+
+        String ModUrl = ConstServer._MainbaseUrl+
+                ConstServer._type+
+                ConstServer.LoginType+
+                ConstServer._ConCat+
+                ConstServer._ConCat+
+                ConstServer.UserEmail+
+                EmailEdTxt.getText().toString().trim()+
+                ConstServer._ConCat+
+                ConstServer.UserPassword+
+                PasswdEdTxt.getText().toString().trim()+
+                ConstServer._ConCat+
+                ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
+                ConstServer._ConCat+
+                ConstServer._device_type;
+
+        Log.d("CheckURL",ModUrl);
+
+        JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                ModUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("CheckJson",response.toString());
+
+                Gson _Gson = new Gson();
+                fansFootLogin = _Gson.fromJson(response.toString(),FansFootLogin.class);
+
+                if(fansFootLogin.getStatus()==1){
+                    editorBeta = sharedPreferencesBeta.edit();
+                    editorBeta.putString("FbFFID", fansFootLogin.getUserId());
+                    editorBeta.putString("FbFFMSG", fansFootLogin.getMessage());
+                    editorBeta.putInt("FbFFSTATUS", fansFootLogin.getStatus());
+                    editorBeta.commit();
+                    LoginStatus = true;
+                    Log.d("LoginStatus",LoginStatus.toString());
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LoginStatus = false;
+                Log.d("LoginStatus2",LoginStatus.toString());
+            }
+        });
+        mRequestQueue.add(_JsonObjectRequest);
+        Log.d("LoginStatus3",LoginStatus.toString());
+        return LoginStatus;
+    }
+
+
+
+
 
     private void DoTheCallToFB() {
         String ModUrl = ConstServer._MainbaseUrl+
@@ -250,7 +366,7 @@ public class LoginPage extends Fragment {
                 ConstServer._ConCat+
                 ConstServer.Facebook_profilePic+sharedPreferences.getString("Fbpicture","https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/15590483_339385113121292_4884085331937605536_n.jpg?oh=7fc509aa2ff6e22729678893bc82c158&oe=58F5283F")+
                 ConstServer._ConCat+
-                ConstServer._deviceToken+"123"+
+                ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
                 ConstServer._ConCat+
                 ConstServer._device_type;
         Log.d("ChkLog",ModUrl);
@@ -259,7 +375,6 @@ public class LoginPage extends Fragment {
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
                 Gson _Gson = new Gson();
                 facebookFansfoot =  _Gson.fromJson(response.toString(), FacebookFansfoot.class);
                 Log.d("ChkLog",facebookFansfoot.getMessage());

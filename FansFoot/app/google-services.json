@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "156149950813",
+    "firebase_url": "https://fansfoot-a5005.firebaseio.com",
+    "project_id": "fansfoot-a5005",
+    "storage_bucket": "fansfoot-a5005.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156149950813:android:54ef0c5ea7c83c1e",
+        "android_client_info": {
+          "package_name": "fansfoot.com.fansfoot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156149950813-6ksi2sjrvqnjbe7noc2pj0ja9pt9g02b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fansfoot.com.fansfoot",
+            "certificate_hash": "2A187A2E1037EA0DB6E5E924B9356E58A55FD47F"
+          }
+        },
+        {
+          "client_id": "156149950813-5iivfetf62vg14r7u1naobq4kdalje7d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrY4EO1O2s5kzDPc_S45wR9NO_2W-vp2A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156149950813-5iivfetf62vg14r7u1naobq4kdalje7d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

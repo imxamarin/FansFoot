@@ -2,6 +2,7 @@ package com.fansfoot.fansfoot.DefaultPages;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -36,6 +37,8 @@ import com.fansfoot.fansfoot.API.FansfootServer;
 import com.fansfoot.fansfoot.API.Post;
 import com.fansfoot.fansfoot.Adapters.NsfwRecycleViewAdapter;
 import com.fansfoot.fansfoot.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
@@ -67,11 +70,16 @@ public class NsfwPage extends Fragment {
     FansfootServer fansfootServers;
     List<Post> posts = new ArrayList<>();
     ProgressBar progressBar;
+    SharedPreferences sharedPreferencesBeta;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.nsfw_fragment,container,false);
         context = getActivity();
+        sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
+        AdView mAdView = (AdView) view.findViewById(R.id.adViewNSFW);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         progressBar = (ProgressBar) view.findViewById(R.id.nsfwProgressBar);
         Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
@@ -172,7 +180,7 @@ public class NsfwPage extends Fragment {
                 ConstServer._ConCat+
                 ConstServer._device_type+
                 ConstServer._ConCat+
-                ConstServer._USERID+"123";
+                ConstServer._USERID+sharedPreferencesBeta.getString("UUID","C10105484848");
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override

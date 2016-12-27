@@ -12,12 +12,12 @@
         android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/adViewAlpha"
+        android:id="@+id/adViewSignUp"
         ads:adSize="BANNER"
-        ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
+        ads:adUnitId="@string/banner_ad_unit_id"
         ads:queryHint="Search"
         ads:defaultQueryHint="GoogleAds"
-        android:background="@drawable/ad_rect_shape" />
+        />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -76,7 +76,7 @@
             android:id="@+id/SignUpEmailEditText"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:hint="root@gmail.com"
+            android:hint="Email"
             android:textColorHint="@color/dim_gray_bg"
             android:background="@color/purewhite"
             android:inputType="textEmailAddress"

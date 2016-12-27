@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/purewhite"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/VideosDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/VideoDescription"
+        android:gravity="left"
+        android:textColor="@color/URLColor"
+        android:paddingLeft="10sp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/MainVideos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+        <ImageView
+            android:id="@+id/imgViewsYoutube"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            />
+
+
+        <ImageButton
+            android:id="@+id/btnViewsYoutube"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/youtube"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5sp"
+
+        >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="0.5"
+            >
+            <TextView
+                android:id="@+id/VideosPointsValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:padding="5sp"
+
+                />
+            <TextView
+                android:id="@+id/VideosPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Points"
+
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            >
+            <TextView
+                android:id="@+id/VideosCommentPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 "
+                android:padding="5sp"
+
+                />
+
+            <TextView
+                android:id="@+id/VideosComments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+
+        >
+        <ImageButton
+            android:id="@+id/Videoslikebutton"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:src="@drawable/like_icon"
+            android:background="@drawable/fb_buttons_shape"
+
+            />
+        <ImageButton
+            android:id="@+id/Videosdislikebutton"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:src="@drawable/dislike_icon"
+            android:background="@drawable/fb_buttons_shape"
+
+            />
+
+        <ImageButton
+            android:id="@+id/Videoscommentbtn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:src="@drawable/comment_icon"
+            android:background="@drawable/fb_buttons_shape"
+
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

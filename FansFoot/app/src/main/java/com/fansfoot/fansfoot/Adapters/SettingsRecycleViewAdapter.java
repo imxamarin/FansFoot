@@ -1,6 +1,7 @@
 package com.fansfoot.fansfoot.Adapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -28,6 +29,11 @@ import com.fansfoot.fansfoot.DefaultPages.ShareTheApp;
 import com.fansfoot.fansfoot.DefaultPages.TwitterLikePage;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
+import com.fansfoot.fansfoot.models.LikeTransition;
+
+import org.greenrobot.eventbus.EventBus;
+
+import static com.fansfoot.fansfoot.R.id.view;
 
 /**
  * Created by xamarin on 05/12/16.
@@ -75,6 +81,8 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
     public static class SettingViewHolder extends RecyclerView.ViewHolder  {
         public TextView textView;
         public CheckBox imageBtn;
+        SharedPreferences sharedPreferences;
+        SharedPreferences.Editor editor;
         public SettingViewHolder(final View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.SettingMenuBar);
@@ -85,6 +93,10 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
                    int x = getPosition();
                     if(x==4){
                         if(b==true){
+                            Snackbar snackbar = Snackbar
+                                    .make(itemView,"NSFW Enabled",Snackbar.LENGTH_SHORT);
+
+                            snackbar.show();
                             compoundButton.setButtonDrawable(R.drawable.on_toggle);
                         }else {
                             compoundButton.setButtonDrawable(R.drawable.off_toggle);
@@ -94,6 +106,9 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
                     }
                 }
             });
+
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -104,26 +119,29 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
                     fragmentTransaction = manager.beginTransaction();
                     switch (x) {
                         case 0:
-
-                            boolean fb_status = FacebookStatus.CheckFbLogin();
-
-                            if(fb_status == true)
-                            {
-                                ProfilePage profilePage = new ProfilePage();
-                                manager.popBackStackImmediate();
-                                fragmentTransaction.replace(R.id.frag,profilePage);
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();
-                                break;
-                            }else {
-                                LoginPage profilePage = new LoginPage();
-                                manager.popBackStackImmediate();
-                                fragmentTransaction.replace(R.id.frag,profilePage);
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();
-                                break;
-                            }
-
+                            LikeTransition likeTransition=new LikeTransition();
+                            likeTransition.setPos(x);
+                            likeTransition.setFragName("profile");
+                            EventBus.getDefault().post(likeTransition);
+//                            boolean fb_status = FacebookStatus.CheckFbLogin();
+//
+//                            if(fb_status == true)
+//                            {
+//                                ProfilePage profilePage = new ProfilePage();
+//                                manager.popBackStackImmediate();
+//                                fragmentTransaction.replace(R.id.frag,profilePage);
+//                                fragmentTransaction.addToBackStack(null);
+//                                fragmentTransaction.commit();
+//                                break;
+//                            }else {
+//                                LoginPage profilePage = new LoginPage();
+//                                manager.popBackStackImmediate();
+//                                fragmentTransaction.replace(R.id.frag,profilePage);
+//                                frbreak;agmentTransaction.addToBackStack(null);
+//                                fragmentTransaction.commit();
+//                                break;
+//                            }
+                            break;
 
                         case 1:
                             AboutUsPage aboutUsPage = new AboutUsPage();
@@ -184,5 +202,15 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
 
 
         }
+        public void JumpToFaceBookForLogin(){
+            int x = getPosition();
+            LikeTransition likeTransition=new LikeTransition();
+            likeTransition.setPos(x);
+            likeTransition.setFragName("profile");
+            EventBus.getDefault().post(likeTransition);
+
+
+        }
+
     }
 }

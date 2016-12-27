@@ -1,6 +1,7 @@
 package com.fansfoot.fansfoot.DefaultPages;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -42,11 +43,14 @@ import com.fansfoot.fansfoot.API.YoutubePost;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.fansfoot.fansfoot.Adapters.VideoRecycleViewAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
 import com.mugen.attachers.BaseAttacher;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URI;
@@ -73,17 +77,23 @@ public class VideoPage  extends Fragment {
     int firstVisibleItem, visibleItemCount, totalItemCount;
     LinearLayoutManager recylerViewLayoutManager;
     int newValue  = 0;
+    ProgressDialog progress;
     ProgressBar progressBar;
     private boolean isLoading = false;
-
+    SharedPreferences sharedPreferencesBeta;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.video_fragment,container,false);
         context = getActivity();
+        sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
+        progress = new ProgressDialog(getActivity());
+        progress.setMessage("Refreshing the list");
         progressBar = (ProgressBar) view.findViewById(R.id.videoProgressBar);
-
+        AdView mAdView = (AdView) view.findViewById(R.id.adViewVideo);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
@@ -122,7 +132,18 @@ public class VideoPage  extends Fragment {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
+                progress.show();
+                final Handler handler = new Handler();
+                Runnable runable = new Runnable() {
+                    @Override
+                    public void run() {
+                        posts.clear();
+                        newValue = 0;
+                        SyncOP(newValue);
+                    }
+                };
+                handler.postDelayed(runable, 3000);
+
             }
         });
         CheckBox back = (CheckBox) view.findViewById(R.id.cm_VideoToolBar_search);
@@ -184,27 +205,36 @@ public class VideoPage  extends Fragment {
                 ConstServer._ConCat+
                 ConstServer._device_type+
                 ConstServer._ConCat+
-                ConstServer._USERID+"123";
+                ConstServer._USERID+sharedPreferencesBeta.getString("UUID","C10105484848");
         Log.d("yuha",""+ModUrl);
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                if(progress.isShowing()){
+                    progress.dismiss();
+                }
                 progressBar.setVisibility(View.GONE);
                 progressBar.setEnabled(false);
                 isLoading=false;
                 newValue=newValue+1;
-                Gson _Gson = new Gson();
-                fansfootServers =  _Gson.fromJson(response.toString(), YouTube.class);
-                posts.addAll(fansfootServers.getPost());
-                Log.d("wala",""+posts.size());
-                if( posts.size()!=0){
-                    recyclerViewAdapter.notifyDataSetChanged();
-                }
+
+
+                    Gson _Gson = new Gson();
+                    fansfootServers = _Gson.fromJson(response.toString(), YouTube.class);
+                    posts.addAll(fansfootServers.getPost());
+                    Log.d("wala", "" + posts.size());
+                    if (posts.size() != 0) {
+                        recyclerViewAdapter.notifyDataSetChanged();
+                    }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if(progress.isShowing()){
+                    progress.dismiss();
+                }
                 progressBar.setVisibility(View.GONE);
                 progressBar.setEnabled(false);
                 isLoading=false;

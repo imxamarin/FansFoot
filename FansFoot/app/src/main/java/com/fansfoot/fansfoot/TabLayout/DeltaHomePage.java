@@ -2,6 +2,7 @@ package com.fansfoot.fansfoot.TabLayout;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -31,6 +32,8 @@ import com.fansfoot.fansfoot.API.FansfootServer;
 import com.fansfoot.fansfoot.API.Post;
 import com.fansfoot.fansfoot.Adapters.DeltaHomeRecycleViewAdapter;
 import com.fansfoot.fansfoot.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
@@ -60,12 +63,14 @@ public class DeltaHomePage extends Fragment {
     LinearLayoutManager recylerViewLayoutManager;
     int newValue  = 0;
     ProgressBar progressBar;
+    SharedPreferences sharedPreferencesBeta;
     private boolean isLoading = false;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.delta_home_fragment,container,false);
         context = this.getActivity();
+        sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
         progressBar = (ProgressBar) view.findViewById(R.id.deltaProgressBar);
         Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
@@ -94,6 +99,10 @@ public class DeltaHomePage extends Fragment {
             }
 
         });
+        AdView mAdView = (AdView) view.findViewById(R.id.adViewDelta);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.DeltaRecycleView);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);
@@ -139,7 +148,7 @@ public class DeltaHomePage extends Fragment {
                 ConstServer._ConCat+
                 ConstServer._device_type+
                 ConstServer._ConCat+
-                ConstServer._USERID+"123";
+                ConstServer._USERID+sharedPreferencesBeta.getString("UUID","C10105484848");
 
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {

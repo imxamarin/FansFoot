@@ -28,6 +28,9 @@ public class YoutubePlayerActivity extends YouTubeBaseActivity implements
         setContentView(R.layout.activity_youtube_player);
         Intent intent = getIntent();
         TitleImg = intent.getStringExtra("VideoTitle");
+        if(TitleImg.isEmpty()){
+            TitleImg = "8rmBvkMrjAY";
+        }
          youTubeView = (YouTubePlayerView) findViewById(R.id.youtubeView);
         youTubeView.initialize("AIzaSyDKVkI5QRYt486jYFoKUW4npL0wt6dDGAo",this);
 

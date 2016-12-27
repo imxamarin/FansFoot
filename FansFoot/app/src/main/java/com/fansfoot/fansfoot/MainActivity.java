@@ -1,7 +1,10 @@
 package com.fansfoot.fansfoot;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,12 +12,15 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -30,19 +36,39 @@ import com.fansfoot.fansfoot.DefaultPages.ProfilePage;
 import com.fansfoot.fansfoot.DefaultPages.SelectionPage;
 import com.fansfoot.fansfoot.DefaultPages.SettingsPage;
 import com.fansfoot.fansfoot.DefaultPages.VideoPage;
+import com.fansfoot.fansfoot.DefaultPages.VideosPage;
+import com.fansfoot.fansfoot.models.LikeTransition;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.net.URISyntaxException;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
+
+    RadioButton ProfileButton;
+
+    public interface Callback {
+        public void onRadioButtonClicked(View radioButton);
+    }
+
+    private Callback callback;
+
     //Button HomeButton, SectionButton, VideoButton, ProfileButton, SettingButton;
     static FragmentManager fragmentManager;
     static FragmentManager supportFrag;
     static Context context;
+    SharedPreferences sharedPreferencesBeta;
+     public static RadioGroup bottom_layout;
+    SharedPreferences.Editor editor;
 
-    RadioGroup bottom_layout;
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +76,20 @@ public class MainActivity extends AppCompatActivity {
 //        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 //        getSupportActionBar().setCustomView(R.layout.cm_action_bar);
         super.onCreate(savedInstanceState);
+
+        EventBus.getDefault().register(this);
+
         setContentView(R.layout.activity_main);
+        ProfileButton=(RadioButton) findViewById(R.id.ProfileButton);
         context = this;
+        sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
+
+
+       String UUID =  Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        editor = sharedPreferencesBeta.edit();
+        editor.putString("UUID", UUID);
+        editor.commit();
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         CallbackManager  callbackManager = CallbackManager.Factory.create();
         OpenDefaultFragment();
@@ -120,9 +158,10 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void ProfileFragment() {
+    public void ProfileFragment() {
 
         boolean fb_status = FacebookStatus.CheckFbLogin();
+        boolean value = sharedPreferencesBeta.getString("FbFFID","").isEmpty();
 
         if(fb_status == true)
         {
@@ -131,7 +170,15 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.popBackStackImmediate();
             fragmentTransaction.replace(R.id.frag, loginprofilePage);
             fragmentTransaction.commit();
-        }else {
+        }else if(!value){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            ProfilePage loginprofilePage = new ProfilePage();
+            fragmentManager.popBackStackImmediate();
+            fragmentTransaction.replace(R.id.frag, loginprofilePage);
+            fragmentTransaction.commit();
+        }
+
+        else {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             LoginPage loginprofilePage = new LoginPage();
             fragmentManager.popBackStackImmediate();
@@ -143,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     private void VideoFragment() {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        VideoPage videoPage = new VideoPage();
+        VideosPage videoPage = new VideosPage();
 
         fragmentManager.popBackStackImmediate();
         fragmentTransaction.replace(R.id.frag, videoPage);
@@ -234,6 +281,35 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LikeTransition likeTransition){
+
+        if(likeTransition.getFragName().equalsIgnoreCase("profile")){
+            Log.e("pos",""+likeTransition.getPos());
+            bottom_layout.check(R.id.ProfileButton);
+            ProfileFragment();
+        }
+    }
+//
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onMessagesEvent(LikeTransition likeTransition){
+//        if(likeTransition.getFragName().equalsIgnoreCase("login")){
+//            Log.e("pos",""+likeTransition.getPos());
+//            bottom_layout.check(R.id.ProfileButton);
+//            ProfileFragment();
+//        }
+//    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        hideKeyboard(this);
+
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         try {
@@ -245,6 +321,17 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    public static void hideKeyboard(Context ctx) {
+        InputMethodManager inputManager = (InputMethodManager) ctx
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View v = ((Activity) ctx).getCurrentFocus();
+        if (v == null)
+            return;
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 }
 

@@ -10,12 +10,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -40,9 +44,13 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FacebookFansfoot;
+import com.fansfoot.fansfoot.API.FansFootLogin;
+import com.fansfoot.fansfoot.API.FansFootSignUp;
 import com.fansfoot.fansfoot.DefaultActivities.YoutubePlayerActivity;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -71,6 +79,8 @@ public class SignUpPage extends Fragment {
     SharedPreferences.Editor editorDelta;
     FacebookFansfoot facebookFansfoot;
     RequestQueue mRequestQueue;
+    FansFootSignUp fansFootSignUp;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -92,7 +102,24 @@ public class SignUpPage extends Fragment {
         Network network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.SignUpToolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
+
+        CheckBox checkBox = (CheckBox) view.findViewById(R.id.cm_back_signUp);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        AdView mAdView = (AdView) view.findViewById(R.id.adViewSignUp);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         FbBtn = (LoginButton) view.findViewById(R.id.SignUpFbBtn);
         NameEdTxt = (EditText) view.findViewById(R.id.SignUpNameEditText);
         EmailEdTxt = (EditText) view.findViewById(R.id.SignUpEmailEditText);
@@ -101,17 +128,75 @@ public class SignUpPage extends Fragment {
         SignUpRegBtn = (Button) view.findViewById(R.id.SignUpRegBtn);
         SignUpRegBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
+                SignUpRegBtn.setEnabled(false);
+
                 if(CheckFields(NameEdTxt)&& CheckFields(EmailEdTxt) && CheckFields(PasswdEdTxt) && CheckFields(ConnPasswdTxt)){
                     if(CheckEmail(EmailEdTxt) ) {
                         if(ConnPassword(PasswdEdTxt,ConnPasswdTxt)) {
                             if (CheckPassword(PasswdEdTxt,ConnPasswdTxt)){
-                            FragmentTransaction fragmentTransaction;
-                            FragmentManager manager = MainActivity.getBaseFragmentManager();
-                            fragmentTransaction = manager.beginTransaction();
-                            ProfilePage profilePage = new ProfilePage();
-                            fragmentTransaction.replace(R.id.frag, profilePage);
-                            fragmentTransaction.commit();
+                                String ModUrl = ConstServer._MainbaseUrl+
+                                        ConstServer._type+
+                                        ConstServer.post_signUp+
+                                        ConstServer._ConCat+
+                                        ConstServer.Register_type+
+                                        ConstServer.Sign_up_RegType+
+                                        ConstServer._ConCat+
+                                        ConstServer.Facebook_UserName+
+                                        NameEdTxt.getText().toString().trim()+
+                                        ConstServer._ConCat+
+                                        ConstServer.UserEmail+
+                                        EmailEdTxt.getText().toString().trim()+
+                                        ConstServer._ConCat+
+                                        ConstServer.UserPassword+
+                                        PasswdEdTxt.getText().toString().trim()+
+                                        ConstServer._ConCat+
+                                        ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
+                                        ConstServer._ConCat+
+                                        ConstServer._device_type;
+
+                                Log.d("URL",ModUrl);
+                                JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                                        ModUrl, null, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Log.d("CheckJson",response.toString());
+                                        Gson _Gson = new Gson();
+                                        fansFootSignUp = _Gson.fromJson(response.toString(),FansFootSignUp.class);
+                                        if(fansFootSignUp.getStatus()==1){
+                                            Log.d("ysk","tmk");
+//                                            editorDelta = sharedPreferencesDelta.edit();
+//                                            editorDelta.putInt("FbFFID", fansFootSignUp.getUserId());
+//                                            editorDelta.putString("FbFFMSG", fansFootSignUp.getMessage());
+//                                            editorDelta.putInt("FbFFSTATUS", fansFootSignUp.getStatus());
+//                                            editorDelta.putString("FbFFName",NameEdTxt.getText().toString().trim());
+//                                            editorDelta.commit();
+                                            editorBeta = sharedPreferencesBeta.edit();
+                                            editorBeta.putString("FbFFID", fansFootSignUp.getUserId().toString());
+                                            editorBeta.putString("FbFFMSG", fansFootSignUp.getMessage());
+                                            editorBeta.putString("FbFFName",NameEdTxt.getText().toString().trim());
+                                            editorBeta.commit();
+                                            Snackbar.make(view,"Login Successful",Snackbar.LENGTH_SHORT).show();
+                                            FragmentTransaction fragmentTransaction;
+                                            FragmentManager manager = MainActivity.getBaseFragmentManager();
+                                            fragmentTransaction = manager.beginTransaction();
+                                            ProfilePage profilePage = new ProfilePage();
+                                            fragmentTransaction.replace(R.id.frag, profilePage);
+                                            fragmentTransaction.commit();
+                                        }else{
+                                            Log.d("lsk","tmk");
+                                            EmailEdTxt.setTextColor(Color.RED);
+                                            Snackbar.make(view,"User already exists",Snackbar.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Snackbar.make(view,"Something Went Wrong Try Again",Snackbar.LENGTH_SHORT).show();
+                                    }
+                                });
+                                mRequestQueue.add(_JsonObjectRequest);
+
                             }else {
                                 Snackbar.make(view,"Password cant be short",Snackbar.LENGTH_SHORT).show();
                             }
@@ -124,6 +209,7 @@ public class SignUpPage extends Fragment {
                     }else {
                     Snackbar.make(view,"Fields Cannot Be Empty",Snackbar.LENGTH_SHORT).show();
                 }
+                SignUpRegBtn.setEnabled(true);
             }
         });
 

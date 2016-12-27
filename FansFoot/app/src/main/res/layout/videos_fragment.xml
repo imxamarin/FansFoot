@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/dim_gray_bg"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/cm_videos_toolbar"/>
+
+
+    <com.google.android.gms.ads.AdView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/adViewVideos"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"
+        ads:queryHint="Search"
+        ads:defaultQueryHint="GoogleAds"
+        />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/VideosSwipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:id="@+id/VideosRecycleView"
+                android:layout_above="@+id/videosProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <ProgressBar
+                android:id="@+id/videosProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                style="?android:attr/progressBarStyle" />
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+</LinearLayout>

@@ -17,6 +17,7 @@
         android:background="@drawable/ad_rect_shape"
          />
     <WebView
+        android:id="@+id/commentID"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>
