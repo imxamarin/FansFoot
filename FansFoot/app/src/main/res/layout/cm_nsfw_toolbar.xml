@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
+
     android:background="@color/_selectedtabs">
 
     <CheckBox
@@ -25,12 +25,16 @@
         android:layout_gravity="center"
 
         />
-    <ImageButton
+    <CheckBox
         android:id="@+id/cm_nsfwToolBar_Refesh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35sp"
+        android:layout_height="50sp"
         android:layout_gravity="right|center"
-        android:background="@drawable/refresh"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/search_bar_bg"
+        android:button="@drawable/refresh"
         />
+
+
 
 </android.support.v7.widget.Toolbar>

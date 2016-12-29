@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,9 +28,7 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.facebook.CallbackManager;
 import com.fansfoot.fansfoot.API.ConstServer;
-import com.fansfoot.fansfoot.API.FansFootLogin;
 import com.fansfoot.fansfoot.API.ForgetPasswd;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
@@ -86,6 +83,8 @@ public class ForgetPasswordPage extends Fragment {
             @Override
             public void onClick(final View view) {
                 ForgetpaswdEmailBtn.setEnabled(false);
+                ForgetpaswdEmailBtn.setTextColor(getResources().getColor(R.color.gray_bg));
+
                 if(CheckFields(EmailEdTxt)){
                     if(CheckEmail(EmailEdTxt)) {
 
@@ -104,18 +103,11 @@ public class ForgetPasswordPage extends Fragment {
                                 Gson _Gson = new Gson();
                                 forgetPasswd = _Gson.fromJson(response.toString(),ForgetPasswd.class);
                                 if(forgetPasswd.getStatus()==1){
-                                    Snackbar.make(view, "Password Sent", Snackbar.LENGTH_SHORT).show();
-                                    FragmentTransaction fragmentTransaction;
-                                    FragmentManager manager = MainActivity.getBaseFragmentManager();
-                                    fragmentTransaction = manager.beginTransaction();
-                                    LoginPage Homepage = new LoginPage();
-                                    fragmentTransaction.replace(R.id.frag, Homepage);
-                                    fragmentTransaction.commit();
-
+                                    Snackbar.make(view, "Password sent successfully", Snackbar.LENGTH_SHORT).show();
+                                    callthisMethodUp();
                                 }else{
                                     Snackbar.make(view,"This email is not registered with us",Snackbar.LENGTH_SHORT).show();
                                 }
-
                             }
                         }, new Response.ErrorListener() {
                             @Override
@@ -131,15 +123,20 @@ public class ForgetPasswordPage extends Fragment {
                 }else {
                     Snackbar.make(view,"Fields Cannot Be Empty",Snackbar.LENGTH_SHORT).show();
                 }
-                ForgetpaswdEmailBtn.setEnabled(true);
 
+                ForgetpaswdEmailBtn.setEnabled(true);
             }
         });
         return view;
     }
-
-
-
+    public void callthisMethodUp(){
+        FragmentTransaction fragmentTransaction;
+        FragmentManager manager = MainActivity.getBaseFragmentManager();
+        fragmentTransaction = manager.beginTransaction();
+        LoginPage Homepage = new LoginPage();
+        fragmentTransaction.replace(R.id.frag, Homepage);
+        fragmentTransaction.commit();
+    }
     public boolean CheckFields(EditText ed){
         String ed_text = ed.getText().toString().trim();
 
@@ -162,6 +159,5 @@ public class ForgetPasswordPage extends Fragment {
             editText.setTextColor(Color.BLACK);
         }
         return matcher.matches();
-
     }
 }

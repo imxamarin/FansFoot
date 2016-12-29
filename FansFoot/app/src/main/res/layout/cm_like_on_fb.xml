@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/Videostoolbar"
+    android:id="@+id/cm_FbLike"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
-    android:paddingLeft="10dp"
     android:background="@color/_selectedtabs">
+    <CheckBox
+        android:id="@+id/cm_back_fbShare"
+        android:layout_width="60sp"
+        android:layout_height="50sp"
+        android:button="@drawable/back_icon"
+        android:layout_gravity="left|center"
 
+        />
 
     <TextView
-        android:id="@+id/cmVideoTool_Title"
+        android:id="@+id/cmSelectionTool_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Videos"
+        android:text="Like us on Facebook"
         android:textColor="@color/_unselectedtabs"
         android:textSize="25sp"
         android:layout_gravity="center"
-        />
-
-    <CheckBox
-        android:id="@+id/cm_VideosToolBar_Refesh"
-        android:layout_width="35sp"
-        android:layout_height="50sp"
-        android:layout_gravity="right|center"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/search_bar_bg"
-        android:button="@drawable/refresh"
+        android:layout_weight="1"
         />
 
 

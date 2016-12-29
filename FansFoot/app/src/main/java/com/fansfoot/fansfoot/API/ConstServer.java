@@ -48,6 +48,11 @@ public class ConstServer {
     public static final String key = "key=";
     public static final String my_profile = "my_profile";
     public static final String my_profile_USERID = "USERID=";
-
+    public static final String username = "username=";
+    public static final String report_problemType = "report_problem";
+    public static final String categories = "categories=str_categorid";
+    public static final String problem = "problem=";
+    public static final String berifly_explain = "berifly_explain=";
+    public static final String suggestion = "suggestion=";
 
 }

@@ -22,14 +22,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:scrollbars = "none"
         android:scrollbarStyle="insideInset"
        >
     <LinearLayout
          android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="wrap_content">
@@ -111,11 +112,13 @@
             />
 
             <Button
+                android:layout_marginTop="15dp"
                 android:id="@+id/SignUpRegBtn"
                 android:layout_marginBottom="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SIGN UP"
+                android:text="Sign Up"
+                android:textAllCaps="false"
                 android:textSize="20sp"
                 android:background="@drawable/login_button_shape"
                 android:textColor="@color/purewhite"

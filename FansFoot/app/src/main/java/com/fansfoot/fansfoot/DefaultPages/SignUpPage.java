@@ -71,12 +71,8 @@ public class SignUpPage extends Fragment {
     LoginButton  FbBtn;
 
     CallbackManager callbackManager;
-    SharedPreferences sharedPreferences;
     SharedPreferences sharedPreferencesBeta;
-    SharedPreferences sharedPreferencesDelta;
-    SharedPreferences.Editor editor;
     SharedPreferences.Editor editorBeta;
-    SharedPreferences.Editor editorDelta;
     FacebookFansfoot facebookFansfoot;
     RequestQueue mRequestQueue;
     FansFootSignUp fansFootSignUp;
@@ -95,9 +91,7 @@ public class SignUpPage extends Fragment {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        sharedPreferences =getActivity().getSharedPreferences("FacebookPrefrence", Context.MODE_PRIVATE);
         sharedPreferencesBeta =getActivity().getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
-        sharedPreferencesDelta =getActivity().getSharedPreferences("FansFootServersPerfrence", Context.MODE_PRIVATE);
         Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
@@ -143,7 +137,7 @@ public class SignUpPage extends Fragment {
                                         ConstServer.Sign_up_RegType+
                                         ConstServer._ConCat+
                                         ConstServer.Facebook_UserName+
-                                        NameEdTxt.getText().toString().trim()+
+                                        EmailEdTxt.getText().toString().trim()+
                                         ConstServer._ConCat+
                                         ConstServer.UserEmail+
                                         EmailEdTxt.getText().toString().trim()+
@@ -155,27 +149,25 @@ public class SignUpPage extends Fragment {
                                         ConstServer._ConCat+
                                         ConstServer._device_type;
 
-                                Log.d("URL",ModUrl);
+
                                 JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                                         ModUrl, null, new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        Log.d("CheckJson",response.toString());
+
                                         Gson _Gson = new Gson();
                                         fansFootSignUp = _Gson.fromJson(response.toString(),FansFootSignUp.class);
+
+                                        SignUpRegBtn.setEnabled(true);
                                         if(fansFootSignUp.getStatus()==1){
-                                            Log.d("ysk","tmk");
-//                                            editorDelta = sharedPreferencesDelta.edit();
-//                                            editorDelta.putInt("FbFFID", fansFootSignUp.getUserId());
-//                                            editorDelta.putString("FbFFMSG", fansFootSignUp.getMessage());
-//                                            editorDelta.putInt("FbFFSTATUS", fansFootSignUp.getStatus());
-//                                            editorDelta.putString("FbFFName",NameEdTxt.getText().toString().trim());
-//                                            editorDelta.commit();
                                             editorBeta = sharedPreferencesBeta.edit();
                                             editorBeta.putString("FbFFID", fansFootSignUp.getUserId().toString());
                                             editorBeta.putString("FbFFMSG", fansFootSignUp.getMessage());
                                             editorBeta.putString("FbFFName",NameEdTxt.getText().toString().trim());
+                                            editorBeta.putString("iName",NameEdTxt.getText().toString().trim());
+                                            editorBeta.putString("iEmail",NameEdTxt.getText().toString().trim());
                                             editorBeta.commit();
+
                                             Snackbar.make(view,"Login Successful",Snackbar.LENGTH_SHORT).show();
                                             FragmentTransaction fragmentTransaction;
                                             FragmentManager manager = MainActivity.getBaseFragmentManager();
@@ -184,9 +176,9 @@ public class SignUpPage extends Fragment {
                                             fragmentTransaction.replace(R.id.frag, profilePage);
                                             fragmentTransaction.commit();
                                         }else{
-                                            Log.d("lsk","tmk");
+                                            Snackbar.make(view,"User with this mail id already exists",Snackbar.LENGTH_SHORT).show();
                                             EmailEdTxt.setTextColor(Color.RED);
-                                            Snackbar.make(view,"User already exists",Snackbar.LENGTH_SHORT).show();
+
                                         }
                                     }
                                 }, new Response.ErrorListener() {
@@ -198,10 +190,10 @@ public class SignUpPage extends Fragment {
                                 mRequestQueue.add(_JsonObjectRequest);
 
                             }else {
-                                Snackbar.make(view,"Password cant be short",Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(view,"Password cannot be less than 8 characters",Snackbar.LENGTH_SHORT).show();
                             }
                         }else {
-                            Snackbar.make(view,"Passwords dont match",Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(view,"Password don't match",Snackbar.LENGTH_SHORT).show();
                         }
                     }else {
                         Snackbar.make(view,"Enter a valid Email ID",Snackbar.LENGTH_SHORT).show();
@@ -209,7 +201,7 @@ public class SignUpPage extends Fragment {
                     }else {
                     Snackbar.make(view,"Fields Cannot Be Empty",Snackbar.LENGTH_SHORT).show();
                 }
-                SignUpRegBtn.setEnabled(true);
+
             }
         });
 
@@ -224,33 +216,84 @@ public class SignUpPage extends Fragment {
                             new GraphRequest.GraphJSONObjectCallback() {
                                 @Override
                                 public void onCompleted(JSONObject object, GraphResponse response) {
-                                    Log.v("LoginActivityAlpha", response.toString());
+
                                     try {
-                                        String email = object.getString("email");
-                                        String id = object.getString("id");
-                                        String birthday = object.getString("birthday"); // 01/31/1980 format
-                                        String name = object.getString("name");
-                                        String location = object.getJSONObject("location").getString("name");
-                                        String homelocation = object.getJSONObject("hometown").getString("name");
-                                        String picture = object.getJSONObject("picture").getJSONObject("data").getString("url");
-                                        String[] s = location.split(",");
-                                        String locationCity = s[0];
-                                        String locationCountry = s[1];
-                                        editor = sharedPreferences.edit();
-                                        editor.putString("FbName", name);
-                                        editor.putString("Fbemail", email);
-                                        editor.putString("FbID", id);
-                                        editor.putString("Fbbirthday", birthday);
-                                        editor.putString("FblocationCity", locationCity);
-                                        editor.putString("FblocationCountry", locationCountry);
-                                        editor.putString("Fbpicture", picture);
-                                        Log.v("ActivityAlpha", response.toString());
-                                        editor.commit();
+                                        editorBeta = sharedPreferencesBeta.edit();
+
+
+
+
+                                        if(object.has("name")){
+                                            if(!object.isNull("name")) {
+                                                if(object.getString("name") != null){
+                                                    editorBeta.putString("iName",object.getString("name"));
+                                                }
+                                            }}
+
+
+                                        if(object.has("email")){
+                                            if(!object.isNull("email")) {
+                                                if(object.getString("email") != null){
+                                                    editorBeta.putString("iEmail",object.getString("email"));
+                                                }
+                                            }}
+
+
+
+                                        if(object.has("id")){
+                                            if(!object.isNull("id")) {
+                                                if(object.getString("id") != null){
+                                                    editorBeta.putString("iUID",object.getString("id"));
+                                                }
+                                            }
+                                        }
+
+
+                                        if(object.has("picture")){
+                                            if(!object.isNull("picture")){
+                                                if(object.getJSONObject("picture").getJSONObject("data").getString("url") != null){
+                                                    editorBeta.putString("iFbpicture", object.getJSONObject("picture").getJSONObject("data").getString("url"));
+                                                }
+                                            }}
+
+
+
+                                        if(object.has("location")){
+
+                                            if(!object.isNull("location")){
+                                                if(object.getJSONObject("location").getString("name") != null){
+                                                    String location  = object.getJSONObject("location").getString("name");
+                                                    String[] s = location.split(",");
+                                                    String locationCity = s[0];
+                                                    String locationCountry = s[1];
+                                                    editorBeta.putString("iCity", locationCity);
+                                                    editorBeta.putString("iCountry", locationCountry);
+                                                }
+                                            }
+                                        }
+
+                                        if(object.has("birthday")){
+
+                                            if(!object.isNull("birthday")){
+                                                if(object.getString("birthday") != null){
+                                                    editorBeta.putString("iBirthday",object.getString("birthday"));
+                                                }
+
+                                            }
+                                        }
+
+
+
+
+
+                                        editorBeta.commit();
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
 
+                                    DoTheCallToFB();
+                                    DoThisOperation();
                                 }
                             });
                     Bundle parameters = new Bundle();
@@ -258,9 +301,7 @@ public class SignUpPage extends Fragment {
                     request.setParameters(parameters);
                     request.executeAsync();
                 }
-                DoTheCallToFB();
-                Snackbar.make(view,"Login Sucessful",Snackbar.LENGTH_SHORT).show();
-                DoThisOperation();
+
             }
 
             @Override
@@ -295,7 +336,7 @@ public class SignUpPage extends Fragment {
         String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(ed_text);
-        Log.d("Validation",matcher.matches()+"");
+
         if(!matcher.matches()){
             editText.setTextColor(Color.RED);
         }else {
@@ -344,34 +385,32 @@ public class SignUpPage extends Fragment {
                 ConstServer.Register_Type_Facebook+
                 ConstServer._ConCat+
                 ConstServer.Facebook_ID+
-                sharedPreferences.getString("FbID","339322503127553")+
+                sharedPreferencesBeta.getString("iUID","339322503127553")+
                 ConstServer._ConCat+
                 ConstServer.Facebook_UserName+
-                sharedPreferences.getString("FbName","Raj")+
+                sharedPreferencesBeta.getString("iName","Raj")+
                 ConstServer._ConCat+
-                ConstServer.Facebook_EmailID+sharedPreferences.getString("Fbemail","amit.verma@trigma.in")+
+                ConstServer.Facebook_EmailID+sharedPreferencesBeta.getString("iEmail","amit.verma@trigma.in")+
                 ConstServer._ConCat+
-                ConstServer.Facebook_profilePic+sharedPreferences.getString("Fbpicture","https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/15590483_339385113121292_4884085331937605536_n.jpg?oh=7fc509aa2ff6e22729678893bc82c158&oe=58F5283F")+
+                ConstServer.Facebook_profilePic+sharedPreferencesBeta.getString("iFbpicture","https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/15590483_339385113121292_4884085331937605536_n.jpg?oh=7fc509aa2ff6e22729678893bc82c158&oe=58F5283F")+
                 ConstServer._ConCat+
-                ConstServer._deviceToken+"123"+
+                ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
                 ConstServer._ConCat+
                 ConstServer._device_type;
-        Log.d("ChkLog",ModUrl);
+
 
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
                 Gson _Gson = new Gson();
                 facebookFansfoot =  _Gson.fromJson(response.toString(), FacebookFansfoot.class);
-                Log.d("ChkLog",facebookFansfoot.getMessage());
-                Log.d("ChkLog",facebookFansfoot.getUserId());
-                Log.d("ChkLog",facebookFansfoot.getDeviceToken());
+
                 editorBeta = sharedPreferencesBeta.edit();
                 editorBeta.putString("FbFFID", facebookFansfoot.getUserId());
                 editorBeta.putString("FbFFMSG", facebookFansfoot.getMessage());
                 editorBeta.putInt("FbFFSTATUS", facebookFansfoot.getStatus());
+                editorBeta.putString("FbFFName",sharedPreferencesBeta.getString("iName","Raj"));
                 editorBeta.commit();
 
             }

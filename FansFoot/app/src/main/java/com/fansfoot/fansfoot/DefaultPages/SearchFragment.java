@@ -6,12 +6,16 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -84,6 +88,20 @@ public class SearchFragment extends Fragment {
         Network network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.SearchResulttoolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        CheckBox back = (CheckBox) view.findViewById(R.id.cm_SearchResultToolBar_search);
+        back.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                getActivity().onBackPressed();
+            }
+        });
+
         SyncOP(newValue);
         final SwipeRefreshLayout swipe = (SwipeRefreshLayout) view.findViewById(R.id.SearchSwipe);
         swipe.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDarkest),getResources().getColor(R.color.holo_blue_light));
@@ -155,37 +173,30 @@ public class SearchFragment extends Fragment {
                 ConstServer.key+
                 searchResult;
 
+        Log.d("Mod",ModUrl);
+
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 progressBar.setVisibility(View.GONE);
                 progressBar.setEnabled(false);
-
                 isLoading=false;
-                Log.d("Responce",""+response.toString());
                 if(response.has("message")){
-                    try {
-
-                     //   Snackbar.make(response.getString("message"),response.getString("message"),Snackbar.LENGTH_SHORT).show();
-                        Snackbar.make(view,response.getString("message"),Snackbar.LENGTH_SHORT).show();
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                }else{
+                    Toast.makeText(context, "No result found", Toast.LENGTH_SHORT).show();
+                    }else{
                     Gson _Gson = new Gson();
                     newValue=newValue+1;
                     fansfootServers =  _Gson.fromJson(response.toString(), FansfootServer.class);
                     posts.addAll(fansfootServers.getPost());
-                    Log.d("check",""+posts.size());
+
                     if( posts.size()!=0){
 
                         recyclerViewAdapter.notifyDataSetChanged();
                     }
                 }
+
+
 
             }
         }, new Response.ErrorListener() {

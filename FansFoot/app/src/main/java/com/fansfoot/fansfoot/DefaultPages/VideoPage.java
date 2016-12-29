@@ -127,11 +127,11 @@ public class VideoPage  extends Fragment {
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ImageButton refresh = (ImageButton) view.findViewById(R.id.cm_VideoToolBar_Refesh);
+        CheckBox refresh = (CheckBox) view.findViewById(R.id.cm_VideoToolBar_Refesh);
 
-        refresh.setOnClickListener(new View.OnClickListener() {
+        refresh.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 progress.show();
                 final Handler handler = new Handler();
                 Runnable runable = new Runnable() {
@@ -143,9 +143,9 @@ public class VideoPage  extends Fragment {
                     }
                 };
                 handler.postDelayed(runable, 3000);
-
             }
         });
+
         CheckBox back = (CheckBox) view.findViewById(R.id.cm_VideoToolBar_search);
         back.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -201,11 +201,13 @@ public class VideoPage  extends Fragment {
                 ConstServer._ConCat+
                 ConstServer._pagesToLoad+pageNumber+
                 ConstServer._ConCat+
-                ConstServer._deviceToken+"123456"+
+                ConstServer._deviceToken+
+                sharedPreferencesBeta.getString("UUID","C10105484848")+
                 ConstServer._ConCat+
                 ConstServer._device_type+
                 ConstServer._ConCat+
-                ConstServer._USERID+sharedPreferencesBeta.getString("UUID","C10105484848");
+                ConstServer._USERID+
+                sharedPreferencesBeta.getString("FbFFID", "");
         Log.d("yuha",""+ModUrl);
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {

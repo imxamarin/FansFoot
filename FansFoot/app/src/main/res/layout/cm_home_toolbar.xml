@@ -39,7 +39,7 @@
         />
     <CheckBox
         android:id="@+id/cm_HomeToolBar_Refesh"
-        android:layout_width="40sp"
+        android:layout_width="35sp"
         android:layout_height="50sp"
         android:layout_gravity="right|center"
         android:layout_marginRight="10dp"

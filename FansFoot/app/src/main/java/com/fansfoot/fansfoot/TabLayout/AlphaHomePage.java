@@ -1,25 +1,19 @@
 package com.fansfoot.fansfoot.TabLayout;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.SearchView;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -31,9 +25,7 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
 import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FansfootServer;
 import com.fansfoot.fansfoot.API.Post;
@@ -61,21 +53,19 @@ public class AlphaHomePage extends Fragment {
     FansfootServer fansfootServers;
     List<Post> posts = new ArrayList<>();
     Context context;
-    SearchView searchView;
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerViewAdapter;
-    private int previousTotal = 0;
-    private boolean loading = true;
-    CallbackManager callbackManager;
-    private int visibleThreshold = 5;
-    int firstVisibleItem, visibleItemCount, totalItemCount;
     LinearLayoutManager recylerViewLayoutManager;
     int newValue  = 0;
     ProgressBar progressBar;
     private boolean isLoading = false;
     SharedPreferences sharedPreferencesBeta;
 
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -94,18 +84,10 @@ public class AlphaHomePage extends Fragment {
             @Override
             public void onRefresh() {
                 Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
-
-//                final Handler handler = new Handler();
-//                Runnable runable = new Runnable() {
-//                    @Override
-//                    public void run() {
                 posts.clear();
                 newValue = 0;
                 SyncOP(newValue);
                 swipe.setRefreshing(false);
-//                    }
-//                };
-//                handler.postDelayed(runable, 2000);
             }
 
         });
@@ -113,7 +95,6 @@ public class AlphaHomePage extends Fragment {
         AdView mAdView = (AdView) view.findViewById(R.id.adViewAlpha);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.AlphaRecycleView);
         recylerViewLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(recylerViewLayoutManager);
@@ -160,21 +141,18 @@ public class AlphaHomePage extends Fragment {
                 ConstServer._ConCat+
                 ConstServer._pagesToLoad+pageNumber+
                 ConstServer._ConCat+
-                ConstServer._deviceToken+"123456"+
+                ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
                 ConstServer._ConCat+
                 ConstServer._device_type+
                 ConstServer._ConCat+
                 ConstServer._USERID+
-                sharedPreferencesBeta.getString("UUID","C10105484848")
-                ;
-
+                sharedPreferencesBeta.getString("FbFFID", "");
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 progressBar.setVisibility(View.GONE);
                 progressBar.setEnabled(false);
-
                 isLoading=false;
                 Log.d("Responce",""+response.toString());
                 Gson _Gson = new Gson();
@@ -193,10 +171,8 @@ public class AlphaHomePage extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 progressBar.setEnabled(false);
                 isLoading=false;
-
             }
         });
         mRequestQueue.add(_JsonObjectRequest);
     }
-
 }

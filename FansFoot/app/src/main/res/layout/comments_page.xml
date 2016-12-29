@@ -9,14 +9,16 @@
     <com.google.android.gms.ads.AdView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/adViewAlpha"
+        android:id="@+id/adViewComment"
         ads:adSize="BANNER"
-        ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
+        ads:adUnitId="@string/banner_ad_unit_id"
         ads:queryHint="Search"
         ads:defaultQueryHint="GoogleAds"
-        android:background="@drawable/ad_rect_shape"
+
          />
     <WebView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/commentID"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

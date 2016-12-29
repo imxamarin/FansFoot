@@ -5,13 +5,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -19,16 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.fansfoot.fansfoot.API.ConstServer;
-import com.fansfoot.fansfoot.API.FacebookStatus;
 import com.fansfoot.fansfoot.Adapters.PageAdapter;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
-
-import static com.fansfoot.fansfoot.R.id.view;
 
 /**
  * Created by kafir on 09-Dec-16.
@@ -47,18 +40,17 @@ public class HomePage extends Fragment {
 
         context = getContext();
         progress = ProgressDialog.show(getActivity(), "", "Please wait, Getting the new data...", true);
-
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.Hometoolbar);
         viewPager = (ViewPager) view.findViewById(R.id.Pager);
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        final TextView title = (TextView) view.findViewById(R.id.cmHomeTool_Title);
         final CheckBox searchBtn = (CheckBox) view.findViewById(R.id.cm_HomeToolBar_search);
         final SearchView searchview = (SearchView) view.findViewById(R.id.AlphaSearchView);
         CheckBox refresh = (CheckBox) view.findViewById(R.id.cm_HomeToolBar_Refesh);
 
+        viewPager.setOffscreenPageLimit(2);
         searchview.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {

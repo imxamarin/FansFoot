@@ -1,7 +1,9 @@
 package com.fansfoot.fansfoot.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -82,9 +84,11 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
         public TextView textView;
         public CheckBox imageBtn;
         SharedPreferences sharedPreferences;
+        SharedPreferences sharedPreferencesBeta;
         SharedPreferences.Editor editor;
         public SettingViewHolder(final View itemView) {
             super(itemView);
+            sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
             textView = (TextView) itemView.findViewById(R.id.SettingMenuBar);
            imageBtn = (CheckBox) itemView.findViewById(R.id.SettingsImgBtn);
             imageBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -112,7 +116,7 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int x = getPosition();
+                    final int x = getPosition();
                     FragmentTransaction fragmentTransaction;
                     FragmentManager manager = MainActivity.getBaseFragmentManager();
                     manager.popBackStackImmediate();
@@ -123,24 +127,6 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
                             likeTransition.setPos(x);
                             likeTransition.setFragName("profile");
                             EventBus.getDefault().post(likeTransition);
-//                            boolean fb_status = FacebookStatus.CheckFbLogin();
-//
-//                            if(fb_status == true)
-//                            {
-//                                ProfilePage profilePage = new ProfilePage();
-//                                manager.popBackStackImmediate();
-//                                fragmentTransaction.replace(R.id.frag,profilePage);
-//                                fragmentTransaction.addToBackStack(null);
-//                                fragmentTransaction.commit();
-//                                break;
-//                            }else {
-//                                LoginPage profilePage = new LoginPage();
-//                                manager.popBackStackImmediate();
-//                                fragmentTransaction.replace(R.id.frag,profilePage);
-//                                frbreak;agmentTransaction.addToBackStack(null);
-//                                fragmentTransaction.commit();
-//                                break;
-//                            }
                             break;
 
                         case 1:
@@ -158,11 +144,12 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
                             fragmentTransaction.commit();
                             break;
                         case 3:
-                            FeedbackPage feedbackPage = new FeedbackPage();
-                            manager.popBackStackImmediate();
-                            fragmentTransaction.replace(R.id.frag,feedbackPage);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
+
+                            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                    "mailto","feedback@fansfoot.com", null));
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                            emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+                            MainActivity.getContext().startActivity(Intent.createChooser(emailIntent, "Send email..."));
                             break;
                         case 5:
                             ShareTheApp shareThePage = new ShareTheApp();
@@ -172,11 +159,45 @@ public class SettingsRecycleViewAdapter extends RecyclerView.Adapter<SettingsRec
                             fragmentTransaction.commit();
                             break;
                         case 6:
-                            ReportPage reportPage = new ReportPage();
-                            manager.popBackStackImmediate();
-                            fragmentTransaction.replace(R.id.frag,reportPage);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
+
+
+
+                            boolean fb_status = FacebookStatus.CheckFbLogin();
+
+
+                            if (fb_status == true) {
+                                ReportPage reportPage = new ReportPage();
+                                manager.popBackStackImmediate();
+                                fragmentTransaction.replace(R.id.frag,reportPage);
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+
+                            }else {
+                                boolean value = sharedPreferencesBeta.getString("FbFFID", "").isEmpty();
+                                if(!value){
+                                    ReportPage reportPage = new ReportPage();
+                                    manager.popBackStackImmediate();
+                                    fragmentTransaction.replace(R.id.frag,reportPage);
+                                    fragmentTransaction.addToBackStack(null);
+                                    fragmentTransaction.commit();
+
+                                }else{
+                                    Snackbar snackbar = Snackbar
+                                            .make(view, "Login", Snackbar.LENGTH_SHORT)
+                                            .setAction("LOGIN", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    LikeTransition likeTransition=new LikeTransition();
+                                                    likeTransition.setPos(x);
+                                                    likeTransition.setFragName("profile");
+                                                    EventBus.getDefault().post(likeTransition);
+                                                }
+                                            });
+
+                                    snackbar.show();
+                                }
+                            }
+
                             break;
                         case 7:
                             FbLikePage fbLikePage = new FbLikePage();

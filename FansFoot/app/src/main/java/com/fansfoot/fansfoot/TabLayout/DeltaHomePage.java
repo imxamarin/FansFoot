@@ -1,10 +1,8 @@
 package com.fansfoot.fansfoot.TabLayout;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -16,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;
@@ -56,10 +53,6 @@ public class DeltaHomePage extends Fragment {
     Context context;
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerViewAdapter;
-    private int previousTotal = 0;
-    private boolean loading = true;
-    private int visibleThreshold = 5;
-    int firstVisibleItem, visibleItemCount, totalItemCount;
     LinearLayoutManager recylerViewLayoutManager;
     int newValue  = 0;
     ProgressBar progressBar;
@@ -83,19 +76,10 @@ public class DeltaHomePage extends Fragment {
             @Override
             public void onRefresh() {
                 Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
-
-//                final Handler handler = new Handler();
-//                Runnable runable = new Runnable() {
-//                    @Override
-//                    public void run() {
-                        posts.clear();
+                      posts.clear();
                         newValue = 0;
                         SyncOP(newValue);
                         swipe.setRefreshing(false);
-//                    }
-//                };
-//                handler.postDelayed(runable, 2000);
-
             }
 
         });
@@ -144,11 +128,12 @@ public class DeltaHomePage extends Fragment {
                 ConstServer._ConCat+
                 ConstServer._pagesToLoad+pageNumber+
                 ConstServer._ConCat+
-                ConstServer._deviceToken+"123456"+
+                ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
                 ConstServer._ConCat+
                 ConstServer._device_type+
                 ConstServer._ConCat+
-                ConstServer._USERID+sharedPreferencesBeta.getString("UUID","C10105484848");
+                ConstServer._USERID+
+                sharedPreferencesBeta.getString("FbFFID", "");
 
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {

@@ -10,7 +10,7 @@
     <string name="com_facebook_loginview_log_in_button">LOGIN</string>
     <string name="com_facebook_loginview_log_out_button">LOGOUT</string>
     <string name="com_facebook_loginview_log_in_button_long">Log in with Facebook</string>
-    <string name="LoginFacebookSnak"> Login using Facebook</string>
+    <string name="LoginFacebookSnak"> Login first </string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
     <string-array name="FB_Array">

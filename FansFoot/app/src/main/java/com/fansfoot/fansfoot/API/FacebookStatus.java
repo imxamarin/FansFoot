@@ -50,6 +50,7 @@ public  class FacebookStatus {
 
 
     public static boolean CheckFbLogin(){
+
         AccessToken accessToken;
         accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken == null){

@@ -64,6 +64,7 @@ public class NsfwPage extends Fragment {
     int firstVisibleItem, visibleItemCount, totalItemCount;
     LinearLayoutManager recylerViewLayoutManager;
     int newValue  = 0;
+    ProgressDialog progress;
 
     private boolean isLoading = false;
     RequestQueue mRequestQueue;
@@ -80,6 +81,8 @@ public class NsfwPage extends Fragment {
         AdView mAdView = (AdView) view.findViewById(R.id.adViewNSFW);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        progress = new ProgressDialog(getActivity());
+        progress.setMessage("Refreshing the list");
         progressBar = (ProgressBar) view.findViewById(R.id.nsfwProgressBar);
         Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
@@ -114,13 +117,24 @@ public class NsfwPage extends Fragment {
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ImageButton refresh = (ImageButton) view.findViewById(R.id.cm_nsfwToolBar_Refesh);
-        refresh.setOnClickListener(new View.OnClickListener() {
+        CheckBox refresh = (CheckBox) view.findViewById(R.id.cm_nsfwToolBar_Refesh);
+        refresh.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view,"Refreshing",Snackbar.LENGTH_SHORT).show();
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                progress.show();
+                final Handler handler = new Handler();
+                Runnable runable = new Runnable() {
+                    @Override
+                    public void run() {
+                        posts.clear();
+                        newValue = 0;
+                        SyncOP(newValue);
+                    }
+                };
+                handler.postDelayed(runable, 3000);
             }
         });
+
         CheckBox back = (CheckBox) view.findViewById(R.id.cm_nsfwToolBar_search);
         back.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -176,15 +190,20 @@ public class NsfwPage extends Fragment {
                 ConstServer._ConCat+
                 ConstServer._pagesToLoad+pageNumber+
                 ConstServer._ConCat+
-                ConstServer._deviceToken+"123456"+
+                ConstServer._deviceToken+
+                sharedPreferencesBeta.getString("UUID","C10105484848")+
                 ConstServer._ConCat+
                 ConstServer._device_type+
                 ConstServer._ConCat+
-                ConstServer._USERID+sharedPreferencesBeta.getString("UUID","C10105484848");
+                ConstServer._USERID+
+                sharedPreferencesBeta.getString("FbFFID", "");
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                if(progress.isShowing()){
+                    progress.dismiss();
+                }
                 progressBar.setVisibility(View.GONE);
                 progressBar.setEnabled(false);
                 isLoading=false;
@@ -200,6 +219,9 @@ public class NsfwPage extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if(progress.isShowing()){
+                    progress.dismiss();
+                }
                 progressBar.setVisibility(View.GONE);
                 progressBar.setEnabled(false);
                 isLoading=false;

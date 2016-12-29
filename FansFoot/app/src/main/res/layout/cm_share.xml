@@ -18,7 +18,7 @@
         android:id="@+id/cmSelectionTool_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Share"
+        android:text="Share this App"
         android:textColor="@color/_unselectedtabs"
         android:textSize="25sp"
         android:layout_gravity="center"

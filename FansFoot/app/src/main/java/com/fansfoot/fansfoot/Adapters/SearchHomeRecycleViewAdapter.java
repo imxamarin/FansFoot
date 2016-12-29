@@ -51,8 +51,10 @@ import com.fansfoot.fansfoot.DefaultActivities.YoutubePlayerActivity;
 import com.fansfoot.fansfoot.DefaultPages.FbLikePage;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
+import com.fansfoot.fansfoot.models.LikeTransition;
 import com.google.gson.Gson;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -69,12 +71,17 @@ public class SearchHomeRecycleViewAdapter extends RecyclerView.Adapter<SearchHom
     Context context;
     View mainView;
     SharedPreferences sharedPreferencesBeta;
-
+    FBLike fblike;
+    RequestQueue mRequestQueue;
 
     SearchHomeRecycleViewAdapter.SearchViewHolder viewHolders;
     public SearchHomeRecycleViewAdapter( Context context,List<Post> urlList) {
         UrlList = urlList;
         this.context = context;
+        Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+        Network network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
     }
 
     @Override
@@ -99,39 +106,90 @@ public class SearchHomeRecycleViewAdapter extends RecyclerView.Adapter<SearchHom
         sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
+                String ModUrl = ConstServer._baseUrl +
+                        ConstServer._type +
+                        ConstServer._typePostLike +
+                        ConstServer._ConCat +
+                        ConstServer._PostID +
+                        UrlList.get(position).getPostId() +
+                        ConstServer._ConCat +
+                        ConstServer._PostUserID +
+                        sharedPreferencesBeta.getString("FbFFID", "") +
+                        ConstServer._ConCat +
+                        ConstServer.LikeStatus;
+
                 boolean fb_status = FacebookStatus.CheckFbLogin();
-                Log.d("valuse", "" + fb_status);
-                if(fb_status == true) {
-                    boolean val = holder.JumpToAlterFacebookLikeAPI(UrlList.get(position).getPostId());
-                    if (val == true) {
-                        holder.dislikeBtn.setEnabled(true);
-                        int vals = Integer.parseInt(holder.likesTextView.getText().toString());
-                        Log.d("value", "" + vals);
-                        int m = vals + 1;
-                        Log.d("val", "" + m);
-                        holder.likesTextView.setText(m + "");
-                        view.setEnabled(false);
-                    }}else {
 
-                    boolean value = sharedPreferencesBeta.getString("FbFFID","").isEmpty();
-                    if(!value){
-                        boolean val = holder.JumpToAlterFacebookLikeAPI(UrlList.get(position).getPostId());
-                        Log.d("as","koop");
-                        if (val == true) {
-                            holder.dislikeBtn.setEnabled(true);
-                            int vals = Integer.parseInt(holder.likesTextView.getText().toString());
-                            Log.d("value", "" + vals);
-                            int m = vals + 1;
-                            Log.d("val", "" + m);
-                            holder.likesTextView.setText(m + "");
-                            view.setEnabled(false);
+
+                if (fb_status == true) {
+
+
+                    JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                            ModUrl, null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("responceq", "" + response.toString());
+                            Gson _Gson = new Gson();
+                            fblike = _Gson.fromJson(response.toString(), FBLike.class);
+                            String xVal = fblike.getMsg();
+                            if (xVal.equals("like")) {
+                                holder.dislikeBtn.setEnabled(true);
+                                int vals = Integer.parseInt(holder.likesTextView.getText().toString());
+                                Log.d("value", "" + vals);
+                                int m = vals + 1;
+                                Log.d("val", "" + m);
+                                holder.likesTextView.setText(m + "");
+                                view.setEnabled(false);
+                            } else {
+                                Toast.makeText(context, "Already Liked", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.d("Text", xVal);
                         }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+                    mRequestQueue.add(_JsonObjectRequest);
 
 
-                    }else {
+                } else {
+                    boolean value = sharedPreferencesBeta.getString("FbFFID", "").isEmpty();
+                    if(!value){
+                        JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                                ModUrl, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d("responceq", "" + response.toString());
+                                Gson _Gson = new Gson();
+                                fblike = _Gson.fromJson(response.toString(), FBLike.class);
+                                String xVal = fblike.getMsg();
+                                if (xVal.equals("like")) {
+                                    holder.dislikeBtn.setEnabled(true);
+                                    int vals = Integer.parseInt(holder.likesTextView.getText().toString());
+                                    Log.d("value", "" + vals);
+                                    int m = vals + 1;
+                                    Log.d("val", "" + m);
+                                    holder.likesTextView.setText(m + "");
+                                    view.setEnabled(false);
+                                } else {
+                                    Toast.makeText(context, "Already Liked", Toast.LENGTH_SHORT).show();
+                                }
+                                Log.d("Text", xVal);
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                            }
+                        });
+                        mRequestQueue.add(_JsonObjectRequest);
+                    }
+                    else{
                         Snackbar snackbar = Snackbar
-                                .make(view,"Login using Facebook",Snackbar.LENGTH_SHORT)
+                                .make(view, "Login using Facebook", Snackbar.LENGTH_SHORT)
                                 .setAction("LOGIN", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -142,49 +200,99 @@ public class SearchHomeRecycleViewAdapter extends RecyclerView.Adapter<SearchHom
                         snackbar.show();
                     }
                 }
-
             }
+
         });
 
         holder.dislikeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                boolean fb_status = FacebookStatus.CheckFbLogin();
+            public void onClick(final View view) {
+
+                String ModUrl = ConstServer._baseUrl+
+                        ConstServer._type+
+                        ConstServer._typePostLike+
+                        ConstServer._ConCat+
+                        ConstServer._PostID+
+                        UrlList.get(position).getPostId()+
+                        ConstServer._ConCat+
+                        ConstServer._PostUserID+
+                        sharedPreferencesBeta.getString("FbFFID","")+
+                        ConstServer._ConCat+
+                        ConstServer.DisLikeStatus;
+
+
+                final boolean fb_status = FacebookStatus.CheckFbLogin();
                 if(fb_status == true) {
-                    boolean val = holder.JumpToAlterFacebookDisLikeAPI(UrlList.get(position).getPostId());
-                    if (val == true) {
-                        holder.likeBtn.setEnabled(true);
-                        int vals = Integer.parseInt(holder.likesTextView.getText().toString());
-                        Log.d("value", "" + vals);
-                        if(vals > 0) {
-                            int m = vals - 1;
-                            Log.d("val", "" + m);
-                            holder.likesTextView.setText(m + "");
+                    Log.d("valueMain", fb_status+"");
+
+                    JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                            ModUrl, null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("responceq",""+response.toString());
+                            Gson _Gson = new Gson();
+                            fblike = _Gson.fromJson(response.toString(), FBLike.class);
+                            String xVal = fblike.getMsg();
+                            if(xVal.equals("unlike")){
+                                holder.likeBtn.setEnabled(true);
+                                int vals = Integer.parseInt(holder.likesTextView.getText().toString());
+                                Log.d("value", "" + vals);
+                                if(vals > 0) {
+                                    int m = vals - 1;
+                                    Log.d("val", "" + m);
+                                    holder.likesTextView.setText(m + "");
+                                }
+                                view.setEnabled(false);
+                            }else{
+                                Toast.makeText(context, "Already Disliked", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.d("Text",xVal);
 
                         }
-                        view.setEnabled(false);
-                    }}else {
-                    boolean value = sharedPreferencesBeta.getString("FbFFID","").isEmpty();
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+                    mRequestQueue.add(_JsonObjectRequest);
+                }else {
+                    boolean value = sharedPreferencesBeta.getString("FbFFID", "").isEmpty();
                     if(!value){
-                        boolean val = holder.JumpToAlterFacebookDisLikeAPI(UrlList.get(position).getPostId());
-                        Log.d("as","koop");
-                        if (val == true) {
-                            holder.likeBtn.setEnabled(true);
-                            int vals = Integer.parseInt(holder.likesTextView.getText().toString());
-                            Log.d("value", "" + vals);
-                            if(vals > 0) {
-                                int m = vals - 1;
-                                Log.d("val", "" + m);
-                                holder.likesTextView.setText(m + "");
+                        JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                                ModUrl, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d("responceq", "" + response.toString());
+                                Gson _Gson = new Gson();
+                                fblike = _Gson.fromJson(response.toString(), FBLike.class);
+                                String xVal = fblike.getMsg();
+                                if (xVal.equals("unlike")) {
+                                    holder.likeBtn.setEnabled(true);
+                                    int vals = Integer.parseInt(holder.likesTextView.getText().toString());
+                                    Log.d("value", "" + vals);
+                                    if(vals > 0) {
+                                        int m = vals - 1;
+                                        Log.d("val", "" + m);
+                                        holder.likesTextView.setText(m + "");
+                                    }
+                                    view.setEnabled(false);
+                                } else {
+                                    Toast.makeText(context, "Already unliked", Toast.LENGTH_SHORT).show();
+                                }
+                                Log.d("Text", xVal);
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
                             }
-                            view.setEnabled(false);
-                        }
-
-
-                    }else {
+                        });
+                        mRequestQueue.add(_JsonObjectRequest);
+                    }
+                    else{
                         Snackbar snackbar = Snackbar
-                                .make(view,R.string.LoginFacebookSnak,Snackbar.LENGTH_SHORT)
+                                .make(view, "Login using Facebook", Snackbar.LENGTH_SHORT)
                                 .setAction("LOGIN", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -195,7 +303,6 @@ public class SearchHomeRecycleViewAdapter extends RecyclerView.Adapter<SearchHom
                         snackbar.show();
                     }
                 }
-
             }
         });
 
@@ -225,15 +332,11 @@ public class SearchHomeRecycleViewAdapter extends RecyclerView.Adapter<SearchHom
 
         public void JumpToFaceBookForLogin(){
             int x = getPosition();
-            FragmentTransaction fragmentTransaction;
-            FragmentManager manager = MainActivity.getBaseFragmentManager();
-            manager.popBackStackImmediate();
-            fragmentTransaction = manager.beginTransaction();
-            FbLikePage fbLikePage = new FbLikePage();
-            manager.popBackStackImmediate();
-            fragmentTransaction.replace(R.id.frag,fbLikePage);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            LikeTransition likeTransition=new LikeTransition();
+            likeTransition.setPos(x);
+            likeTransition.setFragName("profile");
+            EventBus.getDefault().post(likeTransition);
+
         }
 
         public boolean JumpToAlterFacebookLikeAPI(String post_ID){

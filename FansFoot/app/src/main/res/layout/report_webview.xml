@@ -1,12 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include
         layout="@layout/cm_report"/>
-    <WebView
-        android:id="@+id/ReportWebView"
+
+    <com.google.android.gms.ads.AdView
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/adViewReport"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"
+        ads:queryHint="Search"
+        ads:defaultQueryHint="GoogleAds"
+        />
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:fillViewport="true"
+        android:scrollbars = "none"
+        android:scrollbarStyle="insideInset"
+        android:layout_marginRight="10dp"
+        >
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/ProblemEdit"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:hint="What kind of problem are you facing"
+            android:padding="10dp"
+            android:inputType="textImeMultiLine"
+            />
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/ProblemEdit"
+            android:id="@+id/ProblemExplain"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:hint="Description about the problem"
+            android:inputType="textImeMultiLine"
+
+            android:padding="10dp" />
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/ProblemExplain"
+            android:id="@+id/ProblemSuggestion"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:hint="Suggestions"
+            android:inputType="textImeMultiLine"
+
+            android:padding="10dp"/>
+
+        <Button
+
+            android:layout_below="@id/ProblemSuggestion"
+            android:id="@+id/submitBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textColor="@color/purewhite"
+            android:text="Submit"
+            android:layout_centerHorizontal="true"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:background="@drawable/login_button_shape"
+            />
+
+    </RelativeLayout>
+</ScrollView>
 </LinearLayout>
