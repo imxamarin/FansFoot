@@ -14,11 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
-      <!--  <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />-->
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
         <activity
@@ -47,7 +42,7 @@
             />
 
 
-        <activity android:name=".DefaultActivities.SplashScreen" android:screenOrientation="portrait" android:theme="@style/splashScreenTheme">
+        <activity android:name=".DefaultActivities.SplashScreen" android:screenOrientation="portrait" android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

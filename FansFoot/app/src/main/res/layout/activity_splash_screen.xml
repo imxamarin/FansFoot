@@ -9,6 +9,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/SplashScreenImage"
-    android:src="@drawable/splash2"
+    android:background="@drawable/splash1"
     android:scaleType="fitXY"/>
 </RelativeLayout>

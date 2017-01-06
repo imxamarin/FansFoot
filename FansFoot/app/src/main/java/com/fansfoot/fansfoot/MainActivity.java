@@ -14,8 +14,20 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.android.volley.Cache;
+import com.android.volley.Network;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
+import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FacebookStatus;
 import com.fansfoot.fansfoot.DefaultPages.GifPage;
 import com.fansfoot.fansfoot.DefaultPages.HomePage;
@@ -27,9 +39,12 @@ import com.fansfoot.fansfoot.DefaultPages.SelectionPage;
 import com.fansfoot.fansfoot.DefaultPages.SettingsPage;
 import com.fansfoot.fansfoot.DefaultPages.VideosPage;
 import com.fansfoot.fansfoot.models.LikeTransition;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity  {
@@ -41,7 +56,7 @@ public class MainActivity extends AppCompatActivity  {
     SharedPreferences sharedPreferencesBeta;
     public static RadioGroup bottom_layout;
     SharedPreferences.Editor editor;
-
+    RequestQueue mRequestQueue;
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -55,6 +70,10 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         ProfileButton=(RadioButton) findViewById(R.id.ProfileButton);
         context = this;
+        Cache cache = new DiskBasedCache(this.getCacheDir(), 1024 * 1024); // 1MB cap
+        Network network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
         sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
         String UUID =  Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         editor = sharedPreferencesBeta.edit();
@@ -204,6 +223,8 @@ public class MainActivity extends AppCompatActivity  {
             return;
         inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
+
+
 
 }
 

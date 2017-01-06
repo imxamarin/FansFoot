@@ -27,6 +27,7 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.AccessToken;
 import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FBLike;
@@ -39,6 +40,7 @@ import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.fansfoot.fansfoot.models.LikeTransition;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -79,12 +81,20 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
     @Override
     public void onBindViewHolder(final AlphaViewHolder holder, final int position) {
         holder.ImageDetail.setText(UrlList.get(position).getTital());
-        Glide
-                .with(context)
+//        Glide
+//                .with(context)
+//                .load(UrlList.get(position).getPic())
+//                .override(UrlList.get(position).getWidth(),UrlList.get(position).getHeight())
+//                .placeholder(R.drawable.post_img)
+//                .diskCacheStrategy( DiskCacheStrategy.NONE )
+//                .crossFade()
+//                .into(holder.ViewImage);
+
+        Picasso.with(context)
                 .load(UrlList.get(position).getPic())
-                .fitCenter()
+                .resize(UrlList.get(position).getWidth(), UrlList.get(position).getHeight())
+                .centerCrop()
                 .placeholder(R.drawable.post_img)
-                .crossFade()
                 .into(holder.ViewImage);
         holder.commentTextView.setText(UrlList.get(position).getComments().toString());
             holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
@@ -461,16 +471,26 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                     {
                         int x = getPosition();
                         String ImageFBURL = UrlList.get(x).getFbCommnetUrl();
+                        int heighter = UrlList.get(x).getHeight();
+                        int widther = UrlList.get(x).getWidth();
+                        Log.d("hola", ""+heighter+widther);
                         Intent intent = new Intent(MainActivity.getContext(), CommentPage.class);
                         intent.putExtra("ImageFBURL", ImageFBURL);
+                        intent.putExtra("width",widther);
+                        intent.putExtra("height",heighter);
                         MainActivity.getContext().startActivity(intent);
 
                     }else if(!value){
 
                         int x = getPosition();
                         String ImageFBURL = UrlList.get(x).getFbCommnetUrl();
+                        int heighter = UrlList.get(x).getHeight();
+                        int widther = UrlList.get(x).getWidth();
+                        Log.d("Checkthat", " "+heighter+widther);
                         Intent intent = new Intent(MainActivity.getContext(), CommentPage.class);
                         intent.putExtra("ImageFBURL", ImageFBURL);
+                        intent.putExtra("width",widther);
+                        intent.putExtra("height",heighter);
                         MainActivity.getContext().startActivity(intent);
 
                     }else {

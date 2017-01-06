@@ -25,6 +25,7 @@ public class ConstServer {
     public static final String MemespostType = "memes";
     public static final String VideopostType = "videos";
     public static final String get_post_type = "post_show";
+    public static final String get_notification_type = "checkPushNotification";
     public static final String get_search_type = "search_post_show";
     public static final String get_channel_type = "channels";
     public static final String get_Load_Message = "Please wait, your request is being processed...";
@@ -54,5 +55,8 @@ public class ConstServer {
     public static final String problem = "problem=";
     public static final String berifly_explain = "berifly_explain=";
     public static final String suggestion = "suggestion=";
+    public static final String deviceToken = "?device_token=";
+    public static final String deviceTokenDirect = "device_token=";
+
 
 }

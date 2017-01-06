@@ -69,7 +69,7 @@ public class SignUpPage extends Fragment {
     Button SignUpRegBtn;
     EditText  NameEdTxt,EmailEdTxt,PasswdEdTxt,ConnPasswdTxt;
     LoginButton  FbBtn;
-
+    Context context;
     CallbackManager callbackManager;
     SharedPreferences sharedPreferencesBeta;
     SharedPreferences.Editor editorBeta;
@@ -88,6 +88,8 @@ public class SignUpPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.sign_up_page,container,false);
+        context = getContext();
+
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -167,8 +169,6 @@ public class SignUpPage extends Fragment {
                                             editorBeta.putString("iName",NameEdTxt.getText().toString().trim());
                                             editorBeta.putString("iEmail",NameEdTxt.getText().toString().trim());
                                             editorBeta.commit();
-
-                                            Snackbar.make(view,"Login Successful",Snackbar.LENGTH_SHORT).show();
                                             FragmentTransaction fragmentTransaction;
                                             FragmentManager manager = MainActivity.getBaseFragmentManager();
                                             fragmentTransaction = manager.beginTransaction();
@@ -201,7 +201,7 @@ public class SignUpPage extends Fragment {
                     }else {
                     Snackbar.make(view,"Fields Cannot Be Empty",Snackbar.LENGTH_SHORT).show();
                 }
-
+                SignUpRegBtn.setEnabled(true);
             }
         });
 

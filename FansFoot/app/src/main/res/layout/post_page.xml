@@ -8,19 +8,17 @@
     <include
         layout="@layout/cm_post_toolbar"/>
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
     <ScrollView
-        android:layout_above="@+id/adViewAlpha"
         android:fillViewport="true"
         android:scrollbars = "none"
+        android:id="@+id/Scrooler"
         android:scrollbarStyle="insideInset"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
         >
     <LinearLayout
-        android:layout_margin="10dp"
+        android:padding="10dp"
         android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -35,13 +33,24 @@
         android:paddingLeft="10sp"
         />
     <ImageView
-        android:layout_below="@id/PostTilteID"
+
         android:id="@+id/PostMainImage"
         android:layout_width="match_parent"
-         android:adjustViewBounds="true"
+        android:adjustViewBounds="true"
         android:layout_height="wrap_content"
         android:background="@drawable/post_img"
         />
+
+        <com.google.android.gms.ads.AdView
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/adViewPost"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id"
+            ads:queryHint="Search"
+            ads:defaultQueryHint="GoogleAds"
+            />
 
   <WebView
       android:id="@+id/commentView"
@@ -51,17 +60,6 @@
 
 </LinearLayout>
     </ScrollView>
-    <com.google.android.gms.ads.AdView
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/adViewAlpha"
-        ads:adSize="BANNER"
-        ads:adUnitId="INSERT_YOUR_AD_UNIT_ID_HERE"
-        ads:queryHint="Search"
-        ads:defaultQueryHint="GoogleAds"
-        android:background="@drawable/ad_rect_shape"
-        />
-</RelativeLayout>
+
 
 </LinearLayout>

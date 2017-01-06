@@ -1,5 +1,6 @@
 package com.fansfoot.fansfoot.DefaultPages;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -52,10 +54,13 @@ public class ForgetPasswordPage extends Fragment {
     EditText EmailEdTxt;
     ForgetPasswd forgetPasswd;
     RequestQueue mRequestQueue;
+    Context context;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.forget_password,container,false);
+        context = getContext();
         Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
@@ -103,7 +108,7 @@ public class ForgetPasswordPage extends Fragment {
                                 Gson _Gson = new Gson();
                                 forgetPasswd = _Gson.fromJson(response.toString(),ForgetPasswd.class);
                                 if(forgetPasswd.getStatus()==1){
-                                    Snackbar.make(view, "Password sent successfully", Snackbar.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Password sent successfully", Toast.LENGTH_SHORT).show();
                                     callthisMethodUp();
                                 }else{
                                     Snackbar.make(view,"This email is not registered with us",Snackbar.LENGTH_SHORT).show();

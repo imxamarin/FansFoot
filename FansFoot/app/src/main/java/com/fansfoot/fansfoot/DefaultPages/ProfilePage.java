@@ -26,6 +26,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -56,28 +57,13 @@ import org.json.JSONObject;
  */
 
 public class ProfilePage extends Fragment {
-    public interface Callback {
-        public void onRadioButtonClicked(View radioButton);
-    }
 
     Context context;
     ProfilePictureView profilePictureView;
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerViewAdapter;
     RecyclerView.LayoutManager recylerViewLayoutManager;
-    String[] userDetail = {
-            "Name",
-            "City",
-            "Country",
-            "Birthday"
-    };
 
-    String[] userValues = {
-            "Rohit",
-            "Chandigarh",
-            "India",
-            "30 Feb"
-    };
     EditText ProfileNameEdtext;
     EditText ProfileCityEdtext;
     EditText ProfileCountryEdtext;
@@ -107,10 +93,6 @@ public class ProfilePage extends Fragment {
         progress.setCanceledOnTouchOutside(false);
         progress.setCancelable(false);
         sharedPreferencesBeta =getActivity().getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
-
-
-
-
         Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
         Network network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
@@ -131,20 +113,12 @@ public class ProfilePage extends Fragment {
         likes = (TextView) view.findViewById(R.id.Pro_comments);
         posts = (TextView) view.findViewById(R.id.Pro_Post);
 
-
-
-
-
-
-
         if(FacebookStatus.CheckFbLogin()){
             profilePictureView.setProfileId(FacebookStatus.FBUserID());
              name = sharedPreferencesBeta.getString("iName","");
              city = sharedPreferencesBeta.getString("iCity","");
              country= sharedPreferencesBeta.getString("iCountry","");
              birthday = sharedPreferencesBeta.getString("iBirthday","");
-
-
             ProfileNameEdtext.setText(name);
             ProfileCityEdtext.setText(city);
             ProfileCountryEdtext.setText(country);
@@ -156,8 +130,6 @@ public class ProfilePage extends Fragment {
             String locationCity = sharedPreferencesBeta.getString("eCity","");
             String locationCountry = sharedPreferencesBeta.getString("eCountry","");
             String birthday = sharedPreferencesBeta.getString("eBirthday","");
-
-
             ProfileNameEdtext.setText(name);
             ProfileCityEdtext.setText(locationCity);
             ProfileCountryEdtext.setText(locationCountry);
@@ -178,13 +150,13 @@ public class ProfilePage extends Fragment {
                     editorBeta = sharedPreferencesBeta.edit();
                     editorBeta.clear();
                     editorBeta.commit();
-                    Snackbar.make(view,"USER LOGOUT",Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(context, "USER LOGOUT", Toast.LENGTH_SHORT).show();
                     DoThisOperation();
                 }else{
                     editorBeta = sharedPreferencesBeta.edit();
                     editorBeta.clear();
                     editorBeta.commit();
-                    Snackbar.make(view,"USER LOGOUT",Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(context, "USER LOGOUT", Toast.LENGTH_SHORT).show();
                     DoThisOperation();
                 }
             }
@@ -199,12 +171,6 @@ public class ProfilePage extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 progress.show();
-                editorBeta = sharedPreferencesBeta.edit();
-                editorBeta.putString("FbFFName",ProfileNameEdtext.getText().toString());
-                editorBeta.putString("eCity",ProfileCityEdtext.getText().toString());
-                editorBeta.putString("eCountry",ProfileCountryEdtext.getText().toString());
-                editorBeta.putString("eBirthday",ProfileBirthDayEdtext.getText().toString());
-                editorBeta.commit();
 
                 String ModUrl = ConstServer._MainbaseUrl+
                         ConstServer._type+
@@ -221,9 +187,13 @@ public class ProfilePage extends Fragment {
                         Gson _Gson = new Gson();
                         profiler = _Gson.fromJson(response.toString(),Profiler.class);
                         if(profiler.getStatus()==1){
-                            points.setText(profiler.getLike().toString());
-                            likes.setText(profiler.getComments().toString());
-                            posts.setText(profiler.getPost().toString());
+                            profiler.setName(sharedPreferencesBeta.getString("FbFFName",ProfileNameEdtext.getText().toString()));
+                            editorBeta = sharedPreferencesBeta.edit();
+                            editorBeta.putString("FbFFName",ProfileNameEdtext.getText().toString());
+                            editorBeta.putString("eCity",ProfileCityEdtext.getText().toString());
+                            editorBeta.putString("eCountry",ProfileCountryEdtext.getText().toString());
+                            editorBeta.putString("eBirthday",ProfileBirthDayEdtext.getText().toString());
+                            editorBeta.commit();
                         }
                         progress.dismiss();
                     }
@@ -283,10 +253,41 @@ public class ProfilePage extends Fragment {
         fragmentTransaction.replace(R.id.frag,profilePage);
         fragmentTransaction.commit();
     }
-
-
-
     public void CallThisMethodToGetUpdatesFromServer(){
+
+
+        String ModUrl = ConstServer._MainbaseUrl+
+                ConstServer._type+
+                ConstServer.my_profile+
+                ConstServer._ConCat+
+                ConstServer.my_profile_USERID+sharedPreferencesBeta.getString("FbFFID","5294");
+
+        JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                ModUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson _Gson = new Gson();
+                profiler = _Gson.fromJson(response.toString(),Profiler.class);
+                if(profiler.getStatus()==1){
+                    points.setText(profiler.getLike().toString());
+                    likes.setText(profiler.getComments().toString());
+                    posts.setText(profiler.getPost().toString());
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        mRequestQueue.add(_JsonObjectRequest);
+
+
+    }
+
+
+    public void CallThisMethodToGetUpdatesFromServerBeta(){
 
 
         String ModUrl = ConstServer._MainbaseUrl+
@@ -305,6 +306,7 @@ public class ProfilePage extends Fragment {
                 points.setText(profiler.getLike().toString());
                 likes.setText(profiler.getComments().toString());
                 posts.setText(profiler.getPost().toString());
+                ProfileNameEdtext.setText(profiler.getName().toString());
                 }
             }
         }, new Response.ErrorListener() {

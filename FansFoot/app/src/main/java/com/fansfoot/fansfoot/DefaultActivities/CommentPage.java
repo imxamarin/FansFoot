@@ -38,6 +38,7 @@ public class CommentPage extends AppCompatActivity {
                onBackPressed();
             }
         });
+
         AdView mAdView = (AdView) findViewById(R.id.adViewComment);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);

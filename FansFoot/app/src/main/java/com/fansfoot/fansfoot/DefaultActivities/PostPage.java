@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +16,8 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +26,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.fansfoot.fansfoot.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by xamarin on 21/12/16.
@@ -37,6 +44,23 @@ public class PostPage extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_page);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.posttoolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        CheckBox back = (CheckBox)findViewById(R.id.cm_PostToolBar_search);
+        back.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                onBackPressed();
+            }
+        });
+
+        AdView mAdView = (AdView) findViewById(R.id.adViewPost);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         textView = (TextView) findViewById(R.id.PostTilteID);
         webView = (WebView) findViewById(R.id.commentView);
         imageView = (ImageView) findViewById(R.id.PostMainImage);
@@ -44,6 +68,9 @@ public class PostPage extends AppCompatActivity {
         String TitleImg = intent.getStringExtra("ImageTitle");
         String TitlePic = intent.getStringExtra("ImageURL");
         String ImageFBURL = intent.getStringExtra("ImageFBURL");
+        int height = intent.getIntExtra("height",600);
+        int width = intent.getIntExtra("width",500);
+        Log.d("Checkthat", " "+height+width);
         progressDialog = ProgressDialog.show(PostPage.this, "", "Please wait, your request is being processed...", true);
         if(!ImageFBURL.isEmpty()){
             webView.getSettings().setJavaScriptEnabled(true);
@@ -71,12 +98,11 @@ public class PostPage extends AppCompatActivity {
         }
         if(textView != null){
             textView.setText(TitleImg);
-            Glide
-                    .with(getApplicationContext())
+            Picasso.with(getApplicationContext())
                     .load(TitlePic)
-                    .fitCenter()
+                    .resize(width,height)
+                    .centerCrop()
                     .placeholder(R.drawable.post_img)
-                    .crossFade()
                     .into(imageView);
         }
 

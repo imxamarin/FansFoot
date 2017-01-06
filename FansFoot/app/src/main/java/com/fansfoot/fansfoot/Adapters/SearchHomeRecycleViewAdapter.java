@@ -53,6 +53,7 @@ import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.fansfoot.fansfoot.models.LikeTransition;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -94,13 +95,14 @@ public class SearchHomeRecycleViewAdapter extends RecyclerView.Adapter<SearchHom
     @Override
     public void onBindViewHolder(final SearchViewHolder holder, final int position) {
         holder.ImageDetail.setText(UrlList.get(position).getTital());
-        Glide
-                .with(context)
+
+        Picasso.with(context)
                 .load(UrlList.get(position).getPic())
-                .fitCenter()
+                .resize(UrlList.get(position).getWidth(), UrlList.get(position).getHeight())
+                .centerCrop()
                 .placeholder(R.drawable.post_img)
-                .crossFade()
                 .into(holder.ViewImage);
+
         holder.commentTextView.setText(UrlList.get(position).getComments().toString());
         holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
         sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);

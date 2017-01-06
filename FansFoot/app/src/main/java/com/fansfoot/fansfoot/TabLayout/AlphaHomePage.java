@@ -33,6 +33,7 @@ import com.fansfoot.fansfoot.Adapters.AlphaHomeRecycleViewAdapter;
 import com.fansfoot.fansfoot.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
@@ -141,12 +142,14 @@ public class AlphaHomePage extends Fragment {
                 ConstServer._ConCat+
                 ConstServer._pagesToLoad+pageNumber+
                 ConstServer._ConCat+
-                ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
+                ConstServer._deviceToken+ FirebaseInstanceId.getInstance().getToken()+
                 ConstServer._ConCat+
                 ConstServer._device_type+
                 ConstServer._ConCat+
                 ConstServer._USERID+
                 sharedPreferencesBeta.getString("FbFFID", "");
+
+        Log.d("hola",ModUrl);
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override

@@ -120,6 +120,9 @@ public class ReportPage extends Fragment {
                         reportProblem = _Gson.fromJson(response.toString(), ReportProblem.class);
 
                         if (reportProblem.getStatus() == 1) {
+                            editTextAlpha.setText("");
+                            editTextBeta.setText("");
+                            editTextDelta.setText("");
                             Snackbar
                                     .make(view, "Report submitted", Snackbar.LENGTH_SHORT).show();
                         } else {

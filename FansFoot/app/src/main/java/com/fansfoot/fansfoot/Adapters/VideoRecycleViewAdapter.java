@@ -52,6 +52,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -96,6 +97,8 @@ public class VideoRecycleViewAdapter extends RecyclerView.Adapter<VideoRecycleVi
 
         if(UrlList.get(position).getStatus()==1) {
             holder.VideoDetail.setText(UrlList.get(position).getTital());
+
+
             Glide
                     .with(context)
                     .load(UrlList.get(position).getVideoTumb())

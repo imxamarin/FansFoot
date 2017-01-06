@@ -42,6 +42,7 @@ import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.fansfoot.fansfoot.models.LikeTransition;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -82,13 +83,12 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
     @Override
     public void onBindViewHolder(final GifPageImageViewHolder holder, final int position) {
         holder.ImageDetail.setText(UrlList.get(position).getTital());
-        Glide
-                .with(context)
+        Picasso.with(context)
                 .load(UrlList.get(position).getPic())
-                .fitCenter()
+                .resize(UrlList.get(position).getWidth(), UrlList.get(position).getHeight())
+                .centerCrop()
                 .placeholder(R.drawable.post_img)
-                .crossFade()
-                .into(holder.imageViewTarget);
+                .into(holder.ViewImage);
         holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
         holder.commentTextView.setText(UrlList.get(position).getComments().toString());
         sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);

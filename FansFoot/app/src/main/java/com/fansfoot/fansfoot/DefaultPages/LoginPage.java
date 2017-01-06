@@ -199,7 +199,6 @@ public class LoginPage extends Fragment {
                                    }
 
                                    DoTheCallToFB();
-                                   Snackbar.make(view,"Login Sucessful",Snackbar.LENGTH_SHORT).show();
                                    DoThisOperation();
                                }
                            });
@@ -256,7 +255,7 @@ public class LoginPage extends Fragment {
                                         editorBeta.putString("FbFFMSG", fansFootLogin.getMessage());
                                         editorBeta.putInt("FbFFSTATUS", fansFootLogin.getStatus());
                                         editorBeta.commit();
-                                        Snackbar.make(view,"Login Successful",Snackbar.LENGTH_SHORT).show();
+
                                         FragmentTransaction fragmentTransaction;
                                         FragmentManager manager = MainActivity.getBaseFragmentManager();
                                         fragmentTransaction = manager.beginTransaction();

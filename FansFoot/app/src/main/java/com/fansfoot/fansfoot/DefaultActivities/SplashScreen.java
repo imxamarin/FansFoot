@@ -10,24 +10,28 @@ import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 
 public class SplashScreen extends AppCompatActivity {
+    private static int IMAGE_TIME_OUT = 2000;
+
     private static int SPLASH_TIME_OUT = 3000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
 
+        setContentView(R.layout.activity_splash_screen);
         final ImageView img = (ImageView) findViewById(R.id.SplashScreenImage);
+
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        img.setBackgroundResource(R.drawable.splash2);
-                        finish();
-                    }
-                }, SPLASH_TIME_OUT);
+                img.setBackgroundResource(R.drawable.splash2);
+                // finish();
+            }
+        }, IMAGE_TIME_OUT);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
                 Intent i = new Intent(SplashScreen.this, MainActivity.class);
                 startActivity(i);

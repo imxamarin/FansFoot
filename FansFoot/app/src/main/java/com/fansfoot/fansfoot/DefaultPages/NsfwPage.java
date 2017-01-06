@@ -39,6 +39,7 @@ import com.fansfoot.fansfoot.Adapters.NsfwRecycleViewAdapter;
 import com.fansfoot.fansfoot.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
@@ -191,7 +192,7 @@ public class NsfwPage extends Fragment {
                 ConstServer._pagesToLoad+pageNumber+
                 ConstServer._ConCat+
                 ConstServer._deviceToken+
-                sharedPreferencesBeta.getString("UUID","C10105484848")+
+                FirebaseInstanceId.getInstance().getToken()+
                 ConstServer._ConCat+
                 ConstServer._device_type+
                 ConstServer._ConCat+
