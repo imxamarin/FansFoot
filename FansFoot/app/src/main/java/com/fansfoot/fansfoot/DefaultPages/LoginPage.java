@@ -47,6 +47,7 @@ import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -126,6 +127,8 @@ public class LoginPage extends Fragment {
                            new GraphRequest.GraphJSONObjectCallback() {
                                @Override
                                public void onCompleted(JSONObject object, GraphResponse response) {
+
+                                   Log.d("CIS",response.toString());
 
                                    try {
                                        editorBeta = sharedPreferencesBeta.edit();
@@ -240,7 +243,7 @@ public class LoginPage extends Fragment {
                                     ConstServer.UserPassword+
                                     PasswdEdTxt.getText().toString().trim()+
                                     ConstServer._ConCat+
-                                    ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
+                                    ConstServer._deviceToken+FirebaseInstanceId.getInstance().getToken()+
                                     ConstServer._ConCat+
                                     ConstServer._device_type;
                             JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -340,7 +343,7 @@ public class LoginPage extends Fragment {
                 ConstServer.UserPassword+
                 PasswdEdTxt.getText().toString().trim()+
                 ConstServer._ConCat+
-                ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
+                ConstServer._deviceToken+FirebaseInstanceId.getInstance().getToken()+
                 ConstServer._ConCat+
                 ConstServer._device_type;
 
@@ -389,20 +392,23 @@ public class LoginPage extends Fragment {
                 sharedPreferencesBeta.getString("iUID","339322503127553")+
                 ConstServer._ConCat+
                 ConstServer.Facebook_UserName+
-                sharedPreferencesBeta.getString("iName","Raj")+
+                sharedPreferencesBeta.getString("iEmail","Raj")+
                 ConstServer._ConCat+
                 ConstServer.Facebook_EmailID+sharedPreferencesBeta.getString("iEmail","amit.verma@trigma.in")+
                 ConstServer._ConCat+
                 ConstServer.Facebook_profilePic+sharedPreferencesBeta.getString("iFbpicture","https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/15590483_339385113121292_4884085331937605536_n.jpg?oh=7fc509aa2ff6e22729678893bc82c158&oe=58F5283F")+
                 ConstServer._ConCat+
-                ConstServer._deviceToken+sharedPreferencesBeta.getString("UUID","C10105484848")+
+                ConstServer._deviceToken+ FirebaseInstanceId.getInstance().getToken()+
                 ConstServer._ConCat+
                 ConstServer._device_type;
 
+                Log.d("FBI",ModUrl);
         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d("FBI",response.toString());
+
                 Gson _Gson = new Gson();
                 facebookFansfoot =  _Gson.fromJson(response.toString(), FacebookFansfoot.class);
                 editorBeta = sharedPreferencesBeta.edit();

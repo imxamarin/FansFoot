@@ -16,18 +16,21 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_splash_screen);
         final ImageView img = (ImageView) findViewById(R.id.SplashScreenImage);
 
+
+
+// Replacing the First Splash image
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 img.setBackgroundResource(R.drawable.splash2);
-                // finish();
             }
         }, IMAGE_TIME_OUT);
+
+// Starting the Main Activity
 
         new Handler().postDelayed(new Runnable() {
             @Override

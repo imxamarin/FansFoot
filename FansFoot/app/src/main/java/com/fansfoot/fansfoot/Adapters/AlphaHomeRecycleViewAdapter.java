@@ -61,6 +61,7 @@ public class AlphaHomeRecycleViewAdapter extends RecyclerView.Adapter<AlphaHomeR
     String result;
     FBLike fblike;
     RequestQueue mRequestQueue;
+
 AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
     public AlphaHomeRecycleViewAdapter( Context context,List<Post> urlList) {
         UrlList = urlList;
@@ -81,23 +82,18 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
     @Override
     public void onBindViewHolder(final AlphaViewHolder holder, final int position) {
         holder.ImageDetail.setText(UrlList.get(position).getTital());
-//        Glide
-//                .with(context)
-//                .load(UrlList.get(position).getPic())
-//                .override(UrlList.get(position).getWidth(),UrlList.get(position).getHeight())
-//                .placeholder(R.drawable.post_img)
-//                .diskCacheStrategy( DiskCacheStrategy.NONE )
-//                .crossFade()
-//                .into(holder.ViewImage);
-
+//        holder.JumpToAlterFacebookLikeAPI(UrlList.get(position).getPostId());
+//        holder.JumpToAlterFacebookDisLikeAPI(UrlList.get(position).getPostId());
         Picasso.with(context)
                 .load(UrlList.get(position).getPic())
                 .resize(UrlList.get(position).getWidth(), UrlList.get(position).getHeight())
                 .centerCrop()
                 .placeholder(R.drawable.post_img)
                 .into(holder.ViewImage);
-        holder.commentTextView.setText(UrlList.get(position).getComments().toString());
+            holder.commentTextView.setText(UrlList.get(position).getComments().toString());
             holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
+
+
         sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
         holder.likeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,10 +110,13 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                         ConstServer._ConCat +
                         ConstServer.LikeStatus;
 
-                boolean fb_status = FacebookStatus.CheckFbLogin();
+                Log.d("like id",ModUrl);
+
+                final boolean fb_status = FacebookStatus.CheckFbLogin();
 
 
                 if (fb_status == true) {
+
 
 
                     JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -129,14 +128,18 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                             fblike = _Gson.fromJson(response.toString(), FBLike.class);
                             String xVal = fblike.getMsg();
                             if (xVal.equals("like")) {
-                                holder.dislikeBtn.setEnabled(true);
+                                holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
+
                                 int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                 Log.d("value", "" + vals);
                                 int m = vals + 1;
                                 Log.d("val", "" + m);
                                 holder.likesTextView.setText(m + "");
-                                view.setEnabled(false);
+
                             } else {
+                                holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
                                 Toast.makeText(context, "Already Liked", Toast.LENGTH_SHORT).show();
                             }
                             Log.d("Text", xVal);
@@ -152,7 +155,9 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
 
                 } else {
                     boolean value = sharedPreferencesBeta.getString("FbFFID", "").isEmpty();
-                    if(!value){
+                    if (!value) {
+
+
                         JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                                 ModUrl, null, new Response.Listener<JSONObject>() {
                             @Override
@@ -162,14 +167,18 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                                 fblike = _Gson.fromJson(response.toString(), FBLike.class);
                                 String xVal = fblike.getMsg();
                                 if (xVal.equals("like")) {
-                                    holder.dislikeBtn.setEnabled(true);
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
+
                                     int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                     Log.d("value", "" + vals);
                                     int m = vals + 1;
                                     Log.d("val", "" + m);
                                     holder.likesTextView.setText(m + "");
-                                    view.setEnabled(false);
+
                                 } else {
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
                                     Toast.makeText(context, "Already Liked", Toast.LENGTH_SHORT).show();
                                 }
                                 Log.d("Text", xVal);
@@ -181,7 +190,8 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                             }
                         });
                         mRequestQueue.add(_JsonObjectRequest);
-                    }
+
+                }
                     else{
                         Snackbar snackbar = Snackbar
                                 .make(view, "Login using Facebook", Snackbar.LENGTH_SHORT)
@@ -203,6 +213,7 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
             @Override
             public void onClick(final View view) {
 
+
                 String ModUrl = ConstServer._baseUrl+
                         ConstServer._type+
                         ConstServer._typePostLike+
@@ -215,7 +226,7 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                         ConstServer._ConCat+
                         ConstServer.DisLikeStatus;
 
-
+                Log.d("dislike id",ModUrl);
                 final boolean fb_status = FacebookStatus.CheckFbLogin();
                 if(fb_status == true) {
                     Log.d("valueMain", fb_status+"");
@@ -229,7 +240,9 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                             fblike = _Gson.fromJson(response.toString(), FBLike.class);
                             String xVal = fblike.getMsg();
                             if(xVal.equals("unlike")){
-                            holder.likeBtn.setEnabled(true);
+                               holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                holder.likeBtn.setImageResource(R.drawable.like_icon);
+
                             int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                             Log.d("value", "" + vals);
                             if(vals > 0) {
@@ -237,8 +250,10 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                             Log.d("val", "" + m);
                             holder.likesTextView.setText(m + "");
                              }
-                        view.setEnabled(false);
+
                             }else{
+                                holder.likeBtn.setImageResource(R.drawable.like_icon);
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
                                 Toast.makeText(context, "Already Disliked", Toast.LENGTH_SHORT).show();
                             }
                             Log.d("Text",xVal);
@@ -263,7 +278,9 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                                 fblike = _Gson.fromJson(response.toString(), FBLike.class);
                                 String xVal = fblike.getMsg();
                                 if (xVal.equals("unlike")) {
-                                    holder.likeBtn.setEnabled(true);
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon);
+
                                     int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                     Log.d("value", "" + vals);
                                     if(vals > 0) {
@@ -271,8 +288,11 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                                         Log.d("val", "" + m);
                                         holder.likesTextView.setText(m + "");
                                     }
-                                    view.setEnabled(false);
+
                                 } else {
+
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon);
                                     Toast.makeText(context, "Already unliked", Toast.LENGTH_SHORT).show();
                                 }
                                 Log.d("Text", xVal);
@@ -338,7 +358,7 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
 
         }
 
-        public boolean JumpToAlterFacebookLikeAPI(String post_ID){
+        public void JumpToAlterFacebookLikeAPI(String post_ID){
             String userID = "";
             if(FacebookStatus.CheckFbLogin()){
                 userID = AccessToken.getCurrentAccessToken().getUserId();
@@ -364,26 +384,28 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                     Log.d("responceq",""+response.toString());
                     Gson _Gson = new Gson();
                     fblike = _Gson.fromJson(response.toString(), FBLike.class);
-                    int  x = fblike.getStatus();
-                    if (x==1){
-                    likeResponce = true;
+                    String xVal = fblike.getMsg();
+                    if(xVal.equals("Already like")) {
+                        likeBtn.setImageResource(R.drawable.like_icon_selected);
+                    }else {
+                        likeBtn.setImageResource(R.drawable.like_icon);
                     }
                    }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    likeResponce = false;
-                    Log.d("eresponce",""+likeResponce);
+
+
                 }
             });
             mRequestQueue.add(_JsonObjectRequest);
-            Log.d("responceq",""+likeResponce);
-            return likeResponce;
+
+
 
         }
 
 
-        public boolean JumpToAlterFacebookDisLikeAPI(String post_ID){
+        public void JumpToAlterFacebookDisLikeAPI(String post_ID){
 
             String userID = "";
             if(FacebookStatus.CheckFbLogin()){
@@ -409,26 +431,42 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
                     Log.d("Makes",response.toString());
                     Gson _Gson = new Gson();
                     fblike = _Gson.fromJson(response.toString(), FBLike.class);
-                     int x = fblike.getStatus();
-                    result = fblike.getMsg();
-                    if(result.equals("unlike")){
-                        DislikeResponce = true;
+                    String xVal = fblike.getMsg();
+                    if (xVal.equals("Already unlike")) {
+                        dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
                     }else {
-                        DislikeResponce = false;
+                        dislikeBtn.setImageResource(R.drawable.dislike_icon);
                     }
-
-                    Log.d("resd",result);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    DislikeResponce = false;
+
                 }
             });
             mRequestQueue.add(_JsonObjectRequest);
-            return DislikeResponce;
+
         }
 
+
+
+        public boolean JumpIfAlreadayLiked(boolean value){
+            if(value==true){
+                Toast.makeText(context, "Already Liked", Toast.LENGTH_SHORT).show();
+                return true;
+            }else {
+                return false;
+            }
+        }
+
+        public boolean JumpIfAlreadayDisLiked(boolean value){
+            if(value==true){
+                Toast.makeText(context, "Already Liked", Toast.LENGTH_SHORT).show();
+                return true;
+            }else {
+                return false;
+            }
+        }
 
         public AlphaViewHolder(final View itemView) {
 
@@ -447,6 +485,9 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
             likeBtn = (ImageButton) itemView.findViewById(R.id.Alphalikebutton);
             dislikeBtn = (ImageButton) itemView.findViewById(R.id.Alphadislikebutton);
             commentBtn = (ImageButton) itemView.findViewById(R.id.Alphacommentbtn);
+            int xm = getPosition();
+
+
             ImageDetail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -462,6 +503,8 @@ AlphaHomeRecycleViewAdapter.AlphaViewHolder viewHolders;
 
                 }
             });
+
+
             commentBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

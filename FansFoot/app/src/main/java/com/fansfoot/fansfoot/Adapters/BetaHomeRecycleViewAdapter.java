@@ -119,14 +119,17 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
                             fblike = _Gson.fromJson(response.toString(), FBLike.class);
                             String xVal = fblike.getMsg();
                             if (xVal.equals("like")) {
-                                holder.dislikeBtn.setEnabled(true);
+                                holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
                                 int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                 Log.d("value", "" + vals);
                                 int m = vals + 1;
                                 Log.d("val", "" + m);
                                 holder.likesTextView.setText(m + "");
-                                view.setEnabled(false);
+
                             } else {
+                                holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
                                 Toast.makeText(context, "Already Liked", Toast.LENGTH_SHORT).show();
                             }
                             Log.d("Text", xVal);
@@ -152,14 +155,19 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
                                 fblike = _Gson.fromJson(response.toString(), FBLike.class);
                                 String xVal = fblike.getMsg();
                                 if (xVal.equals("like")) {
-                                    holder.dislikeBtn.setEnabled(true);
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
+
                                     int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                     Log.d("value", "" + vals);
                                     int m = vals + 1;
                                     Log.d("val", "" + m);
                                     holder.likesTextView.setText(m + "");
-                                    view.setEnabled(false);
+
                                 } else {
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
+
                                     Toast.makeText(context, "Already Liked", Toast.LENGTH_SHORT).show();
                                 }
                                 Log.d("Text", xVal);
@@ -219,7 +227,8 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
                             fblike = _Gson.fromJson(response.toString(), FBLike.class);
                             String xVal = fblike.getMsg();
                             if(xVal.equals("unlike")){
-                                holder.likeBtn.setEnabled(true);
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                holder.likeBtn.setImageResource(R.drawable.like_icon);
                                 int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                 Log.d("value", "" + vals);
                                 if(vals > 0) {
@@ -227,8 +236,10 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
                                     Log.d("val", "" + m);
                                     holder.likesTextView.setText(m + "");
                                 }
-                                view.setEnabled(false);
+
                             }else{
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                holder.likeBtn.setImageResource(R.drawable.like_icon);
                                 Toast.makeText(context, "Already Disliked", Toast.LENGTH_SHORT).show();
                             }
                             Log.d("Text",xVal);
@@ -253,7 +264,8 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
                                 fblike = _Gson.fromJson(response.toString(), FBLike.class);
                                 String xVal = fblike.getMsg();
                                 if (xVal.equals("unlike")) {
-                                    holder.likeBtn.setEnabled(true);
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon);
                                     int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                     Log.d("value", "" + vals);
                                     if(vals > 0) {
@@ -261,8 +273,10 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
                                         Log.d("val", "" + m);
                                         holder.likesTextView.setText(m + "");
                                     }
-                                    view.setEnabled(false);
+
                                 } else {
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon);
                                     Toast.makeText(context, "Already unliked", Toast.LENGTH_SHORT).show();
                                 }
                                 Log.d("Text", xVal);

@@ -49,7 +49,8 @@ public class HomePage extends Fragment {
         final CheckBox searchBtn = (CheckBox) view.findViewById(R.id.cm_HomeToolBar_search);
         final SearchView searchview = (SearchView) view.findViewById(R.id.AlphaSearchView);
         CheckBox refresh = (CheckBox) view.findViewById(R.id.cm_HomeToolBar_Refesh);
-
+        searchview.setIconifiedByDefault(false);
+        searchview.setQueryHint("Search here");
         viewPager.setOffscreenPageLimit(2);
         searchview.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
@@ -60,16 +61,20 @@ public class HomePage extends Fragment {
             }
         });
 
+
         searchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b==true){
                     searchview.setVisibility(View.VISIBLE);
+
                 }else {
                     searchview.setVisibility(View.GONE);
                 }
             }
         });
+
+
 
         searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

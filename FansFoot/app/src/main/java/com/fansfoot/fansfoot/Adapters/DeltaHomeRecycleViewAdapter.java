@@ -217,7 +217,8 @@ public class DeltaHomeRecycleViewAdapter extends RecyclerView.Adapter<DeltaHomeR
                             fblike = _Gson.fromJson(response.toString(), FBLike.class);
                             String xVal = fblike.getMsg();
                             if(xVal.equals("unlike")){
-                                holder.likeBtn.setEnabled(true);
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                holder.likeBtn.setImageResource(R.drawable.like_icon);
                                 int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                 Log.d("value", "" + vals);
                                 if(vals > 0) {
@@ -225,8 +226,9 @@ public class DeltaHomeRecycleViewAdapter extends RecyclerView.Adapter<DeltaHomeR
                                     Log.d("val", "" + m);
                                     holder.likesTextView.setText(m + "");
                                 }
-                                view.setEnabled(false);
+
                             }else{
+
                                 Toast.makeText(context, "Already Disliked", Toast.LENGTH_SHORT).show();
                             }
                             Log.d("Text",xVal);
@@ -251,7 +253,8 @@ public class DeltaHomeRecycleViewAdapter extends RecyclerView.Adapter<DeltaHomeR
                                 fblike = _Gson.fromJson(response.toString(), FBLike.class);
                                 String xVal = fblike.getMsg();
                                 if (xVal.equals("unlike")) {
-                                    holder.likeBtn.setEnabled(true);
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon);
                                     int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                     Log.d("value", "" + vals);
                                     if(vals > 0) {
@@ -259,8 +262,9 @@ public class DeltaHomeRecycleViewAdapter extends RecyclerView.Adapter<DeltaHomeR
                                         Log.d("val", "" + m);
                                         holder.likesTextView.setText(m + "");
                                     }
-                                    view.setEnabled(false);
+
                                 } else {
+
                                     Toast.makeText(context, "Already unliked", Toast.LENGTH_SHORT).show();
                                 }
                                 Log.d("Text", xVal);

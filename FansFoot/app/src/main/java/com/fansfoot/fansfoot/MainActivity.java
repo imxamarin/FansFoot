@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity  {
 
     RadioButton ProfileButton;
     static FragmentManager fragmentManager;
-    static FragmentManager supportFrag;
     static Context context;
     SharedPreferences sharedPreferencesBeta;
     public static RadioGroup bottom_layout;
@@ -75,10 +74,7 @@ public class MainActivity extends AppCompatActivity  {
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
         sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
-        String UUID =  Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        editor = sharedPreferencesBeta.edit();
-        editor.putString("UUID", UUID);
-        editor.commit();
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         CallbackManager  callbackManager = CallbackManager.Factory.create();
         OpenDefaultFragment();
