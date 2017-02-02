@@ -32,25 +32,42 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
     <RelativeLayout
         android:id="@+id/ProfileCover"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/profile_bg">
 
-   <ImageView
-       android:layout_width="match_parent"
-       android:layout_height="150sp"
-       android:src="@drawable/profile_bg"
 
-       android:id="@+id/coverimage"
-       android:scaleType="fitXY" />
-        <com.facebook.login.widget.ProfilePictureView
-            android:layout_width="wrap_content"
+
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/imageView"
-            />
+
+
+            >
+
+            <ProgressBar
+                android:id="@+id/progressBarImage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+
+                />
+
+            <com.fansfoot.fansfoot.ImageAPI.CircleImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/imageView"
+                android:src="@drawable/profile_pic"
+                android:visibility="visible"
+                />
+        </FrameLayout>
+
 
     </RelativeLayout>
     <LinearLayout
@@ -71,12 +88,14 @@
                 android:layout_height="wrap_content"
                 android:text="POINTS"
                 android:textColor="#333333"
+                android:layout_gravity="center_vertical|center_horizontal"
                 />
             <TextView
                 android:id="@+id/Pro_points"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:textColor="#333333"
                 />
@@ -93,15 +112,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="COMNNENT"
+                android:text="COMMENTS"
                 android:textColor="#333333"
+                android:layout_gravity="center_vertical|center_horizontal"
                 />
             <TextView
                 android:id="@+id/Pro_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:gravity="center_horizontal"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:textColor="#333333"
                 />
 
@@ -117,15 +137,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="POST"
+                android:text="POSTS"
                 android:textColor="#333333"
+                android:layout_gravity="center_vertical|center_horizontal"
+
                 />
             <TextView
                 android:id="@+id/Pro_Post"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:textColor="#333333"
                 />
 
@@ -209,10 +231,10 @@
         android:id="@+id/ProfileBirthdayEditView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="30 Feb"
         android:textSize="14sp"
         android:paddingLeft="10sp"
-        android:inputType="date"
+        android:inputType="none"
+        android:focusable="false"
         android:textColor="@color/dark_gray_bg"
         />
 </LinearLayout>

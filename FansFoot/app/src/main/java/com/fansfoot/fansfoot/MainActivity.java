@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -17,34 +16,22 @@ import android.widget.RadioGroup;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
-import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FacebookStatus;
-import com.fansfoot.fansfoot.DefaultPages.GifPage;
 import com.fansfoot.fansfoot.DefaultPages.HomePage;
 import com.fansfoot.fansfoot.DefaultPages.LoginPage;
-import com.fansfoot.fansfoot.DefaultPages.MemesPage;
-import com.fansfoot.fansfoot.DefaultPages.NsfwPage;
 import com.fansfoot.fansfoot.DefaultPages.ProfilePage;
 import com.fansfoot.fansfoot.DefaultPages.SelectionPage;
 import com.fansfoot.fansfoot.DefaultPages.SettingsPage;
 import com.fansfoot.fansfoot.DefaultPages.VideosPage;
 import com.fansfoot.fansfoot.models.LikeTransition;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity  {
@@ -60,6 +47,9 @@ public class MainActivity extends AppCompatActivity  {
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
     }
 
     @Override
@@ -69,14 +59,15 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         ProfileButton=(RadioButton) findViewById(R.id.ProfileButton);
         context = this;
-        Cache cache = new DiskBasedCache(this.getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
         sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        CallbackManager  callbackManager = CallbackManager.Factory.create();
+
         OpenDefaultFragment();
         bottom_layout = (RadioGroup)findViewById(R.id.bottom_layout);
         bottom_layout.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

@@ -95,10 +95,12 @@ public class VideoPage  extends Fragment {
         AdView mAdView = (AdView) view.findViewById(R.id.adViewVideo);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
         SyncOP(newValue);
         fgi = getChildFragmentManager();
         final SwipeRefreshLayout swipe = (SwipeRefreshLayout) view.findViewById(R.id.VideoSwipe);
@@ -214,13 +216,14 @@ public class VideoPage  extends Fragment {
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                if(progress.isShowing()){
-                    progress.dismiss();
-                }
-                progressBar.setVisibility(View.GONE);
-                progressBar.setEnabled(false);
-                isLoading=false;
-                newValue=newValue+1;
+                if(context !=null) {
+                    if (progress.isShowing()) {
+                        progress.dismiss();
+                    }
+                    progressBar.setVisibility(View.GONE);
+                    progressBar.setEnabled(false);
+                    isLoading = false;
+                    newValue = newValue + 1;
 
 
                     Gson _Gson = new Gson();
@@ -230,6 +233,7 @@ public class VideoPage  extends Fragment {
                     if (posts.size() != 0) {
                         recyclerViewAdapter.notifyDataSetChanged();
                     }
+                }
 
             }
         }, new Response.ErrorListener() {
@@ -250,7 +254,14 @@ public class VideoPage  extends Fragment {
         return fgi;
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        context=null;
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
+    }
 
 }
 

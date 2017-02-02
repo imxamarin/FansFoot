@@ -62,10 +62,20 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
     public BetaHomeRecycleViewAdapter(Context context,List<Post> urlList) {
         UrlList = urlList;
         this.context = context;
-        Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
     }
 
     @Override
@@ -81,7 +91,6 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
         Picasso.with(context)
                 .load(UrlList.get(position).getPic())
                 .resize(UrlList.get(position).getWidth(), UrlList.get(position).getHeight())
-                .centerCrop()
                 .placeholder(R.drawable.post_img)
                 .into(holder.ViewImage);
         holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
@@ -330,10 +339,12 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
             super(itemView);
             sharedPreferences =MainActivity.getContext().getSharedPreferences("FacebookPrefrence", Context.MODE_PRIVATE);
             sharedPreferencesBeta =MainActivity.getContext().getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
-            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
-            Network network = new BasicNetwork(new HurlStack());
-            mRequestQueue = new RequestQueue(cache, network);
-            mRequestQueue.start();
+            if (mRequestQueue == null) {
+                Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+                Network network = new BasicNetwork(new HurlStack());
+                mRequestQueue = new RequestQueue(cache, network);
+                mRequestQueue.start();
+            }
             ImageDetail = (TextView) itemView.findViewById(R.id.BetaTilteID);
             ViewImage = (ImageView) itemView.findViewById(R.id.BetaMainImage);
             likesTextView  = (TextView) itemView.findViewById(R.id.BetaImagePointsValue);
@@ -348,10 +359,14 @@ public class BetaHomeRecycleViewAdapter extends RecyclerView.Adapter<BetaHomeRec
                     String ImageURL  = UrlList.get(x).getPic();
                     String ImageTitle = UrlList.get(x).getTital();
                     String ImageFBURL = UrlList.get(x).getFbCommnetUrl();
+                    int heighter = UrlList.get(x).getHeight();
+                    int widther = UrlList.get(x).getWidth();
                     Intent intent = new Intent(MainActivity.getContext(), PostPage.class);
                     intent.putExtra("ImageTitle", ImageTitle);
                     intent.putExtra("ImageURL", ImageURL);
                     intent.putExtra("ImageFBURL", ImageFBURL);
+                    intent.putExtra("width",widther);
+                    intent.putExtra("height",heighter);
                     MainActivity.getContext().startActivity(intent);
 
                 }

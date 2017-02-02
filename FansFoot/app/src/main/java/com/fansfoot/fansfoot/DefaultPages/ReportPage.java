@@ -63,10 +63,12 @@ public class ReportPage extends Fragment {
 
         context = this.getContext();
         sharedPreferencesBeta  = context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
-        Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.cm_report);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
@@ -115,22 +117,23 @@ public class ReportPage extends Fragment {
                         ModUrl, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        if (context != null) {
+                            Gson _Gson = new Gson();
+                            reportProblem = _Gson.fromJson(response.toString(), ReportProblem.class);
 
-                        Gson _Gson = new Gson();
-                        reportProblem = _Gson.fromJson(response.toString(), ReportProblem.class);
+                            if (reportProblem.getStatus() == 1) {
+                                editTextAlpha.setText("");
+                                editTextBeta.setText("");
+                                editTextDelta.setText("");
+                                Snackbar
+                                        .make(view, "Report submitted", Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                Snackbar
+                                        .make(view, "Something Went Wrong", Snackbar.LENGTH_SHORT).show();
+                            }
 
-                        if (reportProblem.getStatus() == 1) {
-                            editTextAlpha.setText("");
-                            editTextBeta.setText("");
-                            editTextDelta.setText("");
-                            Snackbar
-                                    .make(view, "Report submitted", Snackbar.LENGTH_SHORT).show();
-                        } else {
-                            Snackbar
-                                    .make(view, "Something Went Wrong", Snackbar.LENGTH_SHORT).show();
+
                         }
-
-
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -177,5 +180,14 @@ public class ReportPage extends Fragment {
             return true;
         }
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        context=null;
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
     }
 }

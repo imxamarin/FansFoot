@@ -21,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -36,15 +37,18 @@ import com.fansfoot.fansfoot.API.Animated;
 import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.GhostPost;
 import com.fansfoot.fansfoot.Adapters.GifPageRecycleViewAdapter;
+import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.mugen.Mugen;
 import com.mugen.MugenCallbacks;
 import com.mugen.attachers.BaseAttacher;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -76,10 +80,12 @@ public class GifPage extends Fragment {
         progressBar = (ProgressBar) view.findViewById(R.id.GifProgressBar);
         progress = new ProgressDialog(getActivity());
         progress.setMessage("Refreshing the list");
-        Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
         SyncOP(newValue);
 
         final SwipeRefreshLayout swipe = (SwipeRefreshLayout) view.findViewById(R.id.GifSwipe);
@@ -169,7 +175,7 @@ public class GifPage extends Fragment {
                 ConstServer.get_channel_type+
                 ConstServer._ConCat+
                 ConstServer._post_type+
-                ConstServer.MemespostType+
+                ConstServer.animatedgif+
                 ConstServer._ConCat+
                 ConstServer._pagesToLoad+pageNumber+
                 ConstServer._ConCat+
@@ -185,19 +191,26 @@ public class GifPage extends Fragment {
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                if(progress.isShowing()){
-                    progress.dismiss();
-                }
-                progressBar.setVisibility(View.GONE);
-                progressBar.setEnabled(false);
-                isLoading=false;
-                newValue=newValue+1;
-                Gson _Gson = new Gson();
-                fansfootServers =  _Gson.fromJson(response.toString(), Animated.class);
-                posts.addAll(fansfootServers.getPost());
-                Log.d("wala",""+posts.size());
-                if( posts.size()!=0){
-                    recyclerViewAdapter.notifyDataSetChanged();
+                if(context !=null) {
+                    if (progress.isShowing()) {
+                        progress.dismiss();
+                    }
+                    progressBar.setVisibility(View.GONE);
+                    progressBar.setEnabled(false);
+                    isLoading = false;
+                    newValue = newValue + 1;
+                    Gson _Gson = new Gson();
+                    fansfootServers = _Gson.fromJson(response.toString(), Animated.class);
+                    Log.d("size", "" + fansfootServers.getPost().size());
+                    if (fansfootServers.getPost().size() < 2) {
+                        Toast.makeText(context, "No more records", Toast.LENGTH_SHORT).show();
+                    } else {
+                        posts.addAll(fansfootServers.getPost());
+                        Log.d("wala", "" + posts.size());
+                        if (posts.size() != 0) {
+                            recyclerViewAdapter.notifyDataSetChanged();
+                        }
+                    }
                 }
             }
         }, new Response.ErrorListener() {
@@ -214,5 +227,12 @@ public class GifPage extends Fragment {
         mRequestQueue.add(_JsonObjectRequest);
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        context=null;
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
+    }
 }

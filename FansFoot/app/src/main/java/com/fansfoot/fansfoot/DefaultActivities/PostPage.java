@@ -101,7 +101,6 @@ public class PostPage extends AppCompatActivity {
             Picasso.with(getApplicationContext())
                     .load(TitlePic)
                     .resize(width,height)
-                    .centerCrop()
                     .placeholder(R.drawable.post_img)
                     .into(imageView);
         }

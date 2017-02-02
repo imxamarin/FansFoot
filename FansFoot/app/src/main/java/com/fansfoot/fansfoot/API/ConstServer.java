@@ -8,8 +8,11 @@ public class ConstServer {
 
     public static final String _baseUrl = "http://fansfoot.com/mobile/web/?";
     public static final String _MainbaseUrl = "http://fansfoot.com/mobile/web/?";
+    public static final String _MainbaseUrls = "http://fansfoot.com/mobile/web/";
+    public static final String _MainbaseUrls2 = "http://fansfoot.com/mobile/";
     public static final String _type = "type=";
     public static final String _post_type = "post_type=";
+    public static final String _posts_type = "post_type";
     public static final String post_signUp = "sign_up";
     public static final String _pagesToLoad = "page=";
     public static final String _deviceToken = "device_token=";
@@ -48,8 +51,14 @@ public class ConstServer {
     public static final String Forget_Password = "forget_password";
     public static final String key = "key=";
     public static final String my_profile = "my_profile";
+    public static final String Edit_profile = "edit_profile";
     public static final String my_profile_USERID = "USERID=";
+    public static final String my_profiles_USERID = "USERID";
     public static final String username = "username=";
+    public static final String fullname = "full_name=";
+    public static final String fullnames = "full_name";
+    public static final String extension = "extension=jpg";
+    public static final String extensions = "extension";
     public static final String report_problemType = "report_problem";
     public static final String categories = "categories=str_categorid";
     public static final String problem = "problem=";
@@ -57,6 +66,11 @@ public class ConstServer {
     public static final String suggestion = "suggestion=";
     public static final String deviceToken = "?device_token=";
     public static final String deviceTokenDirect = "device_token=";
+    public static final String profilePic = "profilepicture=";
+    public static final String profilesPic = "profilepicture";
+    public static final String animatedgif = "animated-gif";
+    public static final String country = "country=";
+    public static final String countries = "country";
 
 
 }

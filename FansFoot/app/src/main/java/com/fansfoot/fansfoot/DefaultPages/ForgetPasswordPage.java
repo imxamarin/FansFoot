@@ -61,10 +61,12 @@ public class ForgetPasswordPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.forget_password,container,false);
         context = getContext();
-        Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.forgetPasswordToolbar);
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
@@ -104,14 +106,16 @@ public class ForgetPasswordPage extends Fragment {
                                 ModUrl, null, new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                Log.d("CheckJson",response.toString());
-                                Gson _Gson = new Gson();
-                                forgetPasswd = _Gson.fromJson(response.toString(),ForgetPasswd.class);
-                                if(forgetPasswd.getStatus()==1){
-                                    Toast.makeText(context, "Password sent successfully", Toast.LENGTH_SHORT).show();
-                                    callthisMethodUp();
-                                }else{
-                                    Snackbar.make(view,"This email is not registered with us",Snackbar.LENGTH_SHORT).show();
+                                if (context != null) {
+                                    Log.d("CheckJson", response.toString());
+                                    Gson _Gson = new Gson();
+                                    forgetPasswd = _Gson.fromJson(response.toString(), ForgetPasswd.class);
+                                    if (forgetPasswd.getStatus() == 1) {
+                                        Toast.makeText(context, "Password sent successfully", Toast.LENGTH_SHORT).show();
+                                        callthisMethodUp();
+                                    } else {
+                                        Snackbar.make(view, "This email is not registered with us", Snackbar.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -150,6 +154,14 @@ public class ForgetPasswordPage extends Fragment {
             return false;
         }else {
             return true;
+        }
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        context=null;
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
         }
     }
     public boolean CheckEmail(EditText editText){

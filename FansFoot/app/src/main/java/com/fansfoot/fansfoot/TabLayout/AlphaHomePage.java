@@ -28,6 +28,7 @@ import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FansfootServer;
 import com.fansfoot.fansfoot.API.Post;
 import com.fansfoot.fansfoot.Adapters.AlphaHomeRecycleViewAdapter;
+import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -72,10 +73,12 @@ public class AlphaHomePage extends Fragment {
         context = this.getContext();
         sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
         progressBar = (ProgressBar) view.findViewById(R.id.alphaProgressbar);
-        Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
         SyncOP(newValue);
         final SwipeRefreshLayout swipe = (SwipeRefreshLayout) view.findViewById(R.id.AlphaSwipe);
         swipe.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDarkest),getResources().getColor(R.color.holo_blue_light));
@@ -124,6 +127,15 @@ public class AlphaHomePage extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        context=null;
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
+    }
+
     public void SyncOP(int pageNumber){
         if(pageNumber>0){
             progressBar.setVisibility(View.VISIBLE);
@@ -152,18 +164,20 @@ public class AlphaHomePage extends Fragment {
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                progressBar.setVisibility(View.GONE);
-                progressBar.setEnabled(false);
-                isLoading=false;
-                Log.d("Responce",""+response.toString());
-                Gson _Gson = new Gson();
-                newValue=newValue+1;
-                fansfootServers =  _Gson.fromJson(response.toString(), FansfootServer.class);
-                posts.addAll(fansfootServers.getPost());
-                Log.d("check",""+posts.size());
-                if( posts.size()!=0){
+                if(context !=null) {
+                    progressBar.setVisibility(View.GONE);
+                    progressBar.setEnabled(false);
+                    isLoading = false;
+                    Log.d("Responce", "" + response.toString());
+                    Gson _Gson = new Gson();
+                    newValue = newValue + 1;
+                    fansfootServers = _Gson.fromJson(response.toString(), FansfootServer.class);
+                    posts.addAll(fansfootServers.getPost());
+                    Log.d("check", "" + posts.size());
+                    if (posts.size() != 0) {
 
-                    recyclerViewAdapter.notifyDataSetChanged();
+                        recyclerViewAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         }, new Response.ErrorListener() {

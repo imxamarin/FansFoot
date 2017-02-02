@@ -79,10 +79,20 @@ public class SearchHomeRecycleViewAdapter extends RecyclerView.Adapter<SearchHom
     public SearchHomeRecycleViewAdapter( Context context,List<Post> urlList) {
         UrlList = urlList;
         this.context = context;
-        Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
     }
 
     @Override
@@ -95,14 +105,18 @@ public class SearchHomeRecycleViewAdapter extends RecyclerView.Adapter<SearchHom
     @Override
     public void onBindViewHolder(final SearchViewHolder holder, final int position) {
         holder.ImageDetail.setText(UrlList.get(position).getTital());
+        Log.d("picval",UrlList.get(position).getPic());
+        Log.d("width",""+UrlList.get(position).getHeight());
+        Log.d("height",""+UrlList.get(position).getWidth());
 
-        Picasso.with(context)
-                .load(UrlList.get(position).getPic())
-                .resize(UrlList.get(position).getWidth(), UrlList.get(position).getHeight())
-                .centerCrop()
-                .placeholder(R.drawable.post_img)
-                .into(holder.ViewImage);
-
+        if(!UrlList.get(position).getPic().isEmpty() && UrlList.get(position).getWidth() !=0 && UrlList.get(position).getHeight() !=0) {
+            Picasso.with(context)
+                    .load(UrlList.get(position).getPic())
+                    .resize(UrlList.get(position).getWidth(), UrlList.get(position).getHeight())
+                    .centerCrop()
+                    .placeholder(R.drawable.post_img)
+                    .into(holder.ViewImage);
+        }
         holder.commentTextView.setText(UrlList.get(position).getComments().toString());
         holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
         sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
@@ -434,10 +448,12 @@ public class SearchHomeRecycleViewAdapter extends RecyclerView.Adapter<SearchHom
 
             sharedPreferences =MainActivity.getContext().getSharedPreferences("FacebookPrefrence", Context.MODE_PRIVATE);
             sharedPreferencesBeta =MainActivity.getContext().getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
-            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
-            Network network = new BasicNetwork(new HurlStack());
-            mRequestQueue = new RequestQueue(cache, network);
-            mRequestQueue.start();
+            if (mRequestQueue == null) {
+                Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+                Network network = new BasicNetwork(new HurlStack());
+                mRequestQueue = new RequestQueue(cache, network);
+                mRequestQueue.start();
+            }
             ImageDetail = (TextView) itemView.findViewById(R.id.SearchTilteID);
             ViewImage = (ImageView) itemView.findViewById(R.id.SearchMainImage);
             likesTextView  = (TextView) itemView.findViewById(R.id.SearchImagePointsValue);

@@ -35,6 +35,7 @@ import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FansfootServer;
 import com.fansfoot.fansfoot.API.Post;
 import com.fansfoot.fansfoot.Adapters.SearchHomeRecycleViewAdapter;
+import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -84,10 +85,12 @@ public class SearchFragment extends Fragment {
         Bundle bundle = getArguments();
          searchResult = bundle.getString("query_string");
         progressBar = (ProgressBar) view.findViewById(R.id.SearchProgressbar);
-        Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.SearchResulttoolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -179,23 +182,24 @@ public class SearchFragment extends Fragment {
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                progressBar.setVisibility(View.GONE);
-                progressBar.setEnabled(false);
-                isLoading=false;
-                if(response.has("message")){
-                    Toast.makeText(context, "No result found", Toast.LENGTH_SHORT).show();
-                    }else{
-                    Gson _Gson = new Gson();
-                    newValue=newValue+1;
-                    fansfootServers =  _Gson.fromJson(response.toString(), FansfootServer.class);
-                    posts.addAll(fansfootServers.getPost());
+                if(context !=null) {
+                    progressBar.setVisibility(View.GONE);
+                    progressBar.setEnabled(false);
+                    isLoading = false;
+                    if (response.has("message")) {
+                        Toast.makeText(context, "No result found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Gson _Gson = new Gson();
+                        newValue = newValue + 1;
+                        fansfootServers = _Gson.fromJson(response.toString(), FansfootServer.class);
+                        posts.addAll(fansfootServers.getPost());
 
-                    if( posts.size()!=0){
+                        if (posts.size() != 0) {
 
-                        recyclerViewAdapter.notifyDataSetChanged();
+                            recyclerViewAdapter.notifyDataSetChanged();
+                        }
                     }
                 }
-
 
 
             }
@@ -211,5 +215,12 @@ public class SearchFragment extends Fragment {
         mRequestQueue.add(_JsonObjectRequest);
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        context=null;
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
+    }
 }

@@ -67,11 +67,22 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
     public GifPageRecycleViewAdapter(Context context,List<GhostPost> urlList) {
         UrlList = urlList;
         this.context = context;
-        Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
     }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
+    }
+
 
     @Override
     public GifPageImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -83,12 +94,17 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
     @Override
     public void onBindViewHolder(final GifPageImageViewHolder holder, final int position) {
         holder.ImageDetail.setText(UrlList.get(position).getTital());
-        Picasso.with(context)
+
+        Glide.with(context)
                 .load(UrlList.get(position).getPic())
-                .resize(UrlList.get(position).getWidth(), UrlList.get(position).getHeight())
-                .centerCrop()
+                .asGif()
                 .placeholder(R.drawable.post_img)
                 .into(holder.ViewImage);
+//        Picasso.with(context)
+//                .load(UrlList.get(position).getVideoTumb())
+//                .resize(UrlList.get(position).getWidth(), UrlList.get(position).getHeight())
+//                .placeholder(R.drawable.post_img)
+//                .into(holder.ViewImage);
         holder.likesTextView.setText(UrlList.get(position).getTotalLike().toString());
         holder.commentTextView.setText(UrlList.get(position).getComments().toString());
         sharedPreferencesBeta =context.getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
@@ -123,14 +139,17 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
                             fblike = _Gson.fromJson(response.toString(), FBLike.class);
                             String xVal = fblike.getMsg();
                             if (xVal.equals("like")) {
-                                holder.dislikeBtn.setEnabled(true);
+                                holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
                                 int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                 Log.d("value", "" + vals);
                                 int m = vals + 1;
                                 Log.d("val", "" + m);
                                 holder.likesTextView.setText(m + "");
-                                view.setEnabled(false);
+
                             } else {
+                                holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
                                 Toast.makeText(context, "Already Liked", Toast.LENGTH_SHORT).show();
                             }
                             Log.d("Text", xVal);
@@ -156,14 +175,17 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
                                 fblike = _Gson.fromJson(response.toString(), FBLike.class);
                                 String xVal = fblike.getMsg();
                                 if (xVal.equals("like")) {
-                                    holder.dislikeBtn.setEnabled(true);
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
                                     int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                     Log.d("value", "" + vals);
                                     int m = vals + 1;
                                     Log.d("val", "" + m);
                                     holder.likesTextView.setText(m + "");
-                                    view.setEnabled(false);
+
                                 } else {
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon_selected);
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon);
                                     Toast.makeText(context, "Already Liked", Toast.LENGTH_SHORT).show();
                                 }
                                 Log.d("Text", xVal);
@@ -223,7 +245,8 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
                             fblike = _Gson.fromJson(response.toString(), FBLike.class);
                             String xVal = fblike.getMsg();
                             if(xVal.equals("unlike")){
-                                holder.likeBtn.setEnabled(true);
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                holder.likeBtn.setImageResource(R.drawable.like_icon);
                                 int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                 Log.d("value", "" + vals);
                                 if(vals > 0) {
@@ -231,8 +254,10 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
                                     Log.d("val", "" + m);
                                     holder.likesTextView.setText(m + "");
                                 }
-                                view.setEnabled(false);
+
                             }else{
+                                holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                holder.likeBtn.setImageResource(R.drawable.like_icon);
                                 Toast.makeText(context, "Already Disliked", Toast.LENGTH_SHORT).show();
                             }
                             Log.d("Text",xVal);
@@ -257,7 +282,8 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
                                 fblike = _Gson.fromJson(response.toString(), FBLike.class);
                                 String xVal = fblike.getMsg();
                                 if (xVal.equals("unlike")) {
-                                    holder.likeBtn.setEnabled(true);
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon);
                                     int vals = Integer.parseInt(holder.likesTextView.getText().toString());
                                     Log.d("value", "" + vals);
                                     if(vals > 0) {
@@ -265,8 +291,10 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
                                         Log.d("val", "" + m);
                                         holder.likesTextView.setText(m + "");
                                     }
-                                    view.setEnabled(false);
+
                                 } else {
+                                    holder.dislikeBtn.setImageResource(R.drawable.dislike_icon_selected);
+                                    holder.likeBtn.setImageResource(R.drawable.like_icon);
                                     Toast.makeText(context, "Already unliked", Toast.LENGTH_SHORT).show();
                                 }
                                 Log.d("Text", xVal);
@@ -320,10 +348,12 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
             super(itemView);
             sharedPreferences =MainActivity.getContext().getSharedPreferences("FacebookPrefrence", Context.MODE_PRIVATE);
             sharedPreferencesBeta =MainActivity.getContext().getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
-            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
-            Network network = new BasicNetwork(new HurlStack());
-            mRequestQueue = new RequestQueue(cache, network);
-            mRequestQueue.start();
+            if (mRequestQueue == null) {
+                Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+                Network network = new BasicNetwork(new HurlStack());
+                mRequestQueue = new RequestQueue(cache, network);
+                mRequestQueue.start();
+            }
             ImageDetail = (TextView) itemView.findViewById(R.id.GifTilteID);
             ViewImage = (ImageView) itemView.findViewById(R.id.GifMainImage);
             likesTextView  = (TextView) itemView.findViewById(R.id.GifImagePointsValue);
@@ -340,10 +370,14 @@ public class GifPageRecycleViewAdapter extends RecyclerView.Adapter<GifPageRecyc
                     String ImageURL  = UrlList.get(x).getPic();
                     String ImageTitle = UrlList.get(x).getTital();
                     String ImageFBURL = UrlList.get(x).getFbCommnetUrl();
+                    int heighter = UrlList.get(x).getHeight();
+                    int widther = UrlList.get(x).getWidth();
                     Intent intent = new Intent(MainActivity.getContext(), PostPage.class);
                     intent.putExtra("ImageTitle", ImageTitle);
                     intent.putExtra("ImageURL", ImageURL);
                     intent.putExtra("ImageFBURL", ImageFBURL);
+                    intent.putExtra("width",widther);
+                    intent.putExtra("height",heighter);
                     MainActivity.getContext().startActivity(intent);
 
                 }

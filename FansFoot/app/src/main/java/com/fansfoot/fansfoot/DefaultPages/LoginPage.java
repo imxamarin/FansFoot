@@ -43,6 +43,7 @@ import com.facebook.login.widget.LoginButton;
 import com.fansfoot.fansfoot.API.ConstServer;
 import com.fansfoot.fansfoot.API.FacebookFansfoot;
 import com.fansfoot.fansfoot.API.FansFootLogin;
+import com.fansfoot.fansfoot.API.Profiler;
 import com.fansfoot.fansfoot.MainActivity;
 import com.fansfoot.fansfoot.R;
 import com.google.android.gms.ads.AdRequest;
@@ -77,8 +78,8 @@ public class LoginPage extends Fragment {
     SharedPreferences.Editor editorBeta;
     FacebookFansfoot facebookFansfoot;
     FansFootLogin fansFootLogin;
-
-
+    Profiler profiler;
+    Context context;
    public Boolean LoginStatus = true;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,10 +102,13 @@ public class LoginPage extends Fragment {
 
         final View view = inflater.inflate(R.layout.login_page,container,false);
         sharedPreferencesBeta =getActivity().getSharedPreferences("FansFootPerfrence", Context.MODE_PRIVATE);
-        Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        context = getActivity();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
         AdView mAdView = (AdView) view.findViewById(R.id.adViewLogin);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -258,13 +262,8 @@ public class LoginPage extends Fragment {
                                         editorBeta.putString("FbFFMSG", fansFootLogin.getMessage());
                                         editorBeta.putInt("FbFFSTATUS", fansFootLogin.getStatus());
                                         editorBeta.commit();
+                                        DoCallTheProfiler();
 
-                                        FragmentTransaction fragmentTransaction;
-                                        FragmentManager manager = MainActivity.getBaseFragmentManager();
-                                        fragmentTransaction = manager.beginTransaction();
-                                        ProfilePage profilePage = new ProfilePage();
-                                        fragmentTransaction.replace(R.id.frag, profilePage);
-                                        fragmentTransaction.commit();
                                     }else{
                                         Snackbar.make(view,"Invalid Email and Password",Snackbar.LENGTH_SHORT).show();
 
@@ -291,6 +290,8 @@ public class LoginPage extends Fragment {
                 Loginbtn.setEnabled(true);
             }
         });
+
+
 
         SignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -330,6 +331,7 @@ public class LoginPage extends Fragment {
         return view;
     }
 
+
     private boolean CallthisToCheckServerLogin() {
 
         String ModUrl = ConstServer._MainbaseUrl+
@@ -363,6 +365,9 @@ public class LoginPage extends Fragment {
                     editorBeta.putInt("FbFFSTATUS", fansFootLogin.getStatus());
                     editorBeta.commit();
                     LoginStatus = true;
+                }else{
+                    Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+
                 }
 
             }
@@ -376,9 +381,58 @@ public class LoginPage extends Fragment {
         return LoginStatus;
     }
 
+ public void DoCallTheProfiler(){
+     String ModUrl = ConstServer._MainbaseUrl+
+             ConstServer._type+
+             ConstServer.my_profile+
+             ConstServer._ConCat+
+             ConstServer.my_profile_USERID+sharedPreferencesBeta.getString("FbFFID","5294");
+
+Log.d("ModUrl",ModUrl);
+     JsonObjectRequest _JsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+             ModUrl, null, new Response.Listener<JSONObject>() {
+         @Override
+         public void onResponse(JSONObject response) {
+             if(context !=null) {
+                 Gson _Gson = new Gson();
+                 profiler = _Gson.fromJson(response.toString(), Profiler.class);
+                 if (profiler.getStatus() == 1) {
+                     editorBeta = sharedPreferencesBeta.edit();
+                     editorBeta.putString("FbFFName", profiler.getName());
+                     editorBeta.putString("FbImage", profiler.getImage());
+                     editorBeta.putString("eCountry",profiler.getCountry());
+                     editorBeta.commit();
+
+                     FragmentTransaction fragmentTransaction;
+                     FragmentManager manager = MainActivity.getBaseFragmentManager();
+                     fragmentTransaction = manager.beginTransaction();
+                     ProfilePage profilePage = new ProfilePage();
+                     fragmentTransaction.replace(R.id.frag, profilePage);
+                     fragmentTransaction.commit();
+                 } else {
+                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                 }
+             }
+         }
+     }, new Response.ErrorListener() {
+         @Override
+         public void onErrorResponse(VolleyError error) {
+
+         }
+     });
+     mRequestQueue.add(_JsonObjectRequest);
 
 
+ }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        context=null;
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
+    }
 
     private void DoTheCallToFB() {
         String ModUrl = ConstServer._MainbaseUrl+

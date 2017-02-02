@@ -88,10 +88,12 @@ public class MemesPage extends Fragment {
         progress = new ProgressDialog(getActivity());
         progress.setMessage("Refreshing the list");
         progressBar = (ProgressBar) view.findViewById(R.id.MemesProgressBar);
-        Cache cache = new DiskBasedCache(this.getActivity().getCacheDir(), 1024 * 1024); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
+        if (mRequestQueue == null) {
+            Cache cache = new DiskBasedCache(MainActivity.getContext().getCacheDir(), 1024 * 1024); // 1MB cap
+            Network network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+        }
         SyncOP(newValue);
         final SwipeRefreshLayout swipe = (SwipeRefreshLayout) view.findViewById(R.id.MemesSwipe);
         swipe.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDarkest),getResources().getColor(R.color.holo_blue_light));
@@ -204,19 +206,22 @@ public class MemesPage extends Fragment {
                 ModUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                if(progress.isShowing()){
-                    progress.dismiss();
-                }
-                progressBar.setVisibility(View.GONE);
-                progressBar.setEnabled(false);
-                isLoading=false;
-                newValue=newValue+1;
-                Gson _Gson = new Gson();
-                fansfootServers =  _Gson.fromJson(response.toString(), FansfootServer.class);
-                posts.addAll(fansfootServers.getPost());
-                Log.d("wala",""+posts.size());
-                if( posts.size()!=0){
-                    recyclerViewAdapter.notifyDataSetChanged();
+
+                if (context != null) {
+                    if (progress.isShowing()) {
+                        progress.dismiss();
+                    }
+                    progressBar.setVisibility(View.GONE);
+                    progressBar.setEnabled(false);
+                    isLoading = false;
+                    newValue = newValue + 1;
+                    Gson _Gson = new Gson();
+                    fansfootServers = _Gson.fromJson(response.toString(), FansfootServer.class);
+                    posts.addAll(fansfootServers.getPost());
+                    Log.d("wala", "" + posts.size());
+                    if (posts.size() != 0) {
+                        recyclerViewAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         }, new Response.ErrorListener() {
@@ -232,5 +237,12 @@ public class MemesPage extends Fragment {
         });
         mRequestQueue.add(_JsonObjectRequest);
     }
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        context=null;
+        if (mRequestQueue != null) {
+            mRequestQueue.stop();
+        }
+    }
 }

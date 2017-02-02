@@ -24,6 +24,9 @@ public class Profiler {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("country")
+    @Expose
+    private String country;
     @SerializedName("image")
     @Expose
     private String image;
@@ -74,6 +77,14 @@ public class Profiler {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getImage() {
